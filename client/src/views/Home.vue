@@ -1,0 +1,58 @@
+<template>
+  <div class="home">
+    <b-jumbotron>
+      <h1 class="mb-5">Splitting bills app</h1>
+
+      <h5>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero vero,
+        consectetur excepturi quasi quas sunt eum asperiores et odio totam
+        facere sed ipsa maiores pariatur, adipisci aliquam omnis ab enim?
+      </h5>
+
+      <hr class="my-4" />
+
+      <p>
+        To continue please log in or sign in if you don't have an account.
+      </p>
+
+      <b-button class="m-1" variant="primary" @click="logIn">Log In</b-button>
+      <b-button class="m-1" variant="success" @click="signIn">
+        Sign In</b-button
+      >
+    </b-jumbotron>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Home",
+  components: {},
+  methods: {
+    logIn() {
+      this.$router.push("login");
+    },
+    signIn() {
+      this.$router.push("signin");
+    }
+  }
+};
+</script>
+
+<style scoped>
+.jumbotron {
+  margin: 0;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+h5 {
+  width: 60%;
+  margin: 0 auto;
+}
+</style>
