@@ -4,10 +4,18 @@
 npm install
 ```
 
-## run backendserver
+## Run backend server
+
+(nodemon)
 
 ```
-npm run dev (nodemon) or npm run start
+npm run dev
+```
+
+or
+
+```
+npm run start
 ```
 
 # Client side project setup
@@ -20,7 +28,7 @@ cd client
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Run development server
 
 ```
 npm run serve
