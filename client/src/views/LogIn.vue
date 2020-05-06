@@ -43,17 +43,20 @@ export default {
   },
   methods: {
     async submitForm() {
-      const url = "http://localhost:5000/api/login";
       this.error = "";
 
       try {
-        await axios.post(url, this.user);
+        await axios.post("/api/login", this.user);
         this.user.name = "";
         this.user.password = "";
 
         // this.$router.push("dashboard");
       } catch (err) {
-        this.error = err.response.data.title;
+        if (err.response) {
+          this.error = err.response.data.title;
+        } else {
+          this.error = "Oooops. Something went wrong :( Server error!";
+        }
       }
     }
   }

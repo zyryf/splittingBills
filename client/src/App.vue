@@ -45,7 +45,7 @@ export default {};
   max-width: 1300px;
   margin: 25px auto;
   border: 2px solid #2c3e50;
-  min-height: 50vh;
+  min-height: 80vh;
 }
 
 #nav a {
