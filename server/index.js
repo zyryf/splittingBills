@@ -28,8 +28,10 @@ mongoose.connection
   });
 
 // routes
-const Users = require("./routes/api/Users");
-app.use("/api/users", Users);
+const users = require("./routes/api/Users");
+const login = require("./routes/api/Login");
+app.use("/api/users", users);
+app.use("/api/login", login);
 
 app.listen(port, () => {
   console.log(`server started on port ${port}

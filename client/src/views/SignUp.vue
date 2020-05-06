@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <h2>Here you can <strong>sign in</strong></h2>
+    <h2>Here you can <strong>sign up</strong></h2>
     <b-form @submit.prevent="submitForm">
       <b-form-group
         id="input-group-1"
@@ -53,8 +53,9 @@
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
     <b-alert v-if="success" show variant="success" class="my-2"
-      >User created!</b-alert
-    >
+      >User created! Go to the
+      <router-link to="/login">login</router-link> page.
+    </b-alert>
     <b-alert v-if="error" show variant="danger" class="my-2"
       >Oooops. Something went wrong :( {{ error }}</b-alert
     >
@@ -70,10 +71,10 @@ export default {
         email: "",
         name: "",
         password: "",
-        confirmedPassword: "",
+        confirmedPassword: ""
       },
       error: "",
-      success: false,
+      success: false
     };
   },
   methods: {
@@ -83,7 +84,7 @@ export default {
       const user = {
         email: this.form.email,
         name: this.form.name,
-        password: this.form.password,
+        password: this.form.password
       };
 
       try {
@@ -94,10 +95,10 @@ export default {
         this.form.password = "";
         this.form.confirmedPassword = "";
       } catch (err) {
-        this.error = `error: ${err}`;
+        this.error = err;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

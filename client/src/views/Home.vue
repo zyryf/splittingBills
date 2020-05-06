@@ -12,12 +12,12 @@
       <hr class="my-4" />
 
       <p>
-        To continue please log in or sign in if you don't have an account.
+        To continue please log in or sign up if you don't have an account.
       </p>
 
       <b-button class="m-1" variant="primary" @click="logIn">Log In</b-button>
-      <b-button class="m-1" variant="success" @click="signIn">
-        Sign In</b-button
+      <b-button class="m-1" variant="success" @click="signUp">
+        Sign Up</b-button
       >
     </b-jumbotron>
   </div>
@@ -31,8 +31,8 @@ export default {
     logIn() {
       this.$router.push("login");
     },
-    signIn() {
-      this.$router.push("signin");
+    signUp() {
+      this.$router.push("signup");
     }
   }
 };

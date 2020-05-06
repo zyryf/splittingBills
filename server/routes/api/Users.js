@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const User = require("../../models/User");
 
 const router = express.Router();
@@ -25,14 +26,14 @@ router.post("/", async (req, res) => {
   const user = new User({
     email: req.body.email,
     name: req.body.name,
-    password: req.body.password,
+    password: bcrypt.hashSync(req.body.password, 10),
   });
 
   try {
     await user.save();
-    res.status(201).send();
+    return res.status(201).send();
   } catch (err) {
-    res.json({ message: err });
+    return res.status(500).json({ title: "Server error!", error: err });
   }
 });
 

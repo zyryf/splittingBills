@@ -5,7 +5,7 @@
       <b-form-group id="input-group-1" label="Your Name:" label-for="input-1">
         <b-form-input
           id="input-1"
-          v-model="form.name"
+          v-model="user.name"
           required
           placeholder="Enter name"
         ></b-form-input>
@@ -13,7 +13,7 @@
       <b-form-group id="input-group-2" label="Password:" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.password"
+          v-model="user.password"
           required
           placeholder="Enter password"
           type="password"
@@ -23,25 +23,38 @@
       <b-button type="submit" variant="primary">Log in</b-button>
     </b-form>
 
-    <b-card class="mt-3" header="Form Data Result - will be send to backend">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
+    <b-alert v-if="error" show variant="danger" class="my-2">{{
+      error
+    }}</b-alert>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      form: {
+      user: {
         name: "",
         password: ""
-      }
+      },
+      error: ""
     };
   },
   methods: {
-    submitForm() {
-      alert(JSON.stringify(this.form));
+    async submitForm() {
+      const url = "http://localhost:5000/api/login";
+      this.error = "";
+
+      try {
+        await axios.post(url, this.user);
+        this.user.name = "";
+        this.user.password = "";
+
+        // this.$router.push("dashboard");
+      } catch (err) {
+        this.error = err.response.data.title;
+      }
     }
   }
 };

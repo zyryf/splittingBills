@@ -10,7 +10,7 @@
         <b-navbar-nav class="ml-auto">
           <router-link to="/login">Log In</router-link>
           |
-          <router-link to="/signin">Sign In</router-link>
+          <router-link to="/signup">Sign Up</router-link>
           <router-link to="/dashboard">Dashboard</router-link>
         </b-navbar-nav>
       </b-navbar>
@@ -18,7 +18,7 @@
     <router-view />
     <p class="info">
       Development version:
-      <a href="https://github.com/zyryf/splitting_bills"
+      <a href="https://github.com/zyryf/splittingBills"
         ><i class="fab fa-github"></i>Github</a
       >
     </p>
@@ -74,5 +74,4 @@ p a {
 .info {
   margin: 15px;
 }
-
 </style>
