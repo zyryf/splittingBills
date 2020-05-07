@@ -14,7 +14,8 @@
             success: !$v.email.$error && $v.email.$dirty
           }"
           id="input-1"
-          v-model.lazy="email"
+          :value="email"
+          @change="updateMail"
           type="email"
           required
           placeholder="Enter email"
@@ -27,7 +28,9 @@
         <p v-if="!$v.email.email" class="error my-1">
           Provide valid email adress!
         </p>
-        <p v-if="!$v.email.unique" class="error my-1">Email already in use!</p>
+        <p v-if="$v.email.$error && !$v.email.unique" class="error my-1">
+          Email already in use!
+        </p>
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
@@ -37,7 +40,8 @@
             success: !$v.name.$error && $v.name.$dirty
           }"
           id="input-2"
-          v-model="name"
+          :value="name"
+          @change="updateName"
           @blur="$v.name.$touch()"
           required
           placeholder="Enter name"
@@ -48,7 +52,9 @@
         <p v-if="!$v.name.minLength" class="error my-1">
           Name must be at least 3 characters length!
         </p>
-        <p v-if="!$v.name.unique" class="error my-1">Email already in use!</p>
+        <p v-if="$v.name.$error && !$v.name.unique" class="error my-1">
+          Name already in use!
+        </p>
       </b-form-group>
 
       <b-form-group
@@ -100,6 +106,7 @@
         >Submit</b-button
       >
     </b-form>
+
     <b-alert v-if="success" show variant="success" class="my-2"
       >User created! Go to the
       <router-link to="/login">log in</router-link> page.
@@ -121,7 +128,8 @@ export default {
       password: "",
       confirmedPassword: "",
       error: "",
-      success: false
+      success: false,
+      check: ""
     };
   },
   validations: {
@@ -131,6 +139,7 @@ export default {
       // WHY DE HELL DOES IT FIRE ON INPUT???
       async unique(val) {
         let matched = false;
+        console.log("email validator executed");
         if (val === "") return true;
         try {
           const users = await axios.get("/api/users");
@@ -171,6 +180,7 @@ export default {
       minLength: minLength(6)
     },
     confirmedPassword: {
+      required,
       sameAs: sameAs("password")
     }
   },
@@ -196,6 +206,12 @@ export default {
           this.error = "Oooops. Something went wrong :( Server error!";
         }
       }
+    },
+    updateMail(value) {
+      this.email = value;
+    },
+    updateName(value) {
+      this.name = value;
     }
   }
 };
@@ -224,6 +240,7 @@ h2 strong {
 .success {
   border: 1px solid green;
 }
+
 .error {
   color: red;
 }
