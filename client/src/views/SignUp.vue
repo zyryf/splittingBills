@@ -136,10 +136,8 @@ export default {
     email: {
       required,
       email,
-      // WHY DE HELL DOES IT FIRE ON INPUT???
       async unique(val) {
         let matched = false;
-        console.log("email validator executed");
         if (val === "") return true;
         try {
           const users = await axios.get("/api/users");

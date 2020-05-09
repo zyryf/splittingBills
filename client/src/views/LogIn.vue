@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import axios from "axios";
 export default {
   data() {
@@ -44,13 +45,14 @@ export default {
   methods: {
     async submitForm() {
       this.error = "";
-
       try {
-        await axios.post("/api/login", this.user);
+        const res = await axios.post("/api/login", this.user);
         this.user.name = "";
         this.user.password = "";
 
-        // this.$router.push("dashboard");
+        localStorage.setItem("token", res.data.token);
+        this.$store.state.userLogged = true;
+        this.$router.push("/dashboard");
       } catch (err) {
         if (err.response) {
           this.error = err.response.data.title;
@@ -77,4 +79,3 @@ h2 strong {
   text-align: left;
 }
 </style>
-

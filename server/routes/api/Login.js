@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../../models/User");
+const JWT = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -9,7 +10,9 @@ router.post("/", async (req, res) => {
     const user = await User.findOne({ name: req.body.name });
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
-        return res.status(200).json({ title: "User login succesful" });
+        const token = JWT.sign({ userID: user._id }, "secretkey");
+
+        return res.status(200).json({ token: token });
       } else {
         return res.status(401).json({ title: "Incorrect password!" });
       }

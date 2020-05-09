@@ -8,14 +8,28 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <router-link to="/login">Log In</router-link>
+          <router-link v-if="!this.$store.state.userLogged" to="/login"
+            >Log In</router-link
+          >
           |
-          <router-link to="/signup">Sign Up</router-link>
-          <router-link to="/dashboard">Dashboard</router-link>
+          <router-link v-if="!this.$store.state.userLogged" to="/signup"
+            >Sign Up</router-link
+          >
+          <router-link v-if="this.$store.state.userLogged" to="/dashboard"
+            >Dashboard</router-link
+          >
+          <button
+            v-if="this.$store.state.userLogged"
+            class="logout"
+            @click="logout"
+          >
+            Log out
+          </button>
         </b-navbar-nav>
       </b-navbar>
     </div>
     <router-view />
+
     <p class="info">
       Development version:
       <a href="https://github.com/zyryf/splittingBills"
@@ -26,7 +40,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    logout() {
+      localStorage.clear();
+      this.$store.state.userLogged = false;
+      console.log(this.$store.state.userLogged);
+      this.$router.push("/");
+    }
+  }
+};
 </script>
 
 <style>
@@ -73,5 +99,19 @@ p a {
 }
 .info {
   margin: 15px;
+}
+
+.logout {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 5px 10px;
+  margin: 5px;
+  transition: 0.2s;
+  border: none;
+  background-color: transparent;
+}
+
+.logout:hover {
+  text-decoration: none;
+  color: rgba(66, 185, 131, 0.55);
 }
 </style>
