@@ -14,15 +14,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     res.json(user);
-//   } catch (err) {
-//     res.json({ message: err });
-//   }
-// });
-
 router.get("/getuser", async (req, res) => {
   const token = req.headers.token;
   JWT.verify(token, "secretkey", async (err, decoded) => {
@@ -38,6 +29,7 @@ router.get("/getuser", async (req, res) => {
     }
   });
 });
+
 router.post("/", async (req, res) => {
   const user = new User({
     email: req.body.email,

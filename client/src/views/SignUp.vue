@@ -25,7 +25,7 @@
           Email required!
         </p>
 
-        <p v-if="!$v.email.email" class="error my-1">
+        <p v-if="!$v.email.email && $v.email.$dirty" class="error my-1">
           Provide valid email adress!
         </p>
         <p v-if="$v.email.$error && !$v.email.unique" class="error my-1">
@@ -107,11 +107,11 @@
       >
     </b-form>
 
-    <b-alert v-if="success" show variant="success" class="my-2"
+    <b-alert v-if="success" show variant="success" class="my-2 info mx-0"
       >User created! Go to the
       <router-link to="/login">log in</router-link> page.
     </b-alert>
-    <b-alert v-if="error" show variant="danger" class="my-2">
+    <b-alert v-if="error" show variant="danger" class="my-2 info mx-0">
       {{ error }}</b-alert
     >
   </div>
@@ -197,6 +197,10 @@ export default {
         this.name = "";
         this.password = "";
         this.confirmedPassword = "";
+        this.$v.email.$reset();
+        this.$v.name.$reset();
+        this.$v.password.$reset();
+        this.$v.confirmedPassword.$reset();
       } catch (err) {
         if (err.response) {
           this.error = err.response.data.title;
@@ -241,5 +245,9 @@ h2 strong {
 
 .error {
   color: red;
+}
+.info {
+  text-align: center;
+  width: 100%;
 }
 </style>

@@ -30,8 +30,10 @@ mongoose.connection
 // routes
 const users = require("./routes/api/Users");
 const login = require("./routes/api/Login");
+const groups = require("./routes/api/Groups");
 app.use("/api/users", users);
 app.use("/api/login", login);
+app.use("/api/groups", groups);
 
 app.listen(port, () => {
   console.log(`server started on port ${port}

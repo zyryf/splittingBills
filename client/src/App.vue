@@ -44,11 +44,13 @@ export default {
   data() {
     return {};
   },
+  created() {
+    if (localStorage.getItem("token")) this.$store.state.userLogged = true;
+  },
   methods: {
     logout() {
       localStorage.clear();
       this.$store.state.userLogged = false;
-      console.log(this.$store.state.userLogged);
       this.$router.push("/");
     }
   }
