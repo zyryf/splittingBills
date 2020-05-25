@@ -73,7 +73,6 @@
           >Join group</b-button
         >
         <p>{{ $v.name.unique }}</p>
-
         <b-alert v-if="error" show variant="danger" class="my-2">{{
           error
         }}</b-alert>
@@ -180,7 +179,23 @@ export default {
       }
     },
     async joinGroup() {
-      console.log(this.$v.name.unique);
+      if (!this.$v.name.unique) {
+        try {
+          const response = await axios.patch("api/groups", {
+            name: this.name,
+            password: this.password,
+            username: this.user.name
+          });
+          console.log('proceeded')
+          this.name = "";
+          this.password = "";
+          this.getUserGroups();
+        } catch (err) {
+          this.error = err;
+        }
+      } else {
+        this.error = "This group does not exist!";
+      }
     },
     updateName(value) {
       this.name = value;
@@ -212,12 +227,6 @@ h2 {
 
 h2 strong {
   color: #42b983;
-}
-
-.card-wrapper {
-  margin: 0 20px;
-  display: flex;
-  /* flex-wrap: wrap; */
 }
 
 ul {

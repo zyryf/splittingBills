@@ -39,4 +39,32 @@ router.get("/usergroups", async (req, res) => {
   }
 });
 
+router.patch("/", async (req, res) => {
+  try {
+    const groupToUpdate = await Group.findOne({ name: req.body.name });
+    if (groupToUpdate) {
+      if (bcrypt.compareSync(req.body.password, groupToUpdate.password)) {
+        // CHECK IF USERNAME EXISTS IN THAT GROUP
+
+        try {
+          const response = await Group.updateOne(
+            { name: req.body.name },
+            { $push: { members: req.body.username } }
+          );
+          console.log("group updated!");
+          return res.status(200).json({ title: "You have joined the group!" });
+        } catch (err) {
+          return res.status(500).json({ title: "Server error", error: err });
+        }
+      } else {
+        return res.status(401).json({ title: "Incorrect password!" });
+      }
+    } else {
+      return res.status(401).json({ title: "Group not found in database!" });
+    }
+  } catch (err) {
+    return res.status(500).json({ title: "Server error", error: err });
+  }
+});
+
 module.exports = router;
