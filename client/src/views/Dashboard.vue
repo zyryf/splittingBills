@@ -1,7 +1,35 @@
 <template>
   <div>
-    <h2>Welcome {{ user.name }} !</h2>
-    <h1>You don't belong to any group :(</h1>
+    <h2>
+      Welcome <strong>{{ user.name }} </strong>!
+    </h2>
+    <div class="card-wrapper" v-if="groups.length">
+      <b-card-group deck>
+        <b-card
+          v-for="(group, index) in groups"
+          :key="index"
+          :header="group.name"
+          header-text-variant="white"
+          header-tag="header"
+          header-bg-variant="dark"
+          title="Members:"
+          class="group"
+        >
+          <b-card-text>
+            <ul>
+              <li v-for="(member, index) in group.members" :key="index">
+                {{ index + 1 }}. {{ member }}
+              </li>
+            </ul>
+          </b-card-text>
+          <b-button type="submit" class="mx-2" variant="warning"
+            >Leave group</b-button
+          >
+        </b-card>
+      </b-card-group>
+    </div>
+
+    <h1 v-else>You don't belong to any group :(</h1>
     <div class="form-wrapper">
       <b-form @submit.prevent>
         <b-form-group
@@ -12,8 +40,10 @@
           <b-form-input
             id="input-1"
             required
-            v-model="group.name"
+            :value="name"
+            @change="updateName"
             placeholder="Enter  group name"
+            @blur="$v.name.$touch()"
           ></b-form-input>
         </b-form-group>
         <b-form-group id="input-group-2" label="Password:" label-for="input-2">
@@ -22,7 +52,8 @@
             required
             placeholder="Enter group password"
             type="password"
-            v-model="group.password"
+            @blur="$v.password.$touch()"
+            v-model="password"
           ></b-form-input>
         </b-form-group>
 
@@ -31,9 +62,18 @@
           type="submit"
           class="mx-2"
           variant="primary"
+          :disabled="!$v.name.required || !$v.password.required"
           >Create group</b-button
         >
-        <b-button type="submit" variant="success">Join group</b-button>
+        <b-button
+          @click="joinGroup"
+          :disabled="!$v.name.required || !$v.password.required"
+          type="submit"
+          variant="success"
+          >Join group</b-button
+        >
+        <p>{{ $v.name.unique }}</p>
+
         <b-alert v-if="error" show variant="danger" class="my-2">{{
           error
         }}</b-alert>
@@ -47,20 +87,46 @@
 
 <script>
 import axios from "axios";
+import { required } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
+      groups: [],
       user: {
         email: "",
         name: ""
       },
-      group: {
-        name: "",
-        password: ""
-      },
+      name: "",
+      password: "",
       error: "",
       success: false
     };
+  },
+  validations: {
+    name: {
+      required,
+      async unique(val) {
+        let matched = false;
+        if (val === "") return true;
+        try {
+          const response = await axios.get("/api/groups");
+          const groups = response.data;
+          groups.forEach(group => {
+            if (group.name === this.name) {
+              matched = true;
+
+              return;
+            }
+          });
+          return matched ? false : true;
+        } catch {
+          this.error = "Oooops. Something went wrong :( Server error!";
+        }
+      }
+    },
+    password: {
+      required
+    }
   },
   created() {
     if (!localStorage.getItem("token")) this.$router.push("/login");
@@ -77,25 +143,47 @@ export default {
       console.log(err);
     }
 
-    // try{
-    //   const response = await axios.get('api/groups')
-    // }
+    this.getUserGroups();
   },
   methods: {
-    async createGroup() {
-      const group = {
-        name: this.group.name,
-        password: this.group.password,
-        members: this.user.name
-      };
+    async getUserGroups() {
       try {
-        const response = await axios.post("/api/groups", group);
-        this.group.name = "";
-        this.group.password = "";
-        this.success = true;
+        const response = await axios.get("api/groups/usergroups", {
+          headers: { username: this.user.name }
+        });
+
+        this.groups = response.data;
       } catch (err) {
-        this.error = err;
+        console.log(err);
       }
+    },
+    async createGroup() {
+      if (this.$v.name.unique) {
+        const group = {
+          name: this.name,
+          password: this.password,
+          members: this.user.name
+        };
+        try {
+          const response = await axios.post("/api/groups", group);
+          this.name = "";
+          this.password = "";
+          this.success = true;
+          this.getUserGroups();
+        } catch (err) {
+          this.error = err;
+        }
+      } else {
+        this.name = "";
+        this.password = "";
+        this.error = "Group alreade exists!";
+      }
+    },
+    async joinGroup() {
+      console.log(this.$v.name.unique);
+    },
+    updateName(value) {
+      this.name = value;
     }
   }
 };
@@ -107,5 +195,32 @@ export default {
   margin: 0 auto;
   margin-top: 100px;
   text-align: left;
+}
+.group {
+  min-width: 30%;
+  margin: 10px;
+}
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+}
+
+h2 {
+  margin: 50px;
+}
+
+h2 strong {
+  color: #42b983;
+}
+
+.card-wrapper {
+  margin: 0 20px;
+  display: flex;
+  /* flex-wrap: wrap; */
+}
+
+ul {
+  list-style: none;
 }
 </style>

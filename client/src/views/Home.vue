@@ -11,12 +11,23 @@
 
       <hr class="my-4" />
 
-      <p>
+      <p v-if="!this.$store.state.userLogged">
         To continue please log in or sign up if you don't have an account.
       </p>
 
-      <b-button class="m-1" variant="primary" @click="logIn">Log In</b-button>
-      <b-button class="m-1" variant="success" @click="signUp">
+      <b-button
+        class="m-1"
+        v-if="!this.$store.state.userLogged"
+        variant="primary"
+        @click="logIn"
+        >Log In</b-button
+      >
+      <b-button
+        class="m-1"
+        v-if="!this.$store.state.userLogged"
+        variant="success"
+        @click="signUp"
+      >
         Sign Up</b-button
       >
     </b-jumbotron>
