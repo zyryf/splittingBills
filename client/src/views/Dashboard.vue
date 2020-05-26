@@ -72,12 +72,12 @@
           variant="success"
           >Join group</b-button
         >
-        <p>{{ $v.name.unique }}</p>
+
         <b-alert v-if="error" show variant="danger" class="my-2">{{
           error
         }}</b-alert>
         <b-alert v-if="success" show variant="success" class="my-2 info mx-0"
-          >Group created!
+          >{{ this.success }}
         </b-alert>
       </b-form>
     </div>
@@ -98,7 +98,7 @@ export default {
       name: "",
       password: "",
       error: "",
-      success: false
+      success: ""
     };
   },
   validations: {
@@ -145,6 +145,16 @@ export default {
     this.getUserGroups();
   },
   methods: {
+    clearMessages() {
+      setTimeout(() => {
+        this.error = "";
+        this.success = "";
+      }, 3000);
+    },
+    clearFormInputs() {
+      this.name = "";
+      this.password = "";
+    },
     async getUserGroups() {
       try {
         const response = await axios.get("api/groups/usergroups", {
@@ -165,17 +175,20 @@ export default {
         };
         try {
           const response = await axios.post("/api/groups", group);
-          this.name = "";
-          this.password = "";
-          this.success = true;
+          this.clearFormInputs();
+          this.success = "Group created!";
+          this.clearMessages();
+
           this.getUserGroups();
         } catch (err) {
-          this.error = err;
+          this.clearFormInputs();
+          this.error = err.response.data.title;
+          this.clearMessages();
         }
       } else {
-        this.name = "";
-        this.password = "";
+        this.clearFormInputs();
         this.error = "Group alreade exists!";
+        this.clearMessages();
       }
     },
     async joinGroup() {
@@ -186,15 +199,19 @@ export default {
             password: this.password,
             username: this.user.name
           });
-          console.log('proceeded')
-          this.name = "";
-          this.password = "";
+          this.success = "You have joined the" + this.name;
+          this.clearFormInputs();
+          this.clearMessages();
+
           this.getUserGroups();
         } catch (err) {
-          this.error = err;
+          this.clearFormInputs();
+          this.error = err.response.data.title;
+          this.clearMessages();
         }
       } else {
         this.error = "This group does not exist!";
+        this.clearMessages();
       }
     },
     updateName(value) {

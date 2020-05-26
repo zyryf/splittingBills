@@ -46,6 +46,11 @@ router.patch("/", async (req, res) => {
       if (bcrypt.compareSync(req.body.password, groupToUpdate.password)) {
         // CHECK IF USERNAME EXISTS IN THAT GROUP
 
+        if (groupToUpdate.members.indexOf(req.body.username) !== -1)
+          return res
+            .status(401)
+            .json({ title: "User already exists in that group!" });
+
         try {
           const response = await Group.updateOne(
             { name: req.body.name },
@@ -60,7 +65,7 @@ router.patch("/", async (req, res) => {
         return res.status(401).json({ title: "Incorrect password!" });
       }
     } else {
-      return res.status(401).json({ title: "Group not found in database!" });
+      return res.status(500).json({ title: "Group not found in database!" });
     }
   } catch (err) {
     return res.status(500).json({ title: "Server error", error: err });
