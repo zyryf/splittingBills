@@ -21,7 +21,6 @@ router.post("/", async (req, res) => {
   });
 
   const repeatedGroup = await Group.findOne({ name: group.name });
-  console.log(repeatedGroup);
   if (repeatedGroup)
     return res.status(401).json({ title: "Group already exists!" });
 

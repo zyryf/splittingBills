@@ -40,8 +40,7 @@
           <b-form-input
             id="input-1"
             required
-            :value="name"
-            @change="updateName"
+            v-model="name"
             placeholder="Enter  group name"
             @blur="$v.name.$touch()"
           ></b-form-input>
@@ -62,12 +61,12 @@
           type="submit"
           class="mx-2"
           variant="primary"
-          :disabled="!$v.name.required || !$v.password.required"
+          :disabled="$v.$invalid"
           >Create group</b-button
         >
         <b-button
           @click="joinGroup"
-          :disabled="!$v.name.required || !$v.password.required"
+          :disabled="$v.$invalid"
           type="submit"
           variant="success"
           >Join group</b-button
@@ -103,25 +102,7 @@ export default {
   },
   validations: {
     name: {
-      required,
-      async unique(val) {
-        let matched = false;
-        if (val === "") return true;
-        try {
-          const response = await axios.get("/api/groups");
-          const groups = response.data;
-          groups.forEach(group => {
-            if (group.name === this.name) {
-              matched = true;
-
-              return;
-            }
-          });
-          return matched ? false : true;
-        } catch {
-          this.error = "Oooops. Something went wrong :( Server error!";
-        }
-      }
+      required
     },
     password: {
       required
@@ -202,9 +183,6 @@ export default {
         this.error = err.response.data.title;
         this.clearMessages();
       }
-    },
-    updateName(value) {
-      this.name = value;
     }
   }
 };
