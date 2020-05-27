@@ -20,6 +20,11 @@ router.post("/", async (req, res) => {
     members: [req.body.members],
   });
 
+  const repeatedGroup = await Group.findOne({ name: group.name });
+  console.log(repeatedGroup);
+  if (repeatedGroup)
+    return res.status(401).json({ title: "Group already exists!" });
+
   try {
     await group.save();
     return res.status(201).send();
@@ -44,8 +49,6 @@ router.patch("/", async (req, res) => {
     const groupToUpdate = await Group.findOne({ name: req.body.name });
     if (groupToUpdate) {
       if (bcrypt.compareSync(req.body.password, groupToUpdate.password)) {
-        // CHECK IF USERNAME EXISTS IN THAT GROUP
-
         if (groupToUpdate.members.indexOf(req.body.username) !== -1)
           return res
             .status(401)

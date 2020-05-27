@@ -167,50 +167,39 @@ export default {
       }
     },
     async createGroup() {
-      if (this.$v.name.unique) {
-        const group = {
-          name: this.name,
-          password: this.password,
-          members: this.user.name
-        };
-        try {
-          const response = await axios.post("/api/groups", group);
-          this.clearFormInputs();
-          this.success = "Group created!";
-          this.clearMessages();
-
-          this.getUserGroups();
-        } catch (err) {
-          this.clearFormInputs();
-          this.error = err.response.data.title;
-          this.clearMessages();
-        }
-      } else {
+      const group = {
+        name: this.name,
+        password: this.password,
+        members: this.user.name
+      };
+      try {
+        const response = await axios.post("/api/groups", group);
         this.clearFormInputs();
-        this.error = "Group alreade exists!";
+        this.success = "Group created!";
+        this.clearMessages();
+
+        this.getUserGroups();
+      } catch (err) {
+        this.clearFormInputs();
+        this.error = err.response.data.title;
         this.clearMessages();
       }
     },
     async joinGroup() {
-      if (!this.$v.name.unique) {
-        try {
-          const response = await axios.patch("api/groups", {
-            name: this.name,
-            password: this.password,
-            username: this.user.name
-          });
-          this.success = "You have joined the" + this.name;
-          this.clearFormInputs();
-          this.clearMessages();
+      try {
+        const response = await axios.patch("api/groups", {
+          name: this.name,
+          password: this.password,
+          username: this.user.name
+        });
+        this.success = "You have joined the" + this.name;
+        this.clearFormInputs();
+        this.clearMessages();
 
-          this.getUserGroups();
-        } catch (err) {
-          this.clearFormInputs();
-          this.error = err.response.data.title;
-          this.clearMessages();
-        }
-      } else {
-        this.error = "This group does not exist!";
+        this.getUserGroups();
+      } catch (err) {
+        this.clearFormInputs();
+        this.error = err.response.data.title;
         this.clearMessages();
       }
     },
