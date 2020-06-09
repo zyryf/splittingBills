@@ -22,7 +22,11 @@
               </li>
             </ul>
           </b-card-text>
-          <b-button type="submit" class="mx-2" variant="warning"
+          <b-button
+            type="submit"
+            class="mx-2"
+            variant="warning"
+            @click="leaveGroup(group)"
             >Leave group</b-button
           >
         </b-card>
@@ -30,6 +34,13 @@
     </div>
 
     <h1 v-else>You don't belong to any group :(</h1>
+    <div v-if="message">
+      <b-alert show class="message">{{ message }}</b-alert>
+      <b-button @click="deleteGroup" variant="danger" class="mx-2"
+        >Yes</b-button
+      >
+      <b-button @click="message = ''" variant="success">No</b-button>
+    </div>
     <div class="form-wrapper">
       <b-form @submit.prevent>
         <b-form-group
@@ -97,7 +108,10 @@ export default {
       name: "",
       password: "",
       error: "",
-      success: ""
+      success: "",
+      message: "",
+      deleteWhenEmpty: null,
+      groupToDelete: ""
     };
   },
   validations: {
@@ -168,12 +182,12 @@ export default {
     },
     async joinGroup() {
       try {
-        const response = await axios.patch("api/groups", {
+        const response = await axios.patch("api/groups/join", {
           name: this.name,
           password: this.password,
           username: this.user.name
         });
-        this.success = "You have joined the" + this.name;
+        this.success = "You have joined the " + this.name;
         this.clearFormInputs();
         this.clearMessages();
 
@@ -183,6 +197,33 @@ export default {
         this.error = err.response.data.title;
         this.clearMessages();
       }
+    },
+    async membersAmount(group) {
+      const response = await axios.get(`api/groups/amount/${group.name}`);
+      return response.data;
+    },
+    async leaveGroup(group) {
+      const membersAmount = await this.membersAmount(group);
+
+      if (membersAmount === 1) {
+        this.message = `You were the last member of that group.
+           Would you like to delete the group too?`;
+        this.groupToDelete = group;
+      }
+      try {
+        const response = await axios.patch("api/groups/leave", {
+          name: group.name,
+          member: this.user.name
+        });
+        this.getUserGroups();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async deleteGroup() {
+      await axios.delete(`api/groups/${this.groupToDelete.name}`);
+      this.groupToDelete = "";
+      this.message = "";
     }
   }
 };
@@ -215,5 +256,10 @@ h2 strong {
 
 ul {
   list-style: none;
+}
+
+.message {
+  width: 60%;
+  margin: 20px auto;
 }
 </style>
