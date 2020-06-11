@@ -1,3 +1,10 @@
+const mongoConfig =  require('./config/mongoDB');
+
+// routes
+const users = require("./routes/api/Users");
+const login = require("./routes/api/Login");
+const groups = require("./routes/api/Groups");
+
 // packages
 const express = require("express");
 const cors = require("cors");
@@ -15,8 +22,7 @@ const port = process.env.PORT || 5000;
 
 // conntect to MongoDB
 // in production hide pass and login with dotenv npm package
-const url =
-  "mongodb+srv://szymon:szymon123@cluster0-mh1dp.mongodb.net/splitting_billsDB?retryWrites=true&w=majority";
+const url = mongoConfig.url;
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection
@@ -27,10 +33,7 @@ mongoose.connection
     console.log(`ERROR: ${err}`);
   });
 
-// routes
-const users = require("./routes/api/Users");
-const login = require("./routes/api/Login");
-const groups = require("./routes/api/Groups");
+
 app.use("/api/users", users);
 app.use("/api/login", login);
 app.use("/api/groups", groups);

@@ -1,48 +1,15 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const User = require("../../models/User");
-const JWT = require("jsonwebtoken");
-
 const router = express.Router();
+const userController = require("../../controllers/userController")
 
-router.get("/", async (req, res) => {
-  try {
-    const users = await User.find();
-    return res.json(users);
-  } catch (err) {
-    return res.json({ message: err });
-  }
-});
+router.get("/", userController.getUsers);
+router.get("/:userid", userController.getUser);
 
-router.get("/getuser", async (req, res) => {
-  const token = req.headers.token;
-  JWT.verify(token, "secretkey", async (err, decoded) => {
-    if (err)
-      return res.json(401).json({ title: "Unauthorized user!", error: err });
+router.post("/", userController.addUser);
 
-    try {
-      const user = await User.findById(decoded.userID);
+router.patch("/leave/:groupid/:userid", userController.leaveGroup)
 
-      return res.status(200).json({ email: user.email, name: user.name });
-    } catch (err) {
-      return res.status(401).json({ title: "Unauthorized user!", error: err });
-    }
-  });
-});
+router.patch("/join/:groupid/:userid", userController.joinGroup)
 
-router.post("/", async (req, res) => {
-  const user = new User({
-    email: req.body.email,
-    name: req.body.name,
-    password: bcrypt.hashSync(req.body.password, 10),
-  });
-
-  try {
-    await user.save();
-    return res.status(201).send();
-  } catch (err) {
-    return res.status(500).json({ title: "Server error!", error: err });
-  }
-});
 
 module.exports = router;
