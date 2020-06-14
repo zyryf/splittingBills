@@ -5,6 +5,7 @@ import About from "../views/About.vue";
 import LogIn from "../views/LogIn.vue";
 import SignUp from "../views/SignUp.vue";
 import Dashboard from "../views/Dashboard.vue";
+import GroupPanel from "../views/GroupPanel.vue"
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,12 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
+  {
+    path: "/group-panel/:groupname",
+    name: "GroupPanel",
+    component: GroupPanel,
+    props: true
+  }
 ];
 
 const router = new VueRouter({

@@ -7,25 +7,16 @@ const groupController = require("../../controllers/groupController")
 const router = express.Router();
 
 router.get("/", groupController.getAll);
-router.get("/:groupid", groupController.getGroup);
+router.get("/:groupname", groupController.getGroup);
+//router.get("/expensees/:groupname", groupController.getExpenses) 
+// można to zrobić z tym znakiem zapytania ?fields="expenses" - jakoś tak i nie bedzie potrzebny ten endpoint
 
-router.post("/", groupController.addGroup);
+router.post("/", groupController.createGroup);
 
-router.delete("/:groupid", groupController.deleteGroup);
+router.post("/:groupname/expenses", groupController.addExpense)
+//router.delete("/expenses/:groupname", groupController.deleteExpense)
 
-router.patch("/leave", async (req, res) => {
-  try {
-    await Group.updateOne(
-      { name: req.body.name },
-      { $pull: { members: req.body.member } }
-      );
-      
-      return res.status(200).json({ title: "You have left the group!" });
-    } catch (err) {
-      return res.status(500).json({ title: "Server error", error: err });
-    }
-  });
-  
-  
-  module.exports = router;
+router.delete("/:groupname", groupController.deleteGroup);
+
+module.exports = router;
   

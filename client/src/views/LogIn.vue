@@ -51,6 +51,8 @@ export default {
         this.user.password = "";
 
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("expire time", res.data.expTime);
+
         this.$store.state.userLogged = true;
         this.$router.push("/dashboard");
       } catch (err) {
@@ -60,7 +62,8 @@ export default {
           this.error = "Oooops. Something went wrong :( Server error!";
         }
       }
-    }
+    },
+ 
   }
 };
 </script>

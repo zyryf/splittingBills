@@ -1,6 +1,8 @@
 const Group = require("../models/Group");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const { secretKey } = require("../config/JWT")
+const JWT = require("jsonwebtoken");
 
 module.exports = {
     async getUsers(req, res) {
@@ -13,14 +15,17 @@ module.exports = {
     },
 
     async getUser(req, res) {
-        const userID = req.params.userid;
-        try {
-            const user = await User.findById(userID);
-            if (user === null) return res.status(400).json({ title: "User not found" });
-            return res.status(200).json({ email: user.email, name: user.name, groups: user.groups });
-        } catch (err) {
-            return res.status(401).json({ title: "Server Error!", error: err });
-        }
+        const token = req.headers.token;
+        JWT.verify(token, secretKey, async (err, decoded) => {
+            if (err)
+                return res.json(401).json({ title: "Unauthorized user!", error: err });
+            try {
+                const user = await User.findById(decoded.userID);
+                return res.status(200).json({ email: user.email, name: user.name, groups: user.groups });
+            } catch (err) {
+                return res.status(401).json({ title: "Unauthorized user!", error: err });
+            }
+        });
     },
 
     async addUser(req, res) {
@@ -32,66 +37,69 @@ module.exports = {
 
         try {
             await user.save();
-            return res.status(201).send({ title: "User Created"});
+            return res.status(201).send({ title: "User Created" });
         } catch (err) {
             return res.status(500).json({ title: "Server error!", error: err });
         }
     },
-    async leaveGroup(req,res) {
-        const userId = req.params.userid;
-        const groupId = req.params.groupid;
+    async leaveGroup(req, res) {
+        const userName = req.params.username;
+        const groupName = req.params.groupname;
 
-        try{
-            const user  = await User.findById(userId)
-            const group = await Group.findById(groupId)
+        try {
+            const user = await User.findOne({name: userName})
+            let group = await Group.findOne({name: groupName})
 
-            if(!user) return res.status(400).json({ title: "User not found" });
-            if(!group) return res.status(400).json({title: 'Group not found'});
+            if (!group) return res.status(400).json({ title: 'Group not found' });
+            if (!user) return res.status(400).json({ title: "User not found" });
 
-
- 
             await user.updateOne({
-                 $pull: { groups: group.name } 
+                $pull: { groups: group.name }
             });
-            
+
             await group.updateOne({
-                $pull: {members:user.name}
+                $pull: { members: user.name }
+            })
+            group = await Group.findOne({name: groupName})
+
+            let isEmpty = group.members.length === 0 ? true : false
+
+            return res.status(200).json({ 
+                title: 'You left the group', 
+                isEmpty: isEmpty 
             })
 
-            return res.status(200).json({title: 'You left the group'})
-
-        }catch(err){
+        } catch (err) {
             return res.status(500).json({ title: "Server error!", error: err });
         }
-
     },
-    async joinGroup(req,res){
 
-        console.log('okok')
+    async joinGroup(req, res) {
 
-        const userId = req.params.userid;
-        const groupId = req.params.groupid;
+        const userName = req.params.username;
+        const groupName = req.params.groupname;
 
-        try{
-            const user  = await User.findById(userId)
-            const group = await Group.findById(groupId)
+        try {
+            const user = await User.findOne({ name: userName })
+            const group = await Group.findOne({ name: groupName })
 
-            if(!user) return res.status(400).json({ title: "User not found" });
-            if(!group) return res.status(400).json({title: 'Group not found'});
+            if (!user) return res.status(400).json({ title: "User not found" });
+            if (!group) return res.status(400).json({ title: 'Group not found' });
 
-            if(group.members.indexOf(user.name)!==-1)  return res.status(400).json({title:'User already exists in that group'})
- 
+            if (!bcrypt.compareSync(req.body.password, group.password)) return res.status(400).json({ title: 'Incorect password' })
+            if (group.members.indexOf(user.name) !== -1) return res.status(400).json({ title: 'User already exists in that group' })
+
             await user.updateOne({
-                 $push: { groups: group.name } 
+                $push: { groups: group.name }
             });
-            
+
             await group.updateOne({
-                $push: {members:user.name}
+                $push: { members: user.name }
             })
 
-            return res.status(200).json({title: 'You have joined the group'})
+            return res.status(200).json({ title: 'You have joined the group' })
 
-        }catch(err){
+        } catch (err) {
             return res.status(500).json({ title: "Server error!", error: err });
         }
     }

@@ -28,7 +28,7 @@
         </b-navbar-nav>
       </b-navbar>
     </div>
-    <router-view />
+    <router-view class="p-4 router" />
 
     <p class="info">
       Development version:
@@ -46,6 +46,7 @@ export default {
   },
   created() {
     if (localStorage.getItem("token")) this.$store.state.userLogged = true;
+    const expTime = localStorage.getItem('expire time');
   },
   methods: {
     logout() {
@@ -73,7 +74,7 @@ export default {
   max-width: 1300px;
   margin: 25px auto;
   border: 2px solid #2c3e50;
-  min-height: 80vh;
+  min-height: 90vh;
 }
 
 #nav a {
@@ -115,5 +116,10 @@ p a {
 .logout:hover {
   text-decoration: none;
   color: rgba(66, 185, 131, 0.55);
+}
+
+.router {
+  height: 85%;
+  min-height: 75vh;
 }
 </style>

@@ -1,7 +1,10 @@
 const Group = require("../models/Group");
 const bcrypt = require("bcrypt");
+const User = require("../models/User");
+
 
 module.exports = {
+  
   async getAll(req, res) {
     try {
       const groups = await Group.find();
@@ -12,29 +15,34 @@ module.exports = {
     }
   },
 
-  async addGroup(req, res) {
+  async createGroup(req, res) {
     const group = new Group({
       name: req.body.name,
       password: bcrypt.hashSync(req.body.password, 10),
       members: [req.body.members],
     });
-
+    const user = await User.findOne({ name: req.body.members })
+    
     const isRepeted = await Group.findOne({ name: group.name });
     if (isRepeted)
       return res.status(401).json({ title: "Group already exists!" });
 
     try {
+      await user.updateOne({
+        $push: { groups: group.name }
+      });
       await group.save();
-      return res.status(201).send();
+      return res.status(201).send({ title: "Group created!" });
     } catch (err) {
       return res.status(500).json({ title: "Server error!", error: err });
     }
   },
 
   async getGroup(req, res) {
+  
     try {
       const group = await Group.findOne({
-        _id: req.params.groupid,
+        name: req.params.groupname,
       });
       if (group) {
         return res.status(200).json(group);
@@ -48,12 +56,27 @@ module.exports = {
 
   async deleteGroup(req, res) {
     try {
-      const groupToDelete = await Group.findOne({ _id: req.params.groupid })
+      const groupToDelete = await Group.findOne({ name: req.params.groupname })
 
       if(groupToDelete === null) return res.status(400).json({ title: "Group not found" });
 
       groupToDelete.remove();
       return res.status(200).json({ title: "Group Deleted" });
+      
+    } catch (err) {
+      return res.status(500).json({ title: "Server error", error: err });
+    }
+  },
+
+  async addExpense(req,res) {
+    try {
+      const group = await Group.findOne({ name: req.params.groupname })
+      if(group === null) return res.status(400).json({ title: "Group not found" });
+
+      await group.updateOne({
+        $push: { expenses: req.body }
+      });
+      return res.status(200).json({ title: "Expense added!" }); 
       
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
