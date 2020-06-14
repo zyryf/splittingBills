@@ -13,6 +13,9 @@ const GroupSchema = mongoose.Schema({
     type: Array,
     required: true,
   },
+  expenses: {
+    type: Array
+  }
 });
 
 module.exports = mongoose.model("Groups", GroupSchema);
