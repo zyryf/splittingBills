@@ -2,7 +2,8 @@
   <div>
     <h2>
       Welcome
-      <strong>{{ getUserName }}</strong>!
+      <strong>{{ getUserName }}</strong
+      >!
     </h2>
     <div class="card-wrapper">
       <b-card-group deck>
@@ -15,14 +16,22 @@
     <h1 v-if="!getUserGroups.length">You don't belong to any group :(</h1>
 
     <div v-if="message">
-      <b-alert show class="message">You are the last member. Do you want to delete this group?</b-alert>
-      <b-button @click="deleteGroup" variant="danger" class="mx-2">Yes</b-button>
+      <b-alert show class="message"
+        >You are the last member. Do you want to delete this group?</b-alert
+      >
+      <b-button @click="deleteGroup" variant="danger" class="mx-2"
+        >Yes</b-button
+      >
       <b-button @click="message = false" variant="success">No</b-button>
     </div>
 
     <div class="form-wrapper">
       <b-form @submit.prevent>
-        <b-form-group id="input-group-1" label="Group name:" label-for="input-1">
+        <b-form-group
+          id="input-group-1"
+          label="Group name:"
+          label-for="input-1"
+        >
           <b-form-input
             id="input-1"
             required
@@ -48,16 +57,22 @@
           class="mx-2"
           variant="primary"
           :disabled="$v.$invalid"
-        >Create group</b-button>
+          >Create group</b-button
+        >
         <b-button
           @click="joinGroup"
           :disabled="$v.$invalid"
           type="submit"
           variant="success"
-        >Join group</b-button>
+          >Join group</b-button
+        >
 
-        <b-alert v-if="error" show variant="danger" class="my-2">{{ error }}</b-alert>
-        <b-alert v-if="success" show variant="success" class="my-2 info mx-0">{{ this.success }}</b-alert>
+        <b-alert v-if="error" show variant="danger" class="my-2">{{
+          error
+        }}</b-alert>
+        <b-alert v-if="success" show variant="success" class="my-2 info mx-0">{{
+          this.success
+        }}</b-alert>
       </b-form>
     </div>
   </div>
@@ -70,7 +85,6 @@ import { required } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
 
 import Group from "../components/group";
-
 
 export default {
   data() {
@@ -154,15 +168,14 @@ export default {
     },
 
     askToDelete(groupName) {
-      this.groupToDelete = groupName
+      this.groupToDelete = groupName;
       this.message = true;
-      console.log("ttttt");
     },
 
     async deleteGroup() {
       await axios.delete(`api/groups/${this.groupToDelete}`);
       this.message = false;
-      this.groupToDelete = ""
+      this.groupToDelete = "";
     }
   },
   computed: {
