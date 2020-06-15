@@ -71,10 +71,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  max-width: 1300px;
   margin: 25px auto;
   border: 2px solid #2c3e50;
   min-height: 90vh;
+  max-width: 90vw;
+  min-width: 1000px;
+  
 }
 
 #nav a {

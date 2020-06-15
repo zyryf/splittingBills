@@ -21,20 +21,11 @@
           header="Expenses"
           class="text-center expenses "
         >
-          <div class="d-flex flex-column-reverse">
-            <b-alert
-              show
-              variant="primary"
-              v-for="(item, index) in expenses"
-              :key="index"
-              class="d-flex flex-column custome-alert"
-            >
-              <p class="m-0 "><strong>User</strong> {{ item.userName }}</p>
-              <p class="m-0"><strong>Title:</strong> {{ item.title }}</p>
-              <p class="m-0"><strong>Amount:</strong> {{ item.amount }}</p>
-              <p class="m-0"><strong>Time:</strong> {{ item.date }}</p>
-            </b-alert>
-          </div>
+
+        <div class="d-flex flex-column-reverse">
+            <app-expense v-for="(item,index) in expenses" :key="index" :expense="item"></app-expense>
+        </div>
+
         </b-card>
       </b-col>
     </b-row>
@@ -43,10 +34,14 @@
 
 <script>
 import axios from "axios";
-import { mapActions } from "vuex";
+
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment"
+import appExpense from '../components/AppExpense'
 
 import Members from "../components/Members";
 import NewExpense from "../components/NewExpense";
+
 
 export default {
   data() {
@@ -54,6 +49,9 @@ export default {
       expenses: [],
       members: []
     };
+  },
+  components: {
+      appExpense: appExpense
   },
   async mounted() {
     this.setUserData();
