@@ -1,7 +1,7 @@
 const Group = require("../models/Group");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-
+const uuid = require("uuid")
 
 module.exports = {
   
@@ -73,13 +73,23 @@ module.exports = {
       const group = await Group.findOne({ name: req.params.groupname })
       if(group === null) return res.status(400).json({ title: "Group not found" });
 
+      let expense = req.body
+      expense.id = uuid.v4()
+
       await group.updateOne({
-        $push: { expenses: req.body }
+        $push: { expenses: expense }
       });
       return res.status(200).json({ title: "Expense added!" }); 
       
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
     }
+  },
+
+  async deleteExpense(req,res) {
+    console.log("pesos")
+    let x = uuid.v4()
+    console.log(x)
   }
+
 }

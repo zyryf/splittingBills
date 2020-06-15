@@ -62,7 +62,6 @@
           header-bg-variant="dark"
         >
           <b-alert show variant="light" v-for="(member,index) in members" :key="index">{{member}}</b-alert>
-          <b-button href="#" variant="primary">Go somewhere</b-button>
         </b-card>
       </b-col>
       <b-col>
@@ -73,12 +72,7 @@
           class="text-center expenses "
         >
         <div class="d-flex flex-column-reverse">
-          <b-alert show variant="primary" v-for="(item,index) in expenses" :key="index" class="d-flex flex-column custome-alert">
-            <p class="m-0 "> <strong>User</strong> {{item.userName}}</p>
-            <p class="m-0"> <strong>Title:</strong>  {{item.title}}</p>
-            <p class="m-0"> <strong>Amount:</strong>  {{item.amount}}</p>
-            <p class="m-0"> <strong>Time:</strong> {{item.date}}</p>
-          </b-alert>
+            <app-expense v-for="(item,index) in expenses" :key="index" :expense="item"></app-expense>
         </div>
         </b-card>
       </b-col>
@@ -90,6 +84,7 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment"
+import appExpense from '../components/AppExpense'
 
 export default {
   data() {
@@ -105,6 +100,9 @@ export default {
       success: "",
       error: ""
     };
+  },
+  components: {
+      appExpense: appExpense
   },
   async mounted() {
     this.setUserData()
