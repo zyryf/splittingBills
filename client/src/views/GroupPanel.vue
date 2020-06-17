@@ -4,10 +4,7 @@
       <h1 class="m-auto">
         <strong>{{ $attrs.groupname }}</strong>
       </h1>
-      <NewExpense
-        :groupname="$attrs.groupname"
-        v-on:reloadExpenses="getExpenses"
-      />
+      <NewExpense :groupname="$attrs.groupname" v-on:reloadExpenses="getExpenses" />
     </b-row>
     <hr />
     <b-row class="wrapper">
@@ -19,13 +16,17 @@
           bg-variant="Secondary"
           text-variant="black"
           header="Expenses"
-          class="text-center expenses "
+          class="text-center expenses"
         >
-
-        <div class="d-flex flex-column-reverse">
-            <app-expense v-for="(item,index) in expenses" :key="index" :expense="item"></app-expense>
-        </div>
-
+          <div class="d-flex flex-column-reverse">
+            <expense
+              v-for="(item,index) in expenses"
+              :key="index"
+              :expense="item"
+              :groupname="$attrs.groupname"
+              v-on:reloadExpenses="getExpenses"
+            ></expense>
+          </div>
         </b-card>
       </b-col>
     </b-row>
@@ -36,12 +37,11 @@
 import axios from "axios";
 
 import { mapGetters, mapActions } from "vuex";
-import moment from "moment"
-import appExpense from '../components/AppExpense'
+import moment from "moment";
+import Expense from "../components/Expense";
 
 import Members from "../components/Members";
 import NewExpense from "../components/NewExpense";
-
 
 export default {
   data() {
@@ -49,9 +49,6 @@ export default {
       expenses: [],
       members: []
     };
-  },
-  components: {
-      appExpense: appExpense
   },
   async mounted() {
     this.setUserData();
@@ -81,7 +78,8 @@ export default {
   },
   components: {
     Members,
-    NewExpense
+    NewExpense,
+    Expense
   }
 };
 </script>

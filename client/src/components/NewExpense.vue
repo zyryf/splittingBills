@@ -79,7 +79,6 @@ export default {
     },
     async sendExpense() {
       try {
-        console.log(this.expense);
         const response = await axios.post(
           `api/groups/${this.groupname}/expenses`,
           this.expense

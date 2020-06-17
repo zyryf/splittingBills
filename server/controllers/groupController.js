@@ -80,16 +80,22 @@ module.exports = {
         $push: { expenses: expense }
       });
       return res.status(200).json({ title: "Expense added!" }); 
-      
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
     }
   },
 
   async deleteExpense(req,res) {
-    console.log("pesos")
-    let x = uuid.v4()
-    console.log(x)
+    try {
+      const group = await Group.findOne({ name: req.params.groupname })
+      
+      await group.updateOne({
+        $pull: { expenses: { id: req.params.expenseid } }
+      })
+      return res.status(200).json({ title: "Expense deleted" });
+    } catch(err) {
+      return res.status(500).json({ title: "Server error", error: err });
+    }
   }
 
 }
