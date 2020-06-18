@@ -148,7 +148,7 @@ export default {
         const response = await axios.patch(
           `api/users/join/${this.name}/${this.getUserName}`,
           {
-            password: this.passwordthis.$emit("myEvent")
+            password: this.password
           }
         );
         this.success = "You have joined the " + this.name;

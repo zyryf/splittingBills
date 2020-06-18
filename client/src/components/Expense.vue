@@ -17,7 +17,7 @@
       </div>
       <div class="d-inline-block ml-3">
         <h5 class="m-0 d-flex justify-content-start">{{expense.title}}</h5>
-        <p class="m-0 d-flex justify-content-start">{{expense.userName}}</p>
+        <p class="m-0 d-flex justify-content-start">{{expense.payer}}</p>
         <p class="m-0 d-flex justify-content-start">{{expense.amount}} PLN</p>
         <p class="m-0 d-flex justify-content-start">{{expense.date}}</p>
       </div>
@@ -26,7 +26,8 @@
       <b-button href="#" variant="primary" class="custom-button" @click="editExpense">Edit</b-button>
       <b-button href="#" variant="danger" class="custom-button" @click="deleteExpense">Delete</b-button>
     </div>
-    <edit-expense-panel v-if="editPanel" :expense="expense" >kokokok</edit-expense-panel>
+    
+    <edit-expense-panel v-if="editPanel" v-on:close="closeEditPanel" :expense="expense" :members="groupmembers" :groupname="groupname">kokokok</edit-expense-panel>
   </b-alert>
 </template>
 
@@ -36,7 +37,7 @@ import groupVue from './group.vue';
 import editExpensePanel from './EditExpensePanel'
 
 export default {
-    props: ["expense", "groupname"],
+    props: ["expense", "groupname", "groupmembers"],
     data() {
       return {
         editPanel: false
@@ -47,8 +48,11 @@ export default {
     },
     methods: {
         editExpense() {
-          console.log(this.expense)
           this.editPanel = true
+        },
+        closeEditPanel() {
+          this.editPanel = false
+          this.$emit("reloadExpenses");
         },
         async deleteExpense() {
             try {
