@@ -4,7 +4,11 @@
       <h1 class="m-auto">
         <strong>{{ $attrs.groupname }}</strong>
       </h1>
-      <NewExpense :groupname="$attrs.groupname" v-on:reloadExpenses="getExpenses" />
+      <NewExpense
+        :groupname="$attrs.groupname"
+        :members="members"
+        v-on:reloadExpenses="getExpenses"
+      />
     </b-row>
     <hr />
     <b-row class="wrapper">
@@ -20,7 +24,7 @@
         >
           <div class="d-flex flex-column-reverse">
             <expense
-              v-for="(item,index) in expenses"
+              v-for="(item, index) in expenses"
               :key="index"
               :expense="item"
               :groupname="$attrs.groupname"

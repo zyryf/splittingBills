@@ -1,13 +1,10 @@
 <template>
   <div>
     <b-card bg-variant="light" class="form-wrapper">
-      <h5 class="m-3 d-flex align-items-center">
-        <strong>
-          New<br />
-          Expense</strong
-        >
-      </h5>
       <b-form @submit.prevent="addNewExpense">
+        <h5 class="m-3 ">
+          <strong> New Expense</strong>
+        </h5>
         <b-form-group
           label-cols-sm="3"
           label="Title:"
@@ -36,7 +33,21 @@
             placeholder="Enter amount"
           ></b-form-input>
         </b-form-group>
-        <b-button variant="success" type="submit">Add expense</b-button>
+
+        <b-form-group label="Select members for this expense">
+          <b-form-checkbox-group
+            id="checkbox-group-1"
+            v-model="expense.selectedMembers"
+            :options="members"
+            value="accepted"
+          ></b-form-checkbox-group>
+        </b-form-group>
+        <b-button variant="outline-primary" @click="selectAll" class="m-3"
+          >Select all</b-button
+        >
+        <b-button variant="success" type="submit" class="m-3"
+          >Add expense</b-button
+        >
       </b-form>
     </b-card>
     <b-alert v-if="success" show variant="success" class="my-2">
@@ -54,14 +65,15 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import moment from "moment";
 export default {
-  props: ["groupname"],
+  props: ["groupname", "members"],
   data() {
     return {
       expense: {
         title: "",
         amount: "",
         userName: "",
-        date: ""
+        date: "",
+        selectedMembers: []
       },
       success: "",
       error: ""
@@ -96,6 +108,9 @@ export default {
           this.error = "";
         }, 2000);
       }
+    },
+    selectAll() {
+      this.expense.selectedMembers = [...this.members];
     }
   }
 };
@@ -105,8 +120,9 @@ export default {
 .form-wrapper {
   min-width: 40vw;
 }
-.card-body {
-  display: flex;
-  flex-direction: row;
+
+.member-checkbox {
+  display: inline;
+  margin: 0 10px;
 }
 </style>

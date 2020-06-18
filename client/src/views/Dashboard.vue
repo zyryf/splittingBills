@@ -15,15 +15,19 @@
 
     <h1 v-if="!getUserGroups.length">You don't belong to any group :(</h1>
 
-    <div v-if="message">
-      <b-alert show class="message"
+    <b-modal id="delete-group" title="Warning" hide-footer>
+      <b-alert show class="message w-100"
         >You are the last member. Do you want to delete this group?</b-alert
       >
-      <b-button @click="deleteGroup" variant="danger" class="mx-2"
-        >Yes</b-button
-      >
-      <b-button @click="message = false" variant="success">No</b-button>
-    </div>
+      <div class="d-flex flex-row justify-content-center">
+        <b-button @click="deleteGroup" variant="danger" class="mx-2"
+          >Yes</b-button
+        >
+        <b-button @click="hideModal" variant="success" class="mx-2"
+          >No</b-button
+        >
+      </div>
+    </b-modal>
 
     <div class="form-wrapper">
       <b-form @submit.prevent>
@@ -148,7 +152,7 @@ export default {
         const response = await axios.patch(
           `api/users/join/${this.name}/${this.getUserName}`,
           {
-            password: this.passwordthis.$emit("myEvent")
+            password: this.password
           }
         );
         this.success = "You have joined the " + this.name;
@@ -162,20 +166,19 @@ export default {
         this.clearMessages();
       }
     },
-    async membersAmount(group) {
-      const response = await axios.get(`api/groups/amount/${group.name}`);
-      return response.data;
-    },
 
     askToDelete(groupName) {
       this.groupToDelete = groupName;
-      this.message = true;
+      this.$bvModal.show("delete-group");
     },
 
     async deleteGroup() {
       await axios.delete(`api/groups/${this.groupToDelete}`);
-      this.message = false;
+      this.hideModal();
       this.groupToDelete = "";
+    },
+    hideModal() {
+      this.$bvModal.hide("delete-group");
     }
   },
   computed: {
