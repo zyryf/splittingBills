@@ -14,7 +14,6 @@
         :key="index"
         >{{ member }}</b-alert
       >
-      <b-button href="#" variant="primary">Go somewhere</b-button>
     </b-card>
   </div>
 </template>
