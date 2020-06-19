@@ -2,12 +2,12 @@
   <div class="form-wrapper">
     <h2>Here you can <strong>log in </strong></h2>
     <b-form @submit.prevent="submitForm">
-      <b-form-group id="input-group-1" label="Your Name:" label-for="input-1">
+      <b-form-group id="input-group-1" label="Your Email:" label-for="input-1">
         <b-form-input
           id="input-1"
-          v-model="user.name"
+          v-model="user.email"
           required
-          placeholder="Enter name"
+          placeholder="Enter email"
         ></b-form-input>
       </b-form-group>
       <b-form-group id="input-group-2" label="Password:" label-for="input-2">
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       user: {
-        name: "",
+        email: "",
         password: ""
       },
       error: ""
@@ -47,7 +47,7 @@ export default {
       this.error = "";
       try {
         const res = await axios.post("/api/login", this.user);
-        this.user.name = "";
+        this.user.email = "";
         this.user.password = "";
 
         localStorage.setItem("token", res.data.token);
