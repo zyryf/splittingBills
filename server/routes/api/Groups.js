@@ -14,6 +14,7 @@ router.get("/:groupname", groupController.getGroup);
 router.post("/", groupController.createGroup);
 
 router.post("/:groupname/expenses", groupController.addExpense)
+router.patch("/:groupname/expenses", groupController.editExpense)
 router.delete("/:groupname/expenses/:expenseid", groupController.deleteExpense)
 
 router.delete("/:groupname", groupController.deleteGroup);

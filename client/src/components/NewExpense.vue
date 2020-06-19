@@ -71,7 +71,7 @@ export default {
       expense: {
         title: "",
         amount: "",
-        userName: "",
+        payer: "",
         date: "",
         selectedMembers: []
       },
@@ -80,13 +80,13 @@ export default {
     };
   },
   mounted() {
-    this.expense.userName = this.getUserName();
+    this.expense.payer = this.getUserName();
   },
   methods: {
     ...mapGetters(["getUserName"]),
     addNewExpense() {
       this.expense.date = moment().format("MMM Do YYYY, h:mm:ss a");
-      this.expense.userName = this.getUserName();
+      this.expense.payer = this.getUserName();
       this.sendExpense();
     },
     async sendExpense() {

@@ -28,6 +28,7 @@
               :key="index"
               :expense="item"
               :groupname="$attrs.groupname"
+              :groupmembers="members"
               v-on:reloadExpenses="getExpenses"
             ></expense>
           </div>

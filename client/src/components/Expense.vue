@@ -20,10 +20,12 @@
         </p>
       </div>
       <div class="d-inline-block ml-3">
-        <h5 class="m-0 d-flex justify-content-start">{{ expense.title }}</h5>
-        <p class="m-0 d-flex justify-content-start">{{ expense.userName }}</p>
-        <p class="m-0 d-flex justify-content-start">{{ expense.amount }} PLN</p>
-        <p class="m-0 d-flex justify-content-start">{{ expense.date }}</p>
+
+        <h5 class="m-0 d-flex justify-content-start">{{expense.title}}</h5>
+        <p class="m-0 d-flex justify-content-start">{{expense.payer}}</p>
+        <p class="m-0 d-flex justify-content-start">{{expense.amount}} PLN</p>
+        <p class="m-0 d-flex justify-content-start">{{expense.date}}</p>
+
       </div>
     </div>
 
@@ -50,11 +52,7 @@
         >Delete</b-button
       >
     </div>
-
-    <edit-expense-panel
-      v-if="editPanel"
-      :expense="expense"
-    ></edit-expense-panel>
+    <edit-expense-panel v-if="editPanel" v-on:close="closeEditPanel" :expense="expense" :members="groupmembers" :groupname="groupname">kokokok</edit-expense-panel>
   </b-alert>
 </template>
 
@@ -64,35 +62,39 @@ import groupVue from "./group.vue";
 import editExpensePanel from "./EditExpensePanel";
 
 export default {
-  props: ["expense", "groupname"],
-  data() {
-    return {
-      editPanel: false,
-      members: []
-    };
-  },
-  components: {
-    editExpensePanel
-  },
-  async created() {
-    this.members = [...this.expense.selectedMembers];
-  },
-  methods: {
-    editExpense() {
-      this.editPanel = true;
-    },
-    async deleteExpense() {
-      try {
-        const response = await axios.delete(
-          `api/groups/${this.groupname}/expenses/${this.expense.id}`
-        );
-        this.$emit("reloadExpenses");
-      } catch (err) {
-        console.log(err);
+    props: ["expense", "groupname", "groupmembers"],
+    data() {
+      return {
+        editPanel: false,
+        members: []
       }
+    },
+    components: {
+      editExpensePanel
+    },
+    async created() {
+      this.members = [...this.expense.selectedMembers];
+    },
+    methods: {
+        editExpense() {
+          this.editPanel = true
+        },
+        closeEditPanel() {
+          this.editPanel = false
+          this.$emit("reloadExpenses");
+        },
+        async deleteExpense() {
+            try {
+                const response = await axios.delete(`api/groups/${this.groupname}/expenses/${this.expense.id}`)
+                this.$emit("reloadExpenses");
+            } catch (err) {
+                console.log(err);
+            }
+            
+        }
     }
   }
-};
+  
 </script>
 
 <style scoped>

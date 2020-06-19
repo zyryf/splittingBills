@@ -4,7 +4,7 @@ const User = require("../models/User");
 const uuid = require("uuid")
 
 module.exports = {
-  
+
   async getAll(req, res) {
     try {
       const groups = await Group.find();
@@ -22,7 +22,7 @@ module.exports = {
       members: [req.body.members],
     });
     const user = await User.findOne({ name: req.body.members })
-    
+
     const isRepeted = await Group.findOne({ name: group.name });
     if (isRepeted)
       return res.status(401).json({ title: "Group already exists!" });
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   async getGroup(req, res) {
-  
+
     try {
       const group = await Group.findOne({
         name: req.params.groupname,
@@ -58,20 +58,20 @@ module.exports = {
     try {
       const groupToDelete = await Group.findOne({ name: req.params.groupname })
 
-      if(groupToDelete === null) return res.status(400).json({ title: "Group not found" });
+      if (groupToDelete === null) return res.status(400).json({ title: "Group not found" });
 
       groupToDelete.remove();
       return res.status(200).json({ title: "Group Deleted" });
-      
+
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
     }
   },
 
-  async addExpense(req,res) {
+  async addExpense(req, res) {
     try {
       const group = await Group.findOne({ name: req.params.groupname })
-      if(group === null) return res.status(400).json({ title: "Group not found" });
+      if (group === null) return res.status(400).json({ title: "Group not found" });
 
       let expense = req.body
       expense.id = uuid.v4()
@@ -79,23 +79,44 @@ module.exports = {
       await group.updateOne({
         $push: { expenses: expense }
       });
-      return res.status(200).json({ title: "Expense added!" }); 
+      return res.status(200).json({ title: "Expense added!" });
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
     }
   },
 
-  async deleteExpense(req,res) {
+  async deleteExpense(req, res) {
     try {
       const group = await Group.findOne({ name: req.params.groupname })
-      
+
       await group.updateOne({
         $pull: { expenses: { id: req.params.expenseid } }
       })
       return res.status(200).json({ title: "Expense deleted" });
-    } catch(err) {
+    } catch (err) {
+      return res.status(500).json({ title: "Server error", error: err });
+    }
+  },
+
+  async editExpense(req, res) {
+    try {
+      const group = await Group.findOne({ name: req.params.groupname })
+      let updatedExpense = req.body
+
+      await group.updateOne({
+        $pull: { expenses: { id: updatedExpense.id } }
+      })
+
+      await group.updateOne({
+        $push: { expenses: updatedExpense }
+      })
+      
+      return res.status(200).json({ title: "Group Modified" })
+
+    } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
     }
   }
+
 
 }
