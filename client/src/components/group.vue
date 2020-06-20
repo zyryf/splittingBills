@@ -1,6 +1,5 @@
 <template>
   <div class="m-2">
-    
     <b-card
       :header="groupname"
       header-text-variant="white"
@@ -11,12 +10,18 @@
     >
       <b-card-text>
         <ul>
-          <li v-for="(member, index) in members" :key="index">{{ index + 1 }}. {{ member }}</li>
+          <li v-for="(member, index) in members" :key="index">
+            {{ index + 1 }}. {{ member }}
+          </li>
         </ul>
       </b-card-text>
-      <router-link  :to="{ name: 'GroupPanel', 
-           params: { groupname: groupname }}"><b-button variant="info" class="mx-2"  >Panel</b-button></router-link>
-      <b-button type="submit" class="mx-2" variant="warning" @click="leaveGroup">Leave group</b-button>
+      <router-link
+        :to="{ name: 'GroupPanel', params: { groupname: groupname } }"
+        ><b-button variant="info" class="mx-2">Panel</b-button></router-link
+      >
+      <b-button type="submit" class="mx-2" variant="warning" @click="leaveGroup"
+        >Leave group</b-button
+      >
     </b-card>
   </div>
 </template>
@@ -41,8 +46,8 @@ export default {
     }
   },
   computed: {
-    routerLink(){
-      return '/group-panel/' + this.groupname
+    routerLink() {
+      return "/group-panel/" + this.groupname;
     }
   },
   methods: {
@@ -51,7 +56,11 @@ export default {
     async leaveGroup() {
       try {
         const response = await axios.patch(
-          `api/users/leave/${this.groupname}/${this.getUserName()}`
+          `api/users/leave/${this.groupname}/${this.getUserName()}`,
+          {},
+          {
+            headers: { token: localStorage.getItem("token") }
+          }
         );
         if (response.data.isEmpty) this.$emit("delete", this.groupname);
         this.setUserData();

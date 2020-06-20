@@ -73,11 +73,11 @@ export default {
   props: ["expense", "groupname", "groupmembers"],
   data() {
     return {
-      editPanel: false,
+      editPanel: false
     };
   },
   components: {
-    editExpensePanel,
+    editExpensePanel
   },
 
   methods: {
@@ -91,14 +91,17 @@ export default {
     async deleteExpense() {
       try {
         const response = await axios.delete(
-          `api/groups/${this.groupname}/expenses/${this.expense.id}`
+          `api/groups/${this.groupname}/expenses/${this.expense.id}`,
+          {
+            headers: { token: localStorage.getItem("token") }
+          }
         );
         this.$emit("reloadExpenses");
       } catch (err) {
         console.log(err);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

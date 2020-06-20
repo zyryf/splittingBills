@@ -38,7 +38,7 @@ module.exports = {
   async leaveGroup(req, res) {
     const userName = req.params.username;
     const groupName = req.params.groupname;
-
+    console.log("leave group!");
     try {
       const user = await User.findOne({ name: userName });
       let group = await Group.findOne({ name: groupName });

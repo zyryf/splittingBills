@@ -135,7 +135,9 @@ export default {
         members: this.getUserName
       };
       try {
-        const response = await axios.post("/api/groups", group);
+        const response = await axios.post("/api/groups", group, {
+          headers: { token: localStorage.getItem("token") }
+        });
         this.clearFormInputs();
         this.success = response.data.title;
         this.clearMessages();
@@ -153,6 +155,9 @@ export default {
           `api/users/join/${this.name}/${this.getUserName}`,
           {
             password: this.password
+          },
+          {
+            headers: { token: localStorage.getItem("token") }
           }
         );
         this.success = "You have joined the " + this.name;

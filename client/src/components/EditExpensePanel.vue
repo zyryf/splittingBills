@@ -7,26 +7,61 @@
           label-for="input-1"
           label="Title"
           class="text-left"
-          >
-          <b-form-input id="input-1" type="text" required :value="modifiedExpense.title" v-model="modifiedExpense.title"></b-form-input>
+        >
+          <b-form-input
+            id="input-1"
+            type="text"
+            required
+            :value="modifiedExpense.title"
+            v-model="modifiedExpense.title"
+          ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-3" label="Payer" label-for="input-3" class="text-left">
-          <b-form-select id="input-3" required :options="members" v-model="modifiedExpense.payer"></b-form-select>
+        <b-form-group
+          id="input-group-3"
+          label="Payer"
+          label-for="input-3"
+          class="text-left"
+        >
+          <b-form-select
+            id="input-3"
+            required
+            :options="members"
+            v-model="modifiedExpense.payer"
+          ></b-form-select>
         </b-form-group>
 
-        <b-form-group id="input-group-2" label="Amount" label-for="input-2" class="text-left">
-          <b-form-input id="input-2" required type="number" :value="modifiedExpense.amount" v-model="modifiedExpense.amount"></b-form-input>
+        <b-form-group
+          id="input-group-2"
+          label="Amount"
+          label-for="input-2"
+          class="text-left"
+        >
+          <b-form-input
+            id="input-2"
+            required
+            type="number"
+            :value="modifiedExpense.amount"
+            v-model="modifiedExpense.amount"
+          ></b-form-input>
         </b-form-group>
 
         <b-form-group id="input-group-4">
-          <b-form-checkbox-group id="checkboxes-4" label="Mambers Included" :options="members" v-model="modifiedExpense.selectedMembers">
-          
+          <b-form-checkbox-group
+            id="checkboxes-4"
+            label="Mambers Included"
+            :options="members"
+            v-model="modifiedExpense.selectedMembers"
+          >
           </b-form-checkbox-group>
         </b-form-group>
         <div class="d-flex justify-content-around">
-          <b-button type="submit" variant="primary" @click="save">Save</b-button>
-          <b-button type="reset" variant="danger" @click="closePanel">Close</b-button>
+          <b-button type="submit" variant="primary" @click="save"
+            >Save</b-button
+          >
+          <b-button type="reset" variant="danger" @click="closePanel"
+            >Close</b-button
+          >
         </div>
       </b-form>
     </b-card>
@@ -47,36 +82,39 @@ export default {
         amount: 0,
         selectedMembers: []
       }
-    }
+    };
   },
   created() {
-    console.log(this.expense)
-    this.modifiedExpense.id = this.expense.id
-    this.modifiedExpense.title = this.expense.title
-    this.modifiedExpense.payer = this.expense.payer
-    this.modifiedExpense.amount = this.expense.amount
-    this.modifiedExpense.selectedMembers = this.expense.selectedMembers
-    this.modifiedExpense.date = this.expense.date
+    console.log(this.expense);
+    this.modifiedExpense.id = this.expense.id;
+    this.modifiedExpense.title = this.expense.title;
+    this.modifiedExpense.payer = this.expense.payer;
+    this.modifiedExpense.amount = this.expense.amount;
+    this.modifiedExpense.selectedMembers = this.expense.selectedMembers;
+    this.modifiedExpense.date = this.expense.date;
   },
-  mounted() {
-  },
-  computed: {
-  },
+  mounted() {},
+  computed: {},
   methods: {
     closePanel() {
-      this.$emit("close")
+      this.$emit("close");
     },
-    async save(){
+    async save() {
       try {
-        const response = await axios.patch(`api/groups/${this.groupname}/expenses`, this.modifiedExpense)
-        this.$emit("close")
-      } catch(err){
-        console.log(err)
+        const response = await axios.patch(
+          `api/groups/${this.groupname}/expenses`,
+          this.modifiedExpense,
+          {
+            headers: { token: localStorage.getItem("token") }
+          }
+        );
+        this.$emit("close");
+      } catch (err) {
+        console.log(err);
       }
     }
-  },
-}
-
+  }
+};
 </script>
 
 

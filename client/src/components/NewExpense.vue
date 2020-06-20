@@ -93,7 +93,10 @@ export default {
       try {
         const response = await axios.post(
           `api/groups/${this.groupname}/expenses`,
-          this.expense
+          this.expense,
+          {
+            headers: { token: localStorage.getItem("token") }
+          }
         );
         this.expense.amount = "";
         this.expense.title = "";

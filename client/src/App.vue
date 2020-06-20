@@ -46,7 +46,6 @@ export default {
   },
   created() {
     if (localStorage.getItem("token")) this.$store.state.userLogged = true;
-    const expTime = localStorage.getItem('expire time');
   },
   methods: {
     logout() {
@@ -76,7 +75,6 @@ export default {
   min-height: 90vh;
   max-width: 90vw;
   min-width: 1000px;
-  
 }
 
 #nav a {

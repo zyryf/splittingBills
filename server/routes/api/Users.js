@@ -8,8 +8,12 @@ router.get("/user", authToken, userController.getUser);
 
 router.post("/", userController.addUser);
 
-router.patch("/leave/:groupname/:username", userController.leaveGroup);
+router.patch(
+  "/leave/:groupname/:username",
+  authToken,
+  userController.leaveGroup
+);
 
-router.patch("/join/:groupname/:username", userController.joinGroup);
+router.patch("/join/:groupname/:username", authToken, userController.joinGroup);
 
 module.exports = router;
