@@ -20,17 +20,19 @@
         </p>
       </div>
       <div class="d-inline-block ml-3">
-
-        <h5 class="m-0 d-flex justify-content-start">{{expense.title}}</h5>
-        <p class="m-0 d-flex justify-content-start">{{expense.payer}}</p>
-        <p class="m-0 d-flex justify-content-start">{{expense.amount}} PLN</p>
-        <p class="m-0 d-flex justify-content-start">{{expense.date}}</p>
-
+        <h5 class="m-0 d-flex justify-content-start">{{ expense.title }}</h5>
+        <p class="m-0 d-flex justify-content-start">{{ expense.payer }}</p>
+        <p class="m-0 d-flex justify-content-start">{{ expense.amount }} PLN</p>
+        <p class="m-0 d-flex justify-content-start">{{ expense.date }}</p>
       </div>
     </div>
 
     <div class="d-flex flex-row flex-wrap members-wrapper">
-      <div class="m-1" v-for="(member, index) in members" :key="index">
+      <div
+        class="m-1"
+        v-for="(member, index) in expense.selectedMembers"
+        :key="index"
+      >
         <b-avatar size="sm" variant="light"></b-avatar>
         <p class="d-inline m-2">{{ member }}</p>
       </div>
@@ -52,7 +54,13 @@
         >Delete</b-button
       >
     </div>
-    <edit-expense-panel v-if="editPanel" v-on:close="closeEditPanel" :expense="expense" :members="groupmembers" :groupname="groupname">kokokok</edit-expense-panel>
+    <edit-expense-panel
+      v-if="editPanel"
+      v-on:close="closeEditPanel"
+      :expense="expense"
+      :members="groupmembers"
+      :groupname="groupname"
+    ></edit-expense-panel>
   </b-alert>
 </template>
 
@@ -62,39 +70,36 @@ import groupVue from "./group.vue";
 import editExpensePanel from "./EditExpensePanel";
 
 export default {
-    props: ["expense", "groupname", "groupmembers"],
-    data() {
-      return {
-        editPanel: false,
-        members: []
+  props: ["expense", "groupname", "groupmembers"],
+  data() {
+    return {
+      editPanel: false,
+    };
+  },
+  components: {
+    editExpensePanel,
+  },
+
+  methods: {
+    editExpense() {
+      this.editPanel = true;
+    },
+    closeEditPanel() {
+      this.editPanel = false;
+      this.$emit("reloadExpenses");
+    },
+    async deleteExpense() {
+      try {
+        const response = await axios.delete(
+          `api/groups/${this.groupname}/expenses/${this.expense.id}`
+        );
+        this.$emit("reloadExpenses");
+      } catch (err) {
+        console.log(err);
       }
     },
-    components: {
-      editExpensePanel
-    },
-    async created() {
-      this.members = [...this.expense.selectedMembers];
-    },
-    methods: {
-        editExpense() {
-          this.editPanel = true
-        },
-        closeEditPanel() {
-          this.editPanel = false
-          this.$emit("reloadExpenses");
-        },
-        async deleteExpense() {
-            try {
-                const response = await axios.delete(`api/groups/${this.groupname}/expenses/${this.expense.id}`)
-                this.$emit("reloadExpenses");
-            } catch (err) {
-                console.log(err);
-            }
-            
-        }
-    }
-  }
-  
+  },
+};
 </script>
 
 <style scoped>

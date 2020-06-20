@@ -24,8 +24,8 @@
         >
           <div class="d-flex flex-column-reverse">
             <expense
-              v-for="(item, index) in expenses"
-              :key="index"
+              v-for="item in expenses"
+              :key="item.id"
               :expense="item"
               :groupname="$attrs.groupname"
               :groupmembers="members"
