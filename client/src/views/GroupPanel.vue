@@ -1,13 +1,17 @@
 <template>
   <div>
     <b-row align-h="between" class="mr-4 ml-4">
-      <h1 class="m-auto">
-        <strong>{{ $attrs.groupname }}</strong>
-      </h1>
+      <div class="d-flex flex-column justify-content-between">
+        <h1 class="m-auto">
+          <strong>{{ $attrs.groupname }}</strong>
+        </h1>
+        <Balance :balance="balance" />
+      </div>
+
       <NewExpense
         :groupname="$attrs.groupname"
         :members="members"
-        v-on:reloadExpenses="getExpenses"
+        v-on:reloadExpenses="reloadExpenses"
       />
     </b-row>
     <hr />
@@ -29,7 +33,7 @@
               :expense="item"
               :groupname="$attrs.groupname"
               :groupmembers="members"
-              v-on:reloadExpenses="getExpenses"
+              v-on:reloadExpenses="reloadExpenses"
             ></expense>
           </div>
         </b-card>
@@ -44,6 +48,7 @@ import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import Expense from "../components/Expense";
+import Balance from "../components/Balance";
 
 import Members from "../components/Members";
 import NewExpense from "../components/NewExpense";
@@ -52,7 +57,8 @@ export default {
   data() {
     return {
       expenses: [],
-      members: []
+      members: [],
+      balance: 0,
     };
   },
   async mounted() {
@@ -60,9 +66,11 @@ export default {
     this.members = await this.getMembers();
 
     await this.getExpenses();
+    this.calculateBalance();
   },
   methods: {
     ...mapActions(["setUserData"]),
+    ...mapGetters(["getUserName"]),
     async getMembers() {
       try {
         const response = await axios.get(`api/groups/${this.$attrs.groupname}`);
@@ -79,13 +87,36 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
+    },
+    async reloadExpenses() {
+      await this.getExpenses();
+
+      this.calculateBalance();
+    },
+    calculateBalance() {
+      let userDebt = 0;
+      let userPayments = 0;
+      const userName = this.getUserName();
+      this.expenses.forEach((expense) => {
+        if (expense.selectedMembers.indexOf(userName) > -1) {
+          if (expense.payer !== userName) {
+            userDebt += expense.amount / expense.selectedMembers.length;
+          } else {
+            userPayments +=
+              expense.amount - expense.amount / expense.selectedMembers.length;
+          }
+        }
+      });
+      this.balance = userPayments - userDebt;
+    },
   },
+
   components: {
     Members,
     NewExpense,
-    Expense
-  }
+    Expense,
+    Balance,
+  },
 };
 </script>
 
