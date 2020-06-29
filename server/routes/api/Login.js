@@ -12,6 +12,7 @@ router.post("/", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
+      
       if (bcrypt.compareSync(req.body.password, user.password)) {
         const token = JWT.sign(
           { userID: user._id },
@@ -20,7 +21,6 @@ router.post("/", async (req, res) => {
             expiresIn: EXPIRE_TIME,
           }
         );
-
         return res.status(200).json({ token: token });
       } else {
         return res.status(401).json({ title: "Incorrect password!" });

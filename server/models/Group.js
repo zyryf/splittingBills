@@ -15,6 +15,9 @@ const GroupSchema = mongoose.Schema({
   },
   expenses: {
     type: Array
+  },
+  balances: {
+    type: Array
   }
 });
 

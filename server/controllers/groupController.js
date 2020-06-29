@@ -53,6 +53,20 @@ module.exports = {
       return res.status(500).json({ title: "Server error", error: err });
     }
   },
+  async getBalances(req, res) {
+    try {
+      const group = await Group.findOne({
+        name: req.params.groupname,
+      });
+      if (group) {
+        return res.status(200).json(group.balances);
+      } else {
+        return res.status(500).json({ title: "Group not found in database!" });
+      }
+    } catch (err) {
+      return res.status(500).json({ title: "Server error", error: err });
+    }
+  },
 
   async deleteGroup(req, res) {
     try {
