@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {};
@@ -48,6 +49,7 @@ export default {
     if (localStorage.getItem("token")) this.$store.state.userLogged = true;
   },
   methods: {
+    ...mapActions(["setUserData"]),
     logout() {
       localStorage.clear();
       this.$store.state.userLogged = false;

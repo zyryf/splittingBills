@@ -56,7 +56,7 @@ export default {
         this.$router.push("/dashboard");
       } catch (err) {
         if (err.response) {
-          this.error = err.response.data;
+          this.error = err.response.data.title;
         } else {
           this.error = "Oooops. Something went wrong :( Server error!";
         }

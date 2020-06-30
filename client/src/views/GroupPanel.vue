@@ -5,7 +5,7 @@
         <h1 class="m-auto">
           <strong>{{ $attrs.groupname }}</strong>
         </h1>
-        <Balance :balance="balance" />
+        <Balance :groupname="$attrs.groupname" />
       </div>
 
       <NewExpense
@@ -62,11 +62,10 @@ export default {
     };
   },
   async mounted() {
-    this.setUserData();
+    await this.setUserData();
     this.members = await this.getMembers();
 
     await this.getExpenses();
-    this.calculateBalance();
   },
   methods: {
     ...mapActions(["setUserData"]),
@@ -90,25 +89,7 @@ export default {
     },
     async reloadExpenses() {
       await this.getExpenses();
-
-      this.calculateBalance();
-    },
-    calculateBalance() {
-      let userDebt = 0;
-      let userPayments = 0;
-      const userName = this.getUserName();
-      this.expenses.forEach((expense) => {
-        if (expense.selectedMembers.indexOf(userName) > -1) {
-          if (expense.payer !== userName) {
-            userDebt += expense.amount / expense.selectedMembers.length;
-          } else {
-            userPayments +=
-              expense.amount - expense.amount / expense.selectedMembers.length;
-          }
-        }
-      });
-      this.balance = userPayments - userDebt;
-    },
+    }
   },
 
   components: {

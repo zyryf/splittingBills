@@ -10,6 +10,7 @@ const state = {
 
 const getters = {
   getUser: (state) => {
+    
     return state.user;
   },
 

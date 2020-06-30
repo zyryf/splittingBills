@@ -36,6 +36,7 @@
 
         <b-form-group label="Select members for this expense">
           <b-form-checkbox-group
+            required
             id="checkbox-group-1"
             v-model="expense.selectedMembers"
             :options="members"
@@ -45,10 +46,12 @@
         <b-button variant="outline-primary" @click="selectAll" class="m-3"
           >Select all</b-button
         >
-        <b-button variant="success" type="submit" class="m-3"
+        <b-button variant="success" type="submit" :disabled="!expense.selectedMembers.length"  class="m-3"
           >Add expense</b-button
         >
       </b-form>
+
+      
     </b-card>
     <b-alert v-if="success" show variant="success" class="my-2">
       {{ success }}

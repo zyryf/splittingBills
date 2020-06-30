@@ -2,6 +2,7 @@ const Group = require("../models/Group");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const uuid = require("uuid")
+const calculateBalances = require("./calculateBalances")
 
 module.exports = {
 
@@ -53,13 +54,17 @@ module.exports = {
       return res.status(500).json({ title: "Server error", error: err });
     }
   },
-  async getBalances(req, res) {
+
+  async getBalance(req, res) {
     try {
       const group = await Group.findOne({
         name: req.params.groupname,
       });
+
+      const userBalance = group.balances.filter((user) => user[0] === req.params.username )[0]
+
       if (group) {
-        return res.status(200).json(group.balances);
+        return res.status(200).json(userBalance[1]);
       } else {
         return res.status(500).json({ title: "Group not found in database!" });
       }
@@ -84,15 +89,26 @@ module.exports = {
 
   async addExpense(req, res) {
     try {
-      const group = await Group.findOne({ name: req.params.groupname })
+      let group = await Group.findOne({ name: req.params.groupname })
       if (group === null) return res.status(400).json({ title: "Group not found" });
 
       let expense = req.body
       expense.id = uuid.v4()
-
+      
       await group.updateOne({
         $push: { expenses: expense }
       });
+      
+      group = await Group.findOne({ name: req.params.groupname })
+      const balances = calculateBalances(group.expenses, group.members)
+    
+
+      await group.updateOne({
+        $set: {balances: balances}
+      })
+
+      
+
       return res.status(200).json({ title: "Expense added!" });
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
@@ -101,11 +117,22 @@ module.exports = {
 
   async deleteExpense(req, res) {
     try {
-      const group = await Group.findOne({ name: req.params.groupname })
+      let group = await Group.findOne({ name: req.params.groupname })
 
       await group.updateOne({
         $pull: { expenses: { id: req.params.expenseid } }
       })
+
+      group = await Group.findOne({ name: req.params.groupname })
+      const balances = calculateBalances(group.expenses, group.members)
+      
+
+      await group.updateOne({
+        $set: {balances: balances}
+      })
+
+      
+      
       return res.status(200).json({ title: "Expense deleted" });
     } catch (err) {
       return res.status(500).json({ title: "Server error", error: err });
@@ -114,7 +141,7 @@ module.exports = {
 
   async editExpense(req, res) {
     try {
-      const group = await Group.findOne({ name: req.params.groupname })
+      let group = await Group.findOne({ name: req.params.groupname })
       let updatedExpense = req.body
 
       await group.updateOne({
@@ -124,6 +151,14 @@ module.exports = {
       await group.updateOne({
         $push: { expenses: updatedExpense }
       })
+
+      group = await Group.findOne({ name: req.params.groupname })
+      const balances = calculateBalances(group.expenses, group.members)
+
+      await group.updateOne({
+        $set: {balances: balances}
+      })
+
       
       return res.status(200).json({ title: "Group Modified" })
 
@@ -131,6 +166,4 @@ module.exports = {
       return res.status(500).json({ title: "Server error", error: err });
     }
   }
-
-
 }

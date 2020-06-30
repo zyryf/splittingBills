@@ -27,7 +27,6 @@ module.exports = {
       name: req.body.name,
       password: bcrypt.hashSync(req.body.password, 10)
     });
-    console.log(user)
 
     try {
       await user.save();

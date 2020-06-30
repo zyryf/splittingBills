@@ -88,7 +88,7 @@ import axios from "axios";
 import { required } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
 
-import Group from "../components/group";
+import Group from '../components/Group'
 
 export default {
   data() {
@@ -114,7 +114,7 @@ export default {
     if (!localStorage.getItem("token")) this.$router.push("/login");
   },
   async mounted() {
-    this.setUserData();
+    await this.setUserData();
   },
   methods: {
     ...mapActions(["setUserData"]),
@@ -190,7 +190,7 @@ export default {
     ...mapGetters(["getUser", "getUserName", "getUserGroups"])
   },
   components: {
-    group: Group
+    Group
   }
 };
 </script>

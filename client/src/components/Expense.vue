@@ -66,7 +66,6 @@
 
 <script>
 import axios from "axios";
-import groupVue from "./group.vue";
 import editExpensePanel from "./EditExpensePanel";
 
 export default {

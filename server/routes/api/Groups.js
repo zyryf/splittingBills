@@ -8,9 +8,7 @@ const router = express.Router();
 
 router.get("/", groupController.getAll);
 router.get("/:groupname", groupController.getGroup);
-router.get("/:groupname/balances", groupController.getBalances)
-//router.get("/expensees/:groupname", groupController.getExpenses)
-// można to zrobić z tym znakiem zapytania ?fields="expenses" - jakoś tak i nie bedzie potrzebny ten endpoint
+router.get("/:groupname/:username/balance", groupController.getBalance)
 
 router.post("/", authToken, groupController.createGroup);
 router.post("/:groupname/expenses", authToken, groupController.addExpense);
