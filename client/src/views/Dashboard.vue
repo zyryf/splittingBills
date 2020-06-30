@@ -82,13 +82,13 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 import { required } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
+const jwtDecode = require("jwt-decode");
 
-import Group from '../components/Group'
+import Group from "../components/Group";
 
 export default {
   data() {
@@ -99,19 +99,23 @@ export default {
       success: "",
       message: false,
       deleteWhenEmpty: null,
-      groupToDelete: ""
+      groupToDelete: "",
     };
   },
   validations: {
     name: {
-      required
+      required,
     },
     password: {
-      required
-    }
+      required,
+    },
   },
   created() {
-    if (!localStorage.getItem("token")) this.$router.push("/login");
+    if (!localStorage.getItem("token")) {
+      this.$router.push("/login");
+    } else {
+      this.setExpirationTime();
+    }
   },
   async mounted() {
     await this.setUserData();
@@ -132,11 +136,11 @@ export default {
       const group = {
         name: this.name,
         password: this.password,
-        members: this.getUserName
+        members: this.getUserName,
       };
       try {
         const response = await axios.post("/api/groups", group, {
-          headers: { token: localStorage.getItem("token") }
+          headers: { token: localStorage.getItem("token") },
         });
         this.clearFormInputs();
         this.success = response.data.title;
@@ -154,10 +158,10 @@ export default {
         const response = await axios.patch(
           `api/users/join/${this.name}/${this.getUserName}`,
           {
-            password: this.password
+            password: this.password,
           },
           {
-            headers: { token: localStorage.getItem("token") }
+            headers: { token: localStorage.getItem("token") },
           }
         );
         this.success = "You have joined the " + this.name;
@@ -184,14 +188,24 @@ export default {
     },
     hideModal() {
       this.$bvModal.hide("delete-group");
-    }
+    },
+    setExpirationTime() {
+      const token = localStorage.getItem("token");
+      const decoded = jwtDecode(token);
+
+      const expTime = decoded.exp * 1000 - Date.now();
+      setTimeout(() => {
+        console.log("TOKEN EXPIRED");
+        this.$store.state.endOfSession = true;
+      }, expTime);
+    },
   },
   computed: {
-    ...mapGetters(["getUser", "getUserName", "getUserGroups"])
+    ...mapGetters(["getUser", "getUserName", "getUserGroups"]),
   },
   components: {
-    Group
-  }
+    Group,
+  },
 };
 </script>
 

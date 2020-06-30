@@ -29,6 +29,7 @@
       </b-navbar>
     </div>
     <router-view class="p-4 router" />
+    <EndOfSession v-if="this.$store.state.endOfSession" />
 
     <p class="info">
       Development version:
@@ -41,21 +42,32 @@
 
 <script>
 import { mapActions } from "vuex";
+import EndOfSession from "./components/EndOfSession";
 export default {
   data() {
     return {};
   },
   created() {
-    if (localStorage.getItem("token")) this.$store.state.userLogged = true;
+    if (localStorage.getItem("token")) {
+      this.$store.state.userLogged = true;
+      this.isTokenExpired();
+    }
   },
+
   methods: {
     ...mapActions(["setUserData"]),
     logout() {
       localStorage.clear();
       this.$store.state.userLogged = false;
       this.$router.push("/");
-    }
-  }
+    },
+    isTokenExpired() {
+      const token = localStorage.getItem("token");
+    },
+  },
+  components: {
+    EndOfSession,
+  },
 };
 </script>
 

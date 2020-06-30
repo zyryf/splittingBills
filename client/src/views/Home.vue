@@ -37,15 +37,20 @@
 <script>
 export default {
   name: "Home",
-  components: {},
+
   methods: {
     logIn() {
       this.$router.push("login");
     },
     signUp() {
       this.$router.push("signup");
-    }
-  }
+    },
+    onHide(evt) {
+      if (evt.trigger === "backdrop" || "close") {
+        evt.preventDefault();
+      }
+    },
+  },
 };
 </script>
 

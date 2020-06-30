@@ -80,12 +80,11 @@ export default {
         title: "",
         payer: "",
         amount: 0,
-        selectedMembers: []
-      }
+        selectedMembers: [],
+      },
     };
   },
   created() {
-    console.log(this.expense);
     this.modifiedExpense.id = this.expense.id;
     this.modifiedExpense.title = this.expense.title;
     this.modifiedExpense.payer = this.expense.payer;
@@ -105,18 +104,17 @@ export default {
           `api/groups/${this.groupname}/expenses`,
           this.modifiedExpense,
           {
-            headers: { token: localStorage.getItem("token") }
+            headers: { token: localStorage.getItem("token") },
           }
         );
         this.$emit("close");
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
 
 <style scoped>
 .expense {

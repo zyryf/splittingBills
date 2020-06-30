@@ -9,6 +9,7 @@ function authToken(req, res, next) {
   JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
     if (err) return res.status(403).json({ title: "Token is no longer valid" });
     req.decoded = decoded;
+
     next();
   });
 }

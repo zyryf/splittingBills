@@ -6,13 +6,12 @@ require("dotenv").config();
 
 const router = express.Router();
 
-const EXPIRE_TIME = 12000;
+const EXPIRE_TIME = 15;
 
 router.post("/", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      
       if (bcrypt.compareSync(req.body.password, user.password)) {
         const token = JWT.sign(
           { userID: user._id },
