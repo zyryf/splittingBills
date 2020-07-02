@@ -113,24 +113,24 @@ export default {
   created() {
     if (!localStorage.getItem("token")) {
       this.$router.push("/login");
-    } else {
-      this.setExpirationTime();
     }
   },
   async mounted() {
     await this.setUserData();
   },
   methods: {
-    ...mapActions(["setUserData"]),
+    ...mapActions(["setUserData", "isTokenExpired"]),
     clearMessages() {
       setTimeout(() => {
         this.error = "";
         this.success = "";
       }, 3000);
     },
+    
     clearFormInputs() {
       this.name = "";
       this.password = "";
+      
     },
     async createGroup() {
       const group = {
@@ -189,19 +189,12 @@ export default {
     hideModal() {
       this.$bvModal.hide("delete-group");
     },
-    setExpirationTime() {
-      const token = localStorage.getItem("token");
-      const decoded = jwtDecode(token);
-
-      const expTime = decoded.exp * 1000 - Date.now();
-      setTimeout(() => {
-        console.log("TOKEN EXPIRED");
-        this.$store.state.endOfSession = true;
-      }, expTime);
-    },
   },
   computed: {
     ...mapGetters(["getUser", "getUserName", "getUserGroups"]),
+    sessionTimeLeft: function() {
+      const timeNow = Date.now()
+    }
   },
   components: {
     Group,

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 import axios from "axios";
 export default {
   data() {
@@ -43,6 +43,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["isTokenExpired"]),
     async submitForm() {
       this.error = "";
       try {
@@ -52,7 +53,9 @@ export default {
 
         localStorage.setItem("token", res.data.token);
 
-        this.$store.state.userLogged = true;
+        this.$store.state.isLogged = true;
+        this.isTokenExpired()
+        
         this.$router.push("/dashboard");
       } catch (err) {
         if (err.response) {

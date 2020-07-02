@@ -8,18 +8,18 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <router-link v-if="!this.$store.state.userLogged" to="/login"
+          <router-link v-if="!this.$store.state.isLogged" to="/login"
             >Log In</router-link
           >
           |
-          <router-link v-if="!this.$store.state.userLogged" to="/signup"
+          <router-link v-if="!this.$store.state.isLogged" to="/signup"
             >Sign Up</router-link
           >
-          <router-link v-if="this.$store.state.userLogged" to="/dashboard"
+          <router-link v-if="this.$store.state.isLogged" to="/dashboard"
             >Dashboard</router-link
           >
           <button
-            v-if="this.$store.state.userLogged"
+            v-if="this.$store.state.isLogged"
             class="logout"
             @click="logout"
           >
@@ -51,19 +51,16 @@ export default {
     if (localStorage.getItem("token")) {
       this.$store.state.userLogged = true;
       this.isTokenExpired();
-    }
-  },
+    }  },
 
   methods: {
-    ...mapActions(["setUserData"]),
+    ...mapActions(["setUserData", "isTokenExpired"]),
     logout() {
       localStorage.clear();
-      this.$store.state.userLogged = false;
+      this.$store.state.isLogged = false;
       this.$router.push("/");
     },
-    isTokenExpired() {
-      const token = localStorage.getItem("token");
-    },
+    
   },
   components: {
     EndOfSession,

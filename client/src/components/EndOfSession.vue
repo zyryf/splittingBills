@@ -13,12 +13,11 @@
 export default {
   methods: {
     hideInfo() {
-      this.$router.push("login");
-      this.$store.state.userLogged = false;
-
+      this.$router.push("/login");
+      this.$store.state.isLogged = false;
       this.$store.state.endOfSession = false;
     },
-  },
+  }
 };
 </script>
 
