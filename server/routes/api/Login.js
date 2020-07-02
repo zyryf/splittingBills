@@ -6,7 +6,7 @@ require("dotenv").config();
 
 const router = express.Router();
 
-const EXPIRE_TIME = 15;
+const EXPIRE_TIME = 1200;
 
 router.post("/", async (req, res) => {
   try {
