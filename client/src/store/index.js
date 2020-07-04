@@ -8,28 +8,33 @@ export default new Vuex.Store({
   state: {
     isLogged: false,
     endOfSession: false,
+    timerTime: 0,
   },
   getters: {},
   mutations: {
     SET_SESSION_STATUS(state, status) {
       state.endOfSession = status;
     },
-    SET_LOGG_STATUS(state,status) {
-      state.isLogged = status 
-    }
+    SET_LOGG_STATUS(state, status) {
+      state.isLogged = status;
+    },
+    SET_TIME(state, time) {
+      state.timerTime = Math.round(time / 1000);
+    },
   },
   actions: {
     isTokenExpired(context) {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       if (token) {
-        console.log('checking tokex expiracy!')
+        console.log("checking token expiracy!");
         const tokenPayload = token.split(".")[1];
         const tokenData = JSON.parse(atob(tokenPayload));
         const timeLeft = tokenData.exp * 1000 - Date.now();
-        
-        if(timeLeft > 0) {
+
+        if (timeLeft > 0) {
+          context.commit("SET_TIME", timeLeft);
           setTimeout(() => {
-            console.log('TOKEN EXPIRED!')
+            console.log("TOKEN EXPIRED!");
             context.commit("SET_SESSION_STATUS", true);
           }, timeLeft);
         }

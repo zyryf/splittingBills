@@ -15,6 +15,7 @@
           <router-link v-if="!this.$store.state.isLogged" to="/signup"
             >Sign Up</router-link
           >
+
           <router-link v-if="this.$store.state.isLogged" to="/dashboard"
             >Dashboard</router-link
           >
@@ -28,8 +29,10 @@
         </b-navbar-nav>
       </b-navbar>
     </div>
+
+    <div v-if="$store.state.isLogged" class="timer"><Timer /></div>
     <router-view class="p-4 router" />
-    <EndOfSession v-if="this.$store.state.endOfSession" />
+    <EndOfSession v-if="$store.state.endOfSession" />
 
     <p class="info">
       Development version:
@@ -43,15 +46,17 @@
 <script>
 import { mapActions } from "vuex";
 import EndOfSession from "./components/EndOfSession";
+import Timer from "./components/Timer";
 export default {
   data() {
     return {};
   },
   created() {
     if (localStorage.getItem("token")) {
-      this.$store.state.userLogged = true;
+      this.$store.state.isLogged = true;
       this.isTokenExpired();
-    }  },
+    }
+  },
 
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
@@ -60,10 +65,10 @@ export default {
       this.$store.state.isLogged = false;
       this.$router.push("/");
     },
-    
   },
   components: {
     EndOfSession,
+    Timer,
   },
 };
 </script>
@@ -93,6 +98,11 @@ export default {
   padding: 5px 10px;
   margin: 5px;
   transition: 0.2s;
+}
+
+.timer {
+  display: flex;
+  justify-content: flex-end;
 }
 
 #nav a:hover {

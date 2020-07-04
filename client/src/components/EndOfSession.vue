@@ -16,8 +16,9 @@ export default {
       this.$router.push("/login");
       this.$store.state.isLogged = false;
       this.$store.state.endOfSession = false;
+      localStorage.clear();
     },
-  }
+  },
 };
 </script>
 
