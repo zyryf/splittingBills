@@ -21,6 +21,10 @@
       </b-form-group>
 
       <b-button type="submit" variant="primary">Log in</b-button>
+
+      <b-button class="ml-4 fb-color" @click="logInFB"
+        >Log in with Facebook</b-button
+      >
     </b-form>
 
     <b-alert v-if="error" show variant="danger" class="my-2">{{
@@ -37,9 +41,9 @@ export default {
     return {
       user: {
         email: "",
-        password: ""
+        password: "",
       },
-      error: ""
+      error: "",
     };
   },
   methods: {
@@ -52,10 +56,9 @@ export default {
         this.user.password = "";
 
         localStorage.setItem("token", res.data.token);
-
         this.$store.state.isLogged = true;
-        this.isTokenExpired()
-        
+        this.isTokenExpired();
+
         this.$router.push("/dashboard");
       } catch (err) {
         if (err.response) {
@@ -64,8 +67,28 @@ export default {
           this.error = "Oooops. Something went wrong :( Server error!";
         }
       }
-    }
-  }
+    },
+    async logInFB() {
+      FB.login();
+      // To poniżej, to powinna być funkcja w storze, i jeżeli pzy odpaleniu appki jest connected też powinna się wywoływać
+      const accessToken = FB.getAccessToken();
+      console.log(accessToken);
+      try {
+        const res = axios.post("/api/login/fb", { accessToken: accessToken });
+        // w odpowiedzi powinniśmy dostać nowy token przypisany do usera ale już stworzony na BackEndzie przez serwer
+        localStorage.setItem("token", res.data.token);
+        this.$store.state.isLogged = true;
+        this.isTokenExpired();
+        this.$router.push("/dashboard");
+      } catch (err) {
+        if (err.response) {
+          this.error = err.response.data.title;
+        } else {
+          this.error = "Oooops. Something went wrong :( Server error!";
+        }
+      }
+    },
+  },
 };
 </script>
 
@@ -81,5 +104,13 @@ h2 strong {
   width: 40%;
   margin: 50px auto;
   text-align: left;
+}
+
+.fb-color {
+  background-color: #3b5998;
+  border: none;
+}
+.fb-color:hover {
+  background-color: #527bd3;
 }
 </style>
