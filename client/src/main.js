@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 import Vuelidate from "vuelidate";
 import axios from "axios";
-import facebook from "../src/SDK/facebook"
+import FB_init from "../src/SDK/facebook";
 
 // bootsrap
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
@@ -26,5 +26,10 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+// Initialization Facebook
+
+
+FB_init()
 
 
