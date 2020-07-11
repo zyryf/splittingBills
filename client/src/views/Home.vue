@@ -11,20 +11,20 @@
 
       <hr class="my-4" />
 
-      <p v-if="!this.$store.state.userLogged">
+      <p v-if="!this.$store.state.isLogged">
         To continue please log in or sign up if you don't have an account.
       </p>
 
       <b-button
         class="m-1"
-        v-if="!this.$store.state.userLogged"
+        v-if="!this.$store.state.isLogged"
         variant="primary"
         @click="logIn"
         >Log In</b-button
       >
       <b-button
         class="m-1"
-        v-if="!this.$store.state.userLogged"
+        v-if="!this.$store.state.isLogged"
         variant="success"
         @click="signUp"
       >

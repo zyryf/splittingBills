@@ -24,7 +24,6 @@ export default {
   data() {
     return {
       userBalance: 0,
-      
     };
   },
   async mounted(){  
@@ -51,7 +50,6 @@ export default {
 
       } catch(err){
         console.log(err);
-
       }
     },
     
