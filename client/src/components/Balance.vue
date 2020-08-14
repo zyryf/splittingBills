@@ -9,52 +9,36 @@
       header-text-variant="white"
     >
       <div class="d-flex justify-content-between ">
-        <h3 class=" mr-4">{{ userBalance  | addSign}} PLN</h3>
-        <b-button v-if="userBalance < 0" variant="danger">Pay</b-button>
+        <h3 class=" mr-4">{{ getBalance | addSign }} PLN</h3>
+        <b-button v-if="getBalance < 0" variant="danger">Pay</b-button>
       </div>
     </b-card>
   </div>
 </template>
 
 <script>
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 export default {
-  props: ['groupname'],
+  props: ["groupname"],
   data() {
-    return {
-      userBalance: 0,
-      
-    };
+    return {};
   },
-  async mounted(){  
-    await this.setUserData()
-    this.userBalance  =  await this.getUserBalance;
+  async mounted() {
+    await this.setUserData();
+    await this.setUserBalance(this.groupname);
   },
   methods: {
-   ...mapActions(["setUserData"]),
+    ...mapActions(["setUserBalance", "setUserData"]),
   },
   computed: {
-    ...mapGetters(["getUserName"]),
-    
+    ...mapGetters(["getBalance"]),
+
     color() {
       if (this.balance > 0) return "success";
       if (this.balance < 0) return "danger";
       return "dark";
     },
-    async getUserBalance() {
-      try {
-        
-        const userName = this.getUserName
-        const response = await axios.get(`/api/groups/${this.groupname}/${userName}/balance`)
-        return response.data
-
-      } catch(err){
-        console.log(err);
-
-      }
-    },
-    
   },
 
   filters: {

@@ -67,19 +67,21 @@
 <script>
 import axios from "axios";
 import editExpensePanel from "./EditExpensePanel";
+import { mapActions } from "vuex";
 
 export default {
   props: ["expense", "groupname", "groupmembers"],
   data() {
     return {
-      editPanel: false
+      editPanel: false,
     };
   },
   components: {
-    editExpensePanel
+    editExpensePanel,
   },
 
   methods: {
+    ...mapActions(["setUserBalance"]),
     editExpense() {
       this.editPanel = true;
     },
@@ -92,15 +94,16 @@ export default {
         const response = await axios.delete(
           `api/groups/${this.groupname}/expenses/${this.expense.id}`,
           {
-            headers: { token: localStorage.getItem("token") }
+            headers: { token: localStorage.getItem("token") },
           }
         );
+        await this.setUserBalance(this.groupname);
         this.$emit("reloadExpenses");
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

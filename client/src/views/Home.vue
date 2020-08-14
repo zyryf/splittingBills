@@ -4,27 +4,29 @@
       <h1 class="mb-5">Splitting bills app</h1>
 
       <h5>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero vero,
-        consectetur excepturi quasi quas sunt eum asperiores et odio totam
-        facere sed ipsa maiores pariatur, adipisci aliquam omnis ab enim?
+        After log in you will have the ability to create your own group or join
+        the existing group. Within the group all of the participating members
+        are able to add,delete or edit specific expense, which affects your
+        balance.
       </h5>
+      <p>If you want to lear more, please go to the about section</p>
 
       <hr class="my-4" />
 
-      <p v-if="!this.$store.state.userLogged">
+      <p v-if="!this.$store.state.isLogged">
         To continue please log in or sign up if you don't have an account.
       </p>
 
       <b-button
         class="m-1"
-        v-if="!this.$store.state.userLogged"
+        v-if="!this.$store.state.isLogged"
         variant="primary"
         @click="logIn"
         >Log In</b-button
       >
       <b-button
         class="m-1"
-        v-if="!this.$store.state.userLogged"
+        v-if="!this.$store.state.isLogged"
         variant="success"
         @click="signUp"
       >

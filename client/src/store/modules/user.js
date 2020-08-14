@@ -5,12 +5,12 @@ const state = {
     email: "",
     name: "",
     groups: [],
+    balance: 0,
   },
 };
 
 const getters = {
   getUser: (state) => {
-    
     return state.user;
   },
 
@@ -21,6 +21,9 @@ const getters = {
   getUserGroups: (state) => {
     return state.user.groups;
   },
+  getBalance: (state) => {
+    return state.user.balance;
+  },
 };
 
 const mutations = {
@@ -29,6 +32,9 @@ const mutations = {
     state.user.email = userData.email;
     if (userData.groups) state.user.groups = [...userData.groups];
     else state.user.groups = [];
+  },
+  SET_USER_BALANCE(state, payload) {
+    state.user.balance = payload;
   },
 };
 
@@ -39,6 +45,19 @@ const actions = {
         headers: { token: localStorage.getItem("token") },
       });
       context.commit("setUser", response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  setUserBalance: async ({ commit, getters }, groupname) => {
+    try {
+      const userName = getters.getUserName;
+
+      const response = await axios.get(
+        `/api/groups/${groupname}/${userName}/balance`
+      );
+
+      commit("SET_USER_BALANCE", response.data);
     } catch (err) {
       console.log(err);
     }
