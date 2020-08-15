@@ -19,6 +19,7 @@
           <router-link v-if="this.$store.state.isLogged" to="/dashboard"
             >Dashboard</router-link
           >
+
           <button
             v-if="this.$store.state.isLogged"
             class="logout"

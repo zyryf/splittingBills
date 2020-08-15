@@ -1,15 +1,18 @@
 <template>
   <div class="home">
     <b-jumbotron>
-      <h1 class="mb-5">Splitting bills app</h1>
+      <h1 class="mb-5">Splitting Bills</h1>
 
       <h5>
         After log in you will have the ability to create your own group or join
-        the existing group. Within the group all of the participating members
-        are able to add,delete or edit specific expense, which affects your
+        the existing one. Within the group all of the participating members are
+        able to add, delete or edit specific expense, which affects your
         balance.
       </h5>
-      <p>If you want to lear more, please go to the about section</p>
+      <p class="learn-more">
+        If you want to learn more, please go to the
+        <router-link to="/about"><span>about </span></router-link> section
+      </p>
 
       <hr class="my-4" />
 
@@ -72,5 +75,13 @@ a:hover {
 h5 {
   width: 60%;
   margin: 0 auto;
+}
+
+.learn-more {
+  margin: 40px;
+}
+
+.learn-more span {
+  color: #007bff;
 }
 </style>
