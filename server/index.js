@@ -33,16 +33,16 @@ mongoose.connection
     console.log(`ERROR: ${err}`);
   });
 
+app.use("/api/users", users);
+app.use("/api/login", login);
+app.use("/api/groups", groups);
+
 if (process.env.NODE_ENV === "production") {
   //static folder
   app.use(express.static(__dirname + "/public/"));
   //  handle SPA (single page app)
   app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 }
-
-app.use("/api/users", users);
-app.use("/api/login", login);
-app.use("/api/groups", groups);
 
 app.listen(port, () => {
   console.log(`server started on port ${port}
