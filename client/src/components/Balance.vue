@@ -22,7 +22,10 @@ import axios from "axios";
 export default {
   props: ["groupname"],
   data() {
+
     return {};
+
+
   },
   async mounted() {
     await this.setUserData();
@@ -39,6 +42,7 @@ export default {
       if (this.balance < 0) return "danger";
       return "dark";
     },
+
   },
 
   filters: {

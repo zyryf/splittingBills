@@ -31,7 +31,7 @@
       </b-navbar>
     </div>
 
-    <div v-if="$store.state.isLogged" class="timer"><Timer /></div>
+    <div v-if="$store.state.isL" class="timer"><Timer /></div>
     <router-view class="p-4 router" />
     <EndOfSession v-if="$store.state.endOfSession" />
 

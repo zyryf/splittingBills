@@ -5,7 +5,7 @@
         <h1 class="m-auto">
           <strong>{{ $attrs.groupname }}</strong>
         </h1>
-        <Balance :groupname="$attrs.groupname" />
+        <Balance :groupname="$attrs.groupname" :key="expenses"/>
       </div>
 
       <NewExpense
