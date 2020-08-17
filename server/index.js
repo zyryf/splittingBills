@@ -1,5 +1,3 @@
-// const mongoConfig = require("./config/mongoDB");
-
 // routes
 const users = require("./routes/api/Users");
 const login = require("./routes/api/Login");
