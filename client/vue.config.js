@@ -1,9 +1,14 @@
+
+const path = require("path");
+
 module.exports = {
-    devServer: {
-        open: process.platform === 'darwin',
-        host: '0.0.0.0',
-        port: 8080, // CHANGE YOUR PORT HERE!
-        https: true,
-        hotOnly: false,
+  outputDir: path.resolve(__dirname, "../server/public"),
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000/",
+      },
     },
-}
+  },
+};
+

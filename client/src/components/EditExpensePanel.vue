@@ -70,6 +70,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   props: ["expense", "members", "groupname"],
@@ -95,6 +96,7 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    ...mapActions(["setUserBalance"]),
     closePanel() {
       this.$emit("close");
     },
@@ -107,7 +109,9 @@ export default {
             headers: { token: localStorage.getItem("token") },
           }
         );
+
         this.$emit("close");
+        await this.setUserBalance(this.groupname);
       } catch (err) {
         console.log(err);
       }

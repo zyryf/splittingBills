@@ -1,4 +1,5 @@
 node_modules
 client/node_modules
-server/config
-.env
+client
+# server/config
+# .env

@@ -46,12 +46,14 @@
         <b-button variant="outline-primary" @click="selectAll" class="m-3"
           >Select all</b-button
         >
-        <b-button variant="success" type="submit" :disabled="!expense.selectedMembers.length"  class="m-3"
+        <b-button
+          variant="success"
+          type="submit"
+          :disabled="!expense.selectedMembers.length"
+          class="m-3"
           >Add expense</b-button
         >
       </b-form>
-
-      
     </b-card>
     <b-alert v-if="success" show variant="success" class="my-2">
       {{ success }}
@@ -61,7 +63,6 @@
     </b-alert>
   </div>
 </template>
-
 
 <script>
 import { mapGetters, mapActions } from "vuex";
@@ -76,10 +77,10 @@ export default {
         amount: "",
         payer: "",
         date: "",
-        selectedMembers: []
+        selectedMembers: [],
       },
       success: "",
-      error: ""
+      error: "",
     };
   },
   mounted() {
@@ -87,6 +88,7 @@ export default {
   },
   methods: {
     ...mapGetters(["getUserName"]),
+    ...mapActions(["setUserBalance"]),
     addNewExpense() {
       this.expense.date = moment().format("MMM Do YYYY, h:mm:ss a");
       this.expense.payer = this.getUserName();
@@ -98,12 +100,13 @@ export default {
           `api/groups/${this.groupname}/expenses`,
           this.expense,
           {
-            headers: { token: localStorage.getItem("token") }
+            headers: { token: localStorage.getItem("token") },
           }
         );
         this.expense.amount = "";
         this.expense.title = "";
         this.success = response.data.title;
+        await this.setUserBalance(this.groupname);
         this.$emit("reloadExpenses");
         setTimeout(() => {
           this.success = "";
@@ -117,12 +120,12 @@ export default {
     },
     selectAll() {
       this.expense.selectedMembers = [...this.members];
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style  scoped>
+<style scoped>
 .form-wrapper {
   min-width: 40vw;
 }

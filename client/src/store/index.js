@@ -26,7 +26,6 @@ export default new Vuex.Store({
     isTokenExpired(context) {
       const token = localStorage.getItem("token");
       if (token) {
-        console.log("checking token expiracy!");
         const tokenPayload = token.split(".")[1];
         const tokenData = JSON.parse(atob(tokenPayload));
         const timeLeft = tokenData.exp * 1000 - Date.now();

@@ -11,7 +11,7 @@
       <NewExpense
         :groupname="$attrs.groupname"
         :members="members"
-        v-on:reloadExpenses="reloadExpenses"
+        v-on:reloadExpenses="getExpenses"
       />
     </b-row>
     <hr />
@@ -33,7 +33,7 @@
               :expense="item"
               :groupname="$attrs.groupname"
               :groupmembers="members"
-              v-on:reloadExpenses="reloadExpenses"
+              v-on:reloadExpenses="getExpenses"
             ></expense>
           </div>
         </b-card>
@@ -87,9 +87,6 @@ export default {
         console.log(err);
       }
     },
-    async reloadExpenses() {
-      await this.getExpenses();
-    }
   },
 
   components: {
