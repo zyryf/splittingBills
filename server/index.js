@@ -1,4 +1,4 @@
-const mongoConfig = require("./config/mongoDB");
+// const mongoConfig = require("./config/mongoDB");
 
 // routes
 const users = require("./routes/api/Users");
@@ -21,7 +21,8 @@ app.use(express.json());
 
 // conntect to MongoDB
 // in production hide pass and login with dotenv npm package
-const url = mongoConfig.url;
+const url =
+  "mongodb+srv://szymon:szymon123@cluster0-mh1dp.mongodb.net/splitting_billsDB?retryWrites=true&w=majority";
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection
