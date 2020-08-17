@@ -18,7 +18,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // setting up port
-const port = process.env.PORT || 5000;
 
 // conntect to MongoDB
 // in production hide pass and login with dotenv npm package
@@ -43,7 +42,7 @@ if (process.env.NODE_ENV === "production") {
   //  handle SPA (single page app)
   app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 }
-
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`server started on port ${port}
   ----------------------`);
