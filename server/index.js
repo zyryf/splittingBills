@@ -1,5 +1,5 @@
-const mongoConfig =  require('./config/mongoDB');
- 
+const mongoConfig = require("./config/mongoDB");
+
 // routes
 const users = require("./routes/api/Users");
 const login = require("./routes/api/Login");
@@ -33,6 +33,12 @@ mongoose.connection
     console.log(`ERROR: ${err}`);
   });
 
+if (process.env.NODE_ENV === "production") {
+  //static folder
+  app.use(express.static(__dirname + "/public/"));
+  //  handle SPA (single page app)
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
+}
 
 app.use("/api/users", users);
 app.use("/api/login", login);
