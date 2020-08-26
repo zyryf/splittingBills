@@ -1,14 +1,13 @@
-
-const path = require("path");
-
 module.exports = {
-  outputDir: path.resolve(__dirname, "../server/public"),
-  devServer: {
-    proxy: {
+  "outputDir": "C:\\Users\\jmmar\\Desktop\\Projekty\\splittingBills\\server\\public",
+  "devServer": {
+    "proxy": {
       "/api": {
-        target: "http://localhost:5000/",
-      },
-    },
+        "target": "http://localhost:5000/"
+      }
+    }
   },
-};
-
+  "transpileDependencies": [
+    "vuetify"
+  ]
+}
