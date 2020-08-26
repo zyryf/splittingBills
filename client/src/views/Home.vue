@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
+  <div id="home">
     <h1 class="header">Share your expenses in a comfortable way</h1>
     <p>Try our easy to use application for splitting the bills</p>
     <div class="buttons">
       <h5>Create an account or log in</h5>
-      <v-btn  rounded color="primary" block class="m-2 ">Sign Up</v-btn>
+      <v-btn rounded color="primary" block class="m-2 ">Sign Up</v-btn>
       <v-btn rounded outlined block color="primary" class="m-2 ">Log In</v-btn>
     </div>
     <p>Want to learn more? Check the <strong>about</strong> section</p>
@@ -32,17 +32,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.home {
+#home {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
 
   padding: 30px;
 }
 
-.header {
+h1 {
   font-size: 30px;
 }
 
@@ -57,5 +56,4 @@ export default {
 .btn {
   width: 80%;
 }
-
 </style>
