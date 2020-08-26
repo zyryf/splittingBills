@@ -82,7 +82,7 @@ p {
 }
 
 .v-btn {
-  width: 60vw;
+  width: 200px;
 }
 
 .btn {

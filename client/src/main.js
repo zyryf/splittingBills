@@ -10,7 +10,10 @@ import FB_init from "../src/SDK/facebook";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-import vuetify from './plugins/vuetify';
+import vuetify from "./plugins/vuetify";
+import VueWindowSize from "vue-window-size";
+
+Vue.use(VueWindowSize);
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
@@ -19,16 +22,12 @@ Vue.use(IconsPlugin);
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
-
-
 new Vue({
   router,
   store,
   vuetify,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
 
 // Initialization Facebook
-FB_init()
-
-
+FB_init();
