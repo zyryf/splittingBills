@@ -1,47 +1,44 @@
 <template>
   <div>
-    <h2><strong>Step 1:</strong> Create your account and log in.</h2>
-
-    <div class="image-wrapper">
-      <img src="./../assets/img/sign-up.jpg" alt="sign up" />
-    </div>
-    <div class="image-wrapper">
-      <img src="./../assets/img/log-in.jpg" alt="log in" />
-    </div>
     <h2>
-      <strong>Step 2:</strong> Create your own group or join the existing one.
+      <strong>How does it <span class="primary--text">work</span> ?</strong>
     </h2>
-    <div class="image-wrapper">
-      <img src="./../assets/img/menage-groups.jpg" alt="menage groups" />
-    </div>
-    <h2><strong>Step 3:</strong> Add, edit or delete the expenses.</h2>
-    <div class="image-wrapper expenses">
-      <img src="./../assets/img/new-expense.jpg" alt="new expense" />
-    </div>
-    <div class="image-wrapper expenses">
-      <img src="./../assets/img/menage-expenses.jpg" alt="menage expenses" />
-    </div>
+
+    <p>
+      Start sharing your payments <br v-if="windowWidth < 600" />
+      just a few simple steps
+    </p>
+    <h3>Step One</h3>
+    <p>Create accout & log in</p>
+    <img src="../assets/img/about-login.png" alt="login photo" />
+    <h3>Step Two</h3>
+    <p>
+      Create your own group <br v-if="windowWidth < 600" />
+      or join the existing one
+    </p>
+    <img src="../assets/img/about-group.png" alt="group photo" />
+    <h3>Step Three</h3>
+    <p>Manage your expenses</p>
+    <img src="../assets/img/about-money.png" alt="money photo" />
+    <h3>Step Four</h3>
+    <p>Pay online</p>
+    <img src="../assets/img/about-pay.png" alt="pay photo" />
   </div>
 </template>
 
 <style scoped>
-.image-wrapper {
-  width: 30vw;
-  margin: 20px auto;
-  border-radius: 20px;
-  padding: 5px;
-  /* border: 1px solid #2c3e50; */
-  box-shadow: 6px 7px 16px 2px rgba(148, 135, 148, 1);
-}
-
-img {
-  width: 100%;
-}
 h2 {
-  margin: 50px;
+  font-size: 36px;
+  margin: 30px 0px 10px 0px;
 }
-
-.expenses {
-  width: 45vw;
+p {
+  font-size: 20px;
+}
+img {
+  width: 80vw;
+  margin-bottom: 30px;
+}
+h3:nth-of-type(1) {
+  margin-top: 30px;
 }
 </style>
