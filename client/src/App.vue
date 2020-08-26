@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <router-view class=""/>
-  </div>
+  <v-app id="app"> 
+    <router-view class="view"/>
+  </v-app>
 </template>
 
 <script>
@@ -39,9 +39,15 @@ export default {
   font-family: Segoe UI, Helvetica, Arial, sans-serif;
   text-align: center;
   color: #2F2E41;
-  padding: 30px;
+
+  min-height: 100vh;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.view {
+  height: 100%;
+  width: 100%;
 }
 </style>

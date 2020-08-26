@@ -4,10 +4,9 @@
     <p>Try our easy to use application for splitting the bills</p>
     <h5>Create an account or log in</h5>
     <div class="buttons">
-      <v-btn  rounded color="primary" >Sign Up</v-btn>
-      <v-btn rounded outlined color="">Log In</v-btn>
+      <v-btn  rounded color="primary"  class="m-2">Sign Up</v-btn>
+      <v-btn rounded outlined color="primary" class="m-2">Log In</v-btn>
     </div>
-    
     <p>Want to learn more? Check the <strong>about</strong> section</p>
   </div>
 </template>
@@ -34,6 +33,15 @@ export default {
 
 <style lang="scss" scoped>
 
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 30px;
+}
+
 .header {
   font-size: 30px;
 }
@@ -42,6 +50,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 100%;
 }
 
 
