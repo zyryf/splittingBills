@@ -1,41 +1,14 @@
 <template>
   <div class="home">
-    <b-jumbotron>
-      <h1 class="mb-5">Splitting Bills</h1>
-
-      <h5>
-        After log in you will have the ability to create your own group or join
-        the existing one. Within the group all of the participating members are
-        able to add, delete or edit specific expense, which affects your
-        balance.
-      </h5>
-      <p class="learn-more">
-        If you want to learn more, please go to the
-        <router-link to="/about"><span>about </span></router-link> section
-      </p>
-
-      <hr class="my-4" />
-
-      <p v-if="!this.$store.state.isLogged">
-        To continue please log in or sign up if you don't have an account.
-      </p>
-
-      <b-button
-        class="m-1"
-        v-if="!this.$store.state.isLogged"
-        variant="primary"
-        @click="logIn"
-        >Log In</b-button
-      >
-      <b-button
-        class="m-1"
-        v-if="!this.$store.state.isLogged"
-        variant="success"
-        @click="signUp"
-      >
-        Sign Up</b-button
-      >
-    </b-jumbotron>
+    <h1 class="header">Share your expenses in a comfortable way</h1>
+    <p>Try our easy to use application for splitting the bills</p>
+    <h5>Create an account or log in</h5>
+    <div class="buttons">
+      <v-btn  rounded color="primary" >Sign Up</v-btn>
+      <v-btn rounded outlined color="">Log In</v-btn>
+    </div>
+    
+    <p>Want to learn more? Check the <strong>about</strong> section</p>
   </div>
 </template>
 
@@ -59,29 +32,17 @@ export default {
 };
 </script>
 
-<style scoped>
-.jumbotron {
-  margin: 0;
+<style lang="scss" scoped>
+
+.header {
+  font-size: 30px;
 }
 
-h1 {
-  font-size: 4rem;
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-a:hover {
-  text-decoration: none;
-}
 
-h5 {
-  width: 60%;
-  margin: 0 auto;
-}
-
-.learn-more {
-  margin: 40px;
-}
-
-.learn-more span {
-  color: #007bff;
-}
 </style>
