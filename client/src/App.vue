@@ -1,3 +1,5 @@
+testowy tekst
+
 <template>
   <div id="app">
     <div id="nav">
