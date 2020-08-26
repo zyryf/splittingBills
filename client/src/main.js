@@ -10,20 +10,8 @@ import FB_init from "../src/SDK/facebook";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-import Vuetify from 'vuetify/lib'
+import vuetify from './plugins/vuetify';
 
-const vuetify = new Vuetify({
-  theme: {
-    themes: {
-      light: {
-        primary: '#3f51b5',
-        secondary: '#b0bec5',
-        accent: '#8c9eff',
-        error: '#b71c1c',
-      },
-    },
-  },
-})
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
