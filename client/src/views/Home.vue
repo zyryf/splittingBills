@@ -1,13 +1,33 @@
 <template>
   <div id="home">
-    <h1 class="header">Share your expenses in a comfortable way</h1>
-    <p>Try our easy to use application for splitting the bills</p>
+    <h2>
+      <strong
+        >Share your expenses in a
+        <span class="primary--text">comfortable</span> way
+      </strong>
+    </h2>
+    <p>Try our easy to use application <br />for splitting the bills</p>
+
+    <img src="./../assets/img/home-photo.png" alt="" srcset="" />
+
     <div class="buttons">
       <h5>Create an account or log in</h5>
-      <v-btn rounded color="primary" block class="m-2 ">Sign Up</v-btn>
-      <v-btn rounded outlined block color="primary" class="m-2 ">Log In</v-btn>
+      <router-link to="/signup"
+        ><v-btn rounded color="primary" block class="m-2 "
+          >Sign Up</v-btn
+        ></router-link
+      >
+
+      <router-link to="/login"
+        ><v-btn rounded outlined block color="primary" class="m-2 "
+          >Log In</v-btn
+        ></router-link
+      >
     </div>
-    <p>Want to learn more? Check the <strong>about</strong> section</p>
+    <p>
+      Want to learn more? <br />Check the
+      <strong> <router-link to="/about">about</router-link></strong> section
+    </p>
   </div>
 </template>
 
@@ -36,13 +56,21 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
 
   padding: 30px;
 }
 
-h1 {
+img {
+  height: 35vh;
+}
+
+h2 {
   font-size: 30px;
+}
+
+p {
+  font-size: 20px;
 }
 
 .buttons {
@@ -50,7 +78,11 @@ h1 {
   flex-direction: column;
   align-items: center;
 
-  width: 80%;
+  margin-bottom: 10px;
+}
+
+.v-btn {
+  width: 60vw;
 }
 
 .btn {
