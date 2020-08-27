@@ -50,4 +50,15 @@ export default {
   height: 100%;
   width: 100%;
 }
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding: 30px;
+}
+.submit-btn {
+  height: 45px !important;
+}
 </style>

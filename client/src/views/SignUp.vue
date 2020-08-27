@@ -1,119 +1,78 @@
 <template>
-  <div class="form-wrapper">
-    <h2>Here you can <strong>sign up</strong></h2>
-    <b-form @submit.prevent="submitForm">
-      <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-        description="We'll never share your email with anyone else."
+  <div id="login" class="layout">
+    <h2 class="mt-auto mb-8">
+      <strong
+        >Here you can
+        <br />
+        <span class="primary--text">Sign Up</span>
+      </strong>
+    </h2>
+
+    <form class="mb-2">
+      <p>Enter your email</p>
+      <v-text-field
+        label="E-mail"
+        outlined
+        rounded
+        v-model="email"
+        required
+        :error-messages="emailErrors"
+      ></v-text-field>
+      <p>Enter your nickname</p>
+      <v-text-field
+        label="Nickname"
+        outlined
+        rounded
+        v-model="name"
+        required
+        :error-messages="nicknameErrors"
+      ></v-text-field>
+      <p>Enter your password</p>
+      <v-text-field
+        label="Password"
+        color="primary"
+        class=""
+        outlined
+        rounded
+        v-model="password"
+        required
+        :error-messages="passwordErrors"
+        :type="'password'"
+      ></v-text-field>
+      <p>Confirm password</p>
+      <v-text-field
+        label="Confirmed password"
+        color="primary"
+        class="mb-8"
+        outlined
+        rounded
+        v-model="confirmedPassword"
+        required
+        :error-messages="confirmedPasswordErrors"
+        :type="'password'"
+      ></v-text-field>
+      <v-alert v-if="isError" color="error" outlined
+        >{{ errorsFromServer }}
+      </v-alert>
+      <v-alert v-if="signUpSuccess" color="success" outlined
+        >User created! Go to the
+        <router-link to="/login"><strong style="color: green;">LOG IN</strong></router-link> page.
+      </v-alert>
+      <v-btn
+        color="primary"
+        block
+        class="submit-btn"
+        rounded
+        @click="submitForm"
+        :disabled="!isFormCorect"
+        >SIGN UP</v-btn
       >
-        <b-form-input
-          :class="{
-            invalid: $v.email.$error,
-            success: !$v.email.$error && $v.email.$dirty
-          }"
-          id="input-1"
-          :value="email"
-          @change="updateMail"
-          type="email"
-          required
-          placeholder="Enter email"
-          @blur="$v.email.$touch()"
-        ></b-form-input>
-        <p v-if="!$v.email.required && $v.email.$dirty" class="error my-1">
-          Email required!
-        </p>
+    </form>
 
-        <p v-if="!$v.email.email && $v.email.$dirty" class="error my-1">
-          Provide valid email adress!
-        </p>
-        <p v-if="$v.email.$error && !$v.email.unique" class="error my-1">
-          Email already in use!
-        </p>
-      </b-form-group>
-
-      <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
-        <b-form-input
-          :class="{
-            invalid: $v.name.$error,
-            success: !$v.name.$error && $v.name.$dirty
-          }"
-          id="input-2"
-          :value="name"
-          @change="updateName"
-          @blur="$v.name.$touch()"
-          required
-          placeholder="Enter name"
-        ></b-form-input>
-        <p v-if="!$v.name.required && $v.name.$dirty" class="error my-1">
-          Name required!
-        </p>
-        <p v-if="!$v.name.minLength" class="error my-1">
-          Name must be at least 3 characters length!
-        </p>
-        <p v-if="$v.name.$error && !$v.name.unique" class="error my-1">
-          Name already in use!
-        </p>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-3"
-        label="Password:"
-        label-for="input-3"
-        description="Your password is enrcypted, hence no one can see it."
-      >
-        <b-form-input
-          id="input-3"
-          :class="{
-            invalid: $v.password.$error,
-            success: !$v.password.$error && $v.password.$dirty
-          }"
-          v-model="password"
-          @blur="$v.password.$touch()"
-          required
-          placeholder="Enter password"
-          type="password"
-        ></b-form-input>
-        <p v-if="$v.password.$error" class="error my-1">
-          Password must be at least 6 characters length!
-        </p>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-4"
-        label="Confirm password:"
-        label-for="input-4"
-      >
-        <b-form-input
-          id="input-4"
-          :class="{
-            invalid: $v.confirmedPassword.$error,
-            success: !$v.confirmedPassword.$error && $v.confirmedPassword.$dirty
-          }"
-          v-model="confirmedPassword"
-          required
-          @blur="$v.confirmedPassword.$touch()"
-          placeholder="Confirm password"
-          type="password"
-        ></b-form-input>
-        <p v-if="$v.confirmedPassword.$error" class="error my-1">
-          Passwords are not the same!
-        </p>
-      </b-form-group>
-
-      <b-button type="submit" :disabled="$v.$invalid" variant="primary"
-        >Submit</b-button
-      >
-    </b-form>
-
-    <b-alert v-if="success" show variant="success" class="my-2 info mx-0"
-      >User created! Go to the
-      <router-link to="/login">log in</router-link> page.
-    </b-alert>
-    <b-alert v-if="error" show variant="danger" class="my-2 info mx-0">
-      {{ error }}</b-alert
-    >
+    <p class="mt-auto">
+      Want to learn more? <br />Check the
+      <strong> <router-link to="/about">about</router-link></strong> section
+    </p>
   </div>
 </template>
 
@@ -123,131 +82,130 @@ import { email, required, minLength, sameAs } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
-      email: "",
-      name: "",
-      password: "",
-      confirmedPassword: "",
-      error: "",
-      success: false,
-      check: ""
+      email: null,
+      name: null,
+      password: null,
+      confirmedPassword: null,
+      errorsFromServer: "",
+      signUpSuccess: false,
     };
   },
   validations: {
     email: {
       required,
       email,
-      async unique(val) {
-        let matched = false;
-        if (val === "") return true;
+      isUnique: async (email) => {
+        if (!email) return false;
         try {
           const users = await axios.get("/api/users");
-          users.data.forEach(user => {
-            if (val === user.email) {
-              matched = true;
-            }
-          });
-
-          return matched ? false : true;
+          return !users.data.filter((user) => email === user.email).length;
         } catch {
-          this.error = "Oooops. Something went wrong :( Server error!";
+          this.errorsFromServer =
+            "Oooops. Something went wrong :( Server error!";
         }
-      }
+      },
     },
     name: {
       required,
       minLength: minLength(3),
-      unique: async val => {
-        let matched = false;
-        if (val === "") return true;
+      isUnique: async (name) => {
+        if (!name) return false;
         try {
           const users = await axios.get("/api/users");
-          users.data.forEach(user => {
-            if (val === user.name) {
-              matched = true;
-            }
-          });
-
-          return matched ? false : true;
+          return !users.data.filter((user) => name === user.name).length
         } catch {
-          this.error = "Oooops. Something went wrong :( Server error!";
+          this.errorsFromServer =
+            "Oooops. Something went wrong :( Server error!";
         }
-      }
+      },
     },
     password: {
       required,
-      minLength: minLength(6)
+      minLength: minLength(6),
     },
     confirmedPassword: {
       required,
-      sameAs: sameAs("password")
-    }
+      sameAs: sameAs("password"),
+    },
+  },
+  computed: {
+    isError() {
+      return !!this.errorsFromServer;
+    },
+    emailErrors() {
+      const errors = [];
+      if (this.email === null) return errors;
+      !this.$v.email.email && errors.push("Must be valid e-mail");
+      !this.$v.email.isUnique && errors.push("E-mail already exist");
+      !this.$v.email.required && errors.push("E-mail is required");
+      return errors;
+    },
+    nicknameErrors() {
+      const errors = [];
+      if (this.name === null) return errors;
+      !this.$v.name.minLength && errors.push("Nickname is too short");
+      !this.$v.name.isUnique && errors.push("Nickname already exist");
+      !this.$v.name.required && errors.push("Nickname is required");
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (this.password === null) return errors;
+      !this.$v.password.minLength && errors.push("Password is too short");
+      !this.$v.password.required && errors.push("Password is required");
+      return errors;
+    },
+    confirmedPasswordErrors() {
+      const errors = [];
+      if (this.confirmedPassword === null) return errors;
+      !this.$v.confirmedPassword.sameAs &&
+        errors.push("Passwords are diferent!");
+      !this.$v.confirmedPassword.required && errors.push("is required");
+      return errors;
+    },
+    isFormCorect() {
+      if (
+        this.email != null &&
+        this.name != null &&
+        this.password != null &&
+        this.confirmedPassword != null &&
+        this.emailErrors.length === 0 &&
+        this.nicknameErrors.length === 0 &&
+        this.passwordErrors.length === 0 &&
+        this.confirmedPasswordErrors.length === 0
+      )
+        return true;
+      return false;
+    },
   },
   methods: {
     async submitForm() {
       const user = {
         email: this.email,
         name: this.name,
-        password: this.password
+        password: this.password,
       };
 
       try {
         await axios.post("/api/users", user);
-        this.success = true;
-        this.email = "";
-        this.name = "";
-        this.password = "";
-        this.confirmedPassword = "";
-        this.$v.email.$reset();
-        this.$v.name.$reset();
-        this.$v.password.$reset();
-        this.$v.confirmedPassword.$reset();
+        this.signUpSuccess = true;
+        this.email = null;
+        this.name = null;
+        this.password = null;
+        this.confirmedPassword = null;
       } catch (err) {
         if (err.response) {
-          this.error = err.response.data.title;
+          this.errorsFromServer =
+            err.response.statusText + " :( Please try again later.";
         } else {
-          this.error = "Oooops. Something went wrong :( Server error!";
+          this.errorsFromServer =
+            "Oooops. Something went wrong :( Server error!";
         }
       }
     },
-    updateMail(value) {
-      this.email = value;
-    },
-    updateName(value) {
-      this.name = value;
-    }
-  }
+  },
 };
 </script>
 
 <style scoped>
-.form-wrapper {
-  width: 40%;
-  text-align: left;
-  margin: 50px auto;
-}
-
-h2 {
-  margin: 20px auto;
-  text-align: center;
-}
-
-h2 strong {
-  color: #42b983;
-}
-
-.invalid {
-  border: 1px solid red;
-}
-
-.success {
-  border: 1px solid green;
-}
-
-.error {
-  color: red;
-}
-.info {
-  text-align: center;
-  width: 100%;
-}
 </style>
