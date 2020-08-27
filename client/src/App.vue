@@ -1,6 +1,6 @@
 <template>
-  <v-app id="app"> 
-    <router-view class="view"/>
+  <v-app id="app">
+    <router-view class="view" />
   </v-app>
 </template>
 
@@ -38,14 +38,19 @@ export default {
 #app {
   font-family: Segoe UI, Helvetica, Arial, sans-serif;
   text-align: center;
-  color: #2F2E41;
+  color: #2f2e41;
+  margin: 0 auto;
 
   min-height: 100vh;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-width: 1000px;
+  overflow: hidden;
 }
-
+.v-application a:hover {
+  text-decoration: none;
+}
 .view {
   height: 100%;
   width: 100%;
