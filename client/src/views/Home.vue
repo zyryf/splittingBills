@@ -2,11 +2,15 @@
   <div id="home">
     <h2>
       <strong
-        >Share your expenses in a
-        <span class="primary--text">comfortable</span> way
+        >Share your expenses
+        <br v-if="windowWidth < 1050 && windowWidth > 600" />
+        in a <span class="primary--text">comfortable</span> way
       </strong>
     </h2>
-    <p>Try our easy to use application <br />for splitting the bills</p>
+    <p>
+      Try our easy to use application <br v-if="windowWidth < 600" />for
+      splitting the bills
+    </p>
 
     <img src="./../assets/img/home-photo.png" alt="" srcset="" />
 
@@ -25,7 +29,7 @@
       >
     </div>
     <p>
-      Want to learn more? <br />Check the
+      Want to learn more? <br v-if="windowWidth < 600" />Check the
       <strong> <router-link to="/about">about</router-link></strong> section
     </p>
   </div>
@@ -52,17 +56,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+//mobile
 #home {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-
   padding: 30px;
 }
 
 img {
   height: 35vh;
+  margin: auto 0;
 }
 
 h2 {
@@ -82,10 +86,16 @@ p {
 }
 
 .v-btn {
-  width: 200px;
+  width: 170px;
 }
 
-.btn {
-  width: 80%;
+.v-btn:hover {
+  text-decoration: none;
 }
+// big dev
+@import "../assets/home-styles/extra-large.scss";
+// super small dev
+@import "../assets/home-styles/super-small.scss";
+// tablets
+@import "../assets/home-styles/tablets.scss";
 </style>

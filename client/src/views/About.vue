@@ -26,7 +26,8 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+// mobile
 h2 {
   font-size: 36px;
   margin: 30px 0px 10px 0px;
@@ -41,4 +42,13 @@ img {
 h3:nth-of-type(1) {
   margin-top: 30px;
 }
+
+// super small dev
+@import "../assets/about-styles/super-small.scss";
+//tablets
+@import "../assets/about-styles/tablets.scss";
+//large dev
+@import "../assets/about-styles/large.scss";
+//extra large dev
+@import "../assets/about-styles/extra-large.scss";
 </style>
