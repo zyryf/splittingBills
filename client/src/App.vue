@@ -66,4 +66,5 @@ export default {
 .submit-btn {
   height: 45px !important;
 }
+
 </style>

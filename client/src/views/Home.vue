@@ -84,10 +84,10 @@ p {
 .v-btn:hover {
   text-decoration: none;
 }
-// big dev
+/* // big dev
 @import "../assets/home-styles/extra-large.scss";
 // super small dev
 @import "../assets/home-styles/super-small.scss";
 // tablets
-@import "../assets/home-styles/tablets.scss";
+@import "../assets/home-styles/tablets.scss"; */
 </style>
