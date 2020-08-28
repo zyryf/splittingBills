@@ -1,28 +1,15 @@
 <template>
-  <div class="m-2">
-    <b-card
-      :header="groupname"
-      header-text-variant="white"
-      header-tag="header"
-      header-bg-variant="dark"
-      title="Members:"
-      class="group"
+  <div id="group-card" class="m-2">
+    <h5 class=" ml-4 m-auto ">{{ groupname }}</h5>
+    <v-btn
+      color="primary"
+      block
+      class="panel-btn"
+      rounded
+      outlined
+      @click="$router.push(routerLink)"
+      >PANEL</v-btn
     >
-      <b-card-text>
-        <ul>
-          <li v-for="(member, index) in members" :key="index">
-            {{ index + 1 }}. {{ member }}
-          </li>
-        </ul>
-      </b-card-text>
-      <router-link
-        :to="{ name: 'GroupPanel', params: { groupname: groupname } }"
-        ><b-button variant="info" class="mx-2">Panel</b-button></router-link
-      >
-      <b-button type="submit" class="mx-2" variant="warning" @click="leaveGroup"
-        >Leave group</b-button
-      >
-    </b-card>
   </div>
 </template>
 
@@ -34,7 +21,7 @@ export default {
   props: ["groupname"],
   data() {
     return {
-      members: []
+      members: [],
     };
   },
   async mounted() {
@@ -48,7 +35,7 @@ export default {
   computed: {
     routerLink() {
       return "/group-panel/" + this.groupname;
-    }
+    },
   },
   methods: {
     ...mapGetters(["getUserName"]),
@@ -59,7 +46,7 @@ export default {
           `api/users/leave/${this.groupname}/${this.getUserName()}`,
           {},
           {
-            headers: { token: localStorage.getItem("token") }
+            headers: { token: localStorage.getItem("token") },
           }
         );
         if (response.data.isEmpty) this.$emit("delete", this.groupname);
@@ -67,13 +54,25 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-ul {
-  list-style: none;
+#group-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: solid 1px #b4b4b4;
+  border-radius: 10px;
+  padding: 10px;
 }
+
+.panel-btn {
+  max-width: 100px !important;
+  min-width: 10% !important;
+}
+
 </style>

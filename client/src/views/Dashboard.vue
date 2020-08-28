@@ -1,84 +1,67 @@
 <template>
-  <div>
+  <div id="dashboard" class="layout">
     <h2>
       Welcome
-      <strong>{{ getUserName }}</strong
+      <strong class="primary--text">{{ getUserName }}</strong
       >!
     </h2>
-    <div class="card-wrapper">
-      <b-card-group deck>
-        <div v-for="(name, index) in getUserGroups" :key="index">
-          <group :groupname="name" v-on:delete="askToDelete"></group>
-        </div>
-      </b-card-group>
+
+    <v-text-field
+      class=""
+      label="Search Groups"
+      outlined
+      rounded
+      v-model="searchField"
+      required
+    ></v-text-field>
+
+    <div class="groups-box">
+      <group
+        v-for="(name, index) in getUserGroups"
+        :key="index"
+        :groupname="name"
+        v-on:delete="askToDelete"
+      ></group>
     </div>
+    <form class="mt-8">
+      <h5 class="mb-4">Create group or join one</h5>
+      <v-text-field
+        label="Group Name"
+        outlined
+        rounded
+        v-model="name"
+        required
+      ></v-text-field>
+      <v-text-field
+        label="Password"
+        outlined
+        rounded
+        v-model="password"
+        required
+      ></v-text-field>
 
-    <h1 v-if="!getUserGroups.length">You don't belong to any group :(</h1>
-
-    <b-modal id="delete-group" title="Warning" hide-footer>
-      <b-alert show class="message w-100"
-        >You are the last member. Do you want to delete this group?</b-alert
-      >
-      <div class="d-flex flex-row justify-content-center">
-        <b-button @click="deleteGroup" variant="danger" class="mx-2"
-          >Yes</b-button
+      <div class="form-buttons">
+        <v-btn
+          color="primary"
+          block
+          class="submit-btn"
+          rounded
+          @click="createGroup"
+          :disabled="false"
+          >Create</v-btn
         >
-        <b-button @click="hideModal" variant="success" class="mx-2"
-          >No</b-button
+        <v-btn
+          color="primary"
+          block
+          class="submit-btn"
+          rounded
+          outlined
+          @click="joinGroup"
+          :disabled="false"
+          >Join</v-btn
         >
       </div>
-    </b-modal>
-
-    <div class="form-wrapper">
-      <b-form @submit.prevent>
-        <b-form-group
-          id="input-group-1"
-          label="Group name:"
-          label-for="input-1"
-        >
-          <b-form-input
-            id="input-1"
-            required
-            v-model="name"
-            placeholder="Enter  group name"
-            @blur="$v.name.$touch()"
-          ></b-form-input>
-        </b-form-group>
-        <b-form-group id="input-group-2" label="Password:" label-for="input-2">
-          <b-form-input
-            id="input-2"
-            required
-            placeholder="Enter group password"
-            type="password"
-            @blur="$v.password.$touch()"
-            v-model="password"
-          ></b-form-input>
-        </b-form-group>
-
-        <b-button
-          @click="createGroup"
-          type="submit"
-          class="mx-2"
-          variant="primary"
-          :disabled="$v.$invalid"
-          >Create group</b-button
-        >
-        <b-button
-          @click="joinGroup"
-          :disabled="$v.$invalid"
-          type="submit"
-          variant="success"
-          >Join group</b-button
-        >
-
-        <b-alert v-if="error" show variant="danger" class="my-2">{{
-          error
-        }}</b-alert>
-        <b-alert v-if="success" show variant="success" class="my-2 info mx-0">{{
-          this.success
-        }}</b-alert>
-      </b-form>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -93,6 +76,7 @@ import Group from "../components/Group";
 export default {
   data() {
     return {
+      searchField: "",
       name: "",
       password: "",
       error: "",
@@ -101,6 +85,9 @@ export default {
       deleteWhenEmpty: null,
       groupToDelete: "",
     };
+  },
+  components: {
+    Group,
   },
   validations: {
     name: {
@@ -126,11 +113,10 @@ export default {
         this.success = "";
       }, 3000);
     },
-    
+
     clearFormInputs() {
       this.name = "";
       this.password = "";
-      
     },
     async createGroup() {
       const group = {
@@ -154,6 +140,7 @@ export default {
     },
 
     async joinGroup() {
+      console.log(this.getUserGroups);
       try {
         const response = await axios.patch(
           `api/users/join/${this.name}/${this.getUserName}`,
@@ -193,48 +180,26 @@ export default {
   computed: {
     ...mapGetters(["getUser", "getUserName", "getUserGroups"]),
     sessionTimeLeft: function() {
-      const timeNow = Date.now()
-    }
-  },
-  components: {
-    Group,
+      const timeNow = Date.now();
+    },
   },
 };
 </script>
 
-<style scoped>
-.form-wrapper {
-  width: 40%;
-  margin: 0 auto;
-  text-align: left;
-}
-.group {
-  min-width: 30%;
-  margin: 10px;
-}
-.card-wrapper {
+<style lang="scss" scoped>
+.form-buttons {
   display: flex;
   justify-content: center;
-  padding: 15px;
 }
-.card-deck {
-  justify-content: space-around;
-}
-
-h2 {
-  margin: 50px;
+.submit-btn {
+  min-width: 0% !important;
+  max-width: 200px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-h2 strong {
-  color: #42b983;
-}
-
-ul {
-  list-style: none;
-}
-
-.message {
-  width: 60%;
-  margin: 20px auto;
+.groups-box{
+  width: 100%;
+  max-width: 400px;
 }
 </style>
