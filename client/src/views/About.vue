@@ -10,6 +10,18 @@
     </p>
     <h3>Step One</h3>
     <p>Create accout & log in</p>
+    <div class="buttons">
+      <router-link to="/signup"
+        ><v-btn rounded color="primary"  class="mr-6"
+          >Sign Up</v-btn
+        ></router-link
+      >
+      <router-link to="/login"
+        ><v-btn rounded outlined  color="primary"
+          >Log In</v-btn
+        ></router-link
+      >
+    </div>
     <img src="../assets/img/about-login.png" alt="login photo" />
     <h3>Step Two</h3>
     <p>
@@ -37,11 +49,18 @@ p {
 }
 img {
   width: 80vw;
+  max-width: 500px;
   margin-bottom: 30px;
 }
 h3:nth-of-type(1) {
   margin-top: 30px;
 }
+
+.buttons {
+  //display: flex;
+  //justify-content: center;
+}
+
 
 // super small dev
 @import "../assets/about-styles/super-small.scss";

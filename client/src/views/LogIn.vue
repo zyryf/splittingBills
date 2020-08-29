@@ -22,7 +22,7 @@
       <v-text-field
         label="Password"
         color="primary"
-        class="mb-8"
+        class=""
         outlined
         rounded
         v-model="user.password"
@@ -30,6 +30,13 @@
         :type="'password'"
         :error-messages="passwordErrors"
       ></v-text-field>
+      <v-alert
+        v-if="isError"
+        color="error"
+        style="border-radius: 38px; width: 100%;"
+        outlined
+        >{{ errorsFromServer }}
+      </v-alert>
       <v-btn
         color="primary"
         block
@@ -40,10 +47,6 @@
         >LOG IN</v-btn
       >
     </form>
-
-    <v-alert v-if="isError" color="error" outlined
-      >{{ errorsFromServer }}
-    </v-alert>
 
     <p class="mt-auto">
       Want to learn more? <br />Check the
@@ -123,8 +126,7 @@ export default {
           this.$router.push("/dashboard");
         } catch (err) {
           if (err.response) {
-            this.errorsFromServer =
-              err.response.statusText + " :( Please try again later.";
+            this.errorsFromServer = err.response.statusText;
           } else {
             this.errorsFromServer =
               "Oooops. Something went wrong :( Server error!";

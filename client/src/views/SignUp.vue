@@ -31,7 +31,6 @@
       <v-text-field
         label="Password"
         color="primary"
-        class=""
         outlined
         rounded
         v-model="password"
@@ -43,7 +42,6 @@
       <v-text-field
         label="Confirmed password"
         color="primary"
-        class="mb-8"
         outlined
         rounded
         v-model="confirmedPassword"
@@ -51,10 +49,10 @@
         :error-messages="confirmedPasswordErrors"
         :type="'password'"
       ></v-text-field>
-      <v-alert v-if="isError" color="error" outlined
+      <v-alert v-if="isError" color="error" outlined style="border-radius: 38px; width: 100%;"
         >{{ errorsFromServer }}
       </v-alert>
-      <v-alert v-if="signUpSuccess" color="success" outlined
+      <v-alert v-if="signUpSuccess" color="success" outlined style="border-radius: 38px; width: 100%;"
         >User created! Go to the
         <router-link to="/login"><strong style="color: green;">LOG IN</strong></router-link> page.
       </v-alert>
