@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" class="layout">
     <h2>
       <strong
         >Share your expenses
@@ -12,7 +12,12 @@
       splitting the bills
     </p>
 
-    <img src="./../assets/img/home-photo.png" alt="" srcset="" />
+    <img
+      class="my-auto"
+      src="./../assets/img/home-photo.png"
+      alt=""
+      srcset=""
+    />
 
     <div class="buttons">
       <h5>Create an account or log in</h5>
@@ -56,14 +61,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//mobile
-#home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-}
-
 img {
   height: 35vh;
   margin: auto 0;
@@ -92,10 +89,10 @@ p {
 .v-btn:hover {
   text-decoration: none;
 }
-/* // big dev
+// big dev
 @import "../assets/home-styles/extra-large.scss";
 // super small dev
 @import "../assets/home-styles/super-small.scss";
 // tablets
-@import "../assets/home-styles/tablets.scss"; */
+@import "../assets/home-styles/tablets.scss";
 </style>
