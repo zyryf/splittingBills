@@ -41,7 +41,9 @@
       >
     </form>
 
-    <v-alert v-if="isError" color="error" outlined >{{errorsFromServer}} </v-alert>
+    <v-alert v-if="isError" color="error" outlined
+      >{{ errorsFromServer }}
+    </v-alert>
 
     <p class="mt-auto">
       Want to learn more? <br />Check the
@@ -74,7 +76,7 @@ export default {
 
   computed: {
     isError() {
-      return !!this.errorsFromServer
+      return !!this.errorsFromServer;
     },
     emailErrors() {
       const errors = [];
@@ -95,9 +97,10 @@ export default {
         this.user.password != null &&
         this.emailErrors.length === 0 &&
         this.passwordErrors.length === 0
-      ) return true
-      return false
-    }
+      )
+        return true;
+      return false;
+    },
   },
   methods: {
     ...mapActions(["isTokenExpired"]),
@@ -120,7 +123,8 @@ export default {
           this.$router.push("/dashboard");
         } catch (err) {
           if (err.response) {
-            this.errorsFromServer = err.response.statusText + " :( Please try again later.";
+            this.errorsFromServer =
+              err.response.statusText + " :( Please try again later.";
           } else {
             this.errorsFromServer =
               "Oooops. Something went wrong :( Server error!";
@@ -160,7 +164,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   padding: 30px;
 }
 

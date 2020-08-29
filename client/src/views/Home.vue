@@ -12,7 +12,12 @@
       splitting the bills
     </p>
 
-    <img class="my-auto" src="./../assets/img/home-photo.png" alt="" srcset="" />
+    <img
+      class="my-auto"
+      src="./../assets/img/home-photo.png"
+      alt=""
+      srcset=""
+    />
 
     <div class="buttons">
       <h5>Create an account or log in</h5>
