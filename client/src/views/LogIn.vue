@@ -3,8 +3,8 @@
     <h2 class="mt-auto mb-8">
       <strong
         >Here you can
-        <br />
-        <span class="primary--text">Log in</span>
+        <br v-if="windowWidth < 600" />
+        <span class="primary--text">log in</span>
       </strong>
     </h2>
 
@@ -17,6 +17,7 @@
         v-model="user.email"
         required
         :error-messages="emailErrors"
+        :dense="true"
       ></v-text-field>
       <p>Enter your password</p>
       <v-text-field
@@ -29,8 +30,15 @@
         required
         :type="'password'"
         :error-messages="passwordErrors"
+        :dense="true"
       ></v-text-field>
-    <v-alert v-if="isError" color="error" style="border-radius: 38px; width: 100%;" outlined >{{errorsFromServer}} </v-alert>
+      <v-alert
+        v-if="isError"
+        color="error"
+        style="border-radius: 38px; width: 100%;"
+        outlined
+        >{{ errorsFromServer }}
+      </v-alert>
       <v-btn
         color="primary"
         block
@@ -41,7 +49,6 @@
         >LOG IN</v-btn
       >
     </form>
-
 
     <p class="mt-auto">
       Want to learn more? <br />Check the
@@ -71,10 +78,14 @@ export default {
       password: { required },
     },
   },
-
+  mounted() {
+    if (this.$store.state.isLogged) {
+      this.$router.push("/dashboard");
+    }
+  },
   computed: {
     isError() {
-      return !!this.errorsFromServer
+      return !!this.errorsFromServer;
     },
     emailErrors() {
       const errors = [];
@@ -95,9 +106,10 @@ export default {
         this.user.password != null &&
         this.emailErrors.length === 0 &&
         this.passwordErrors.length === 0
-      ) return true
-      return false
-    }
+      )
+        return true;
+      return false;
+    },
   },
   methods: {
     ...mapActions(["isTokenExpired"]),
@@ -160,10 +172,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   padding: 30px;
 }
-
+p {
+  margin-bottom: 5px;
+}
 .all {
   position: relative;
 }

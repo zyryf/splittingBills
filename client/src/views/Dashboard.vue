@@ -6,23 +6,64 @@
       >!
     </h2>
 
-    <v-text-field
-      class=""
-      label="Search Groups"
-      outlined
-      rounded
-      v-model="searchField"
-      required
-    ></v-text-field>
-
-    <div class="groups-box">
-      <group
-        v-for="(name, index) in getUserGroups"
-        :key="index"
-        :groupname="name"
-        v-on:delete="askToDelete"
-      ></group>
+    <div id="search-container">
+      <v-text-field
+        class=""
+        label="Search Groups"
+        outlined
+        rounded
+        v-model="searchInput"
+        required
+        :dense="true"
+      ></v-text-field>
+      <v-btn
+        id="search-btn"
+        color="primary"
+        block
+        class="submit-btn"
+        rounded
+        @click="searchGroup"
+        >Search</v-btn
+      >
     </div>
+
+    <v-list rounded min-width="300" max-height="300" :outlined="true">
+      <vuescroll>
+        <v-subheader>YOUR GROUPS</v-subheader>
+        <v-list-item-group color="primary">
+          <v-list-item
+            :class="{ focused: name === groupToFocus }"
+            v-for="(name, index) in getUserGroups"
+            :key="index"
+            @click="$router.push(`/group-panel/ + ${name}`)"
+          >
+            <!-- <v-list-item-icon>
+            <v-icon v-text="item.icon"></v-icon>
+          </v-list-item-icon> -->
+            <v-list-item-content>
+              <Group :groupname="name" v-on:show-modal="askToDelete(name)" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </vuescroll>
+    </v-list>
+
+    <v-dialog v-model="dialog" persistent max-width="500">
+      <v-card>
+        <v-card-title class="headline"
+          >You were the last memeber of the group</v-card-title
+        >
+        <v-card-text
+          >Do you want to delete the group while leaving?</v-card-text
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="deleteGroup">Yes</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <form class="mt-8">
       <h5 class="mb-4">Create group or join one</h5>
       <v-text-field
@@ -31,6 +72,7 @@
         rounded
         v-model="name"
         required
+        :dense="true"
       ></v-text-field>
       <v-text-field
         label="Password"
@@ -38,6 +80,8 @@
         rounded
         v-model="password"
         required
+        type="password"
+        :dense="true"
       ></v-text-field>
 
       <div class="form-buttons">
@@ -68,15 +112,14 @@
 <script>
 import axios from "axios";
 import { required } from "vuelidate/lib/validators";
-import { mapGetters, mapActions } from "vuex";
-const jwtDecode = require("jwt-decode");
-
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import Group from "../components/Group";
+import vuescroll from "vuescroll";
+const jwtDecode = require("jwt-decode");
 
 export default {
   data() {
     return {
-      searchField: "",
       name: "",
       password: "",
       error: "",
@@ -84,10 +127,14 @@ export default {
       message: false,
       deleteWhenEmpty: null,
       groupToDelete: "",
+      dialog: false,
+      searchInput: "",
+      groupToFocus: "",
     };
   },
   components: {
     Group,
+    vuescroll,
   },
   validations: {
     name: {
@@ -107,6 +154,7 @@ export default {
   },
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
+
     clearMessages() {
       setTimeout(() => {
         this.error = "";
@@ -140,7 +188,6 @@ export default {
     },
 
     async joinGroup() {
-      console.log(this.getUserGroups);
       try {
         const response = await axios.patch(
           `api/users/join/${this.name}/${this.getUserName}`,
@@ -164,17 +211,20 @@ export default {
     },
 
     askToDelete(groupName) {
+      this.dialog = true;
       this.groupToDelete = groupName;
-      this.$bvModal.show("delete-group");
     },
 
     async deleteGroup() {
       await axios.delete(`api/groups/${this.groupToDelete}`);
-      this.hideModal();
+      this.dialog = false;
       this.groupToDelete = "";
     },
-    hideModal() {
-      this.$bvModal.hide("delete-group");
+    searchGroup() {
+      if (this.getUserGroups.indexOf(this.searchInput) !== -1) {
+        this.groupToFocus = this.searchInput;
+      }
+      this.searchInput = "";
     },
   },
   computed: {
@@ -198,8 +248,30 @@ export default {
   margin-right: 10px;
 }
 
-.groups-box{
+.groups-box {
   width: 100%;
   max-width: 400px;
+}
+
+#search-container {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 0;
+}
+#search-btn {
+  height: 40px !important;
+}
+#dashboard {
+  display: flex;
+  justify-content: center;
+}
+#logout-btn {
+  margin: 20px;
+}
+.v-list {
+  overflow: hidden;
+}
+.focused {
+  border: 1px solid #6c63ff;
 }
 </style>

@@ -1,15 +1,31 @@
 <template>
-  <div id="group-card" class="m-2">
+  <div id="group-card">
     <h5 class=" ml-4 m-auto ">{{ groupname }}</h5>
     <v-btn
-      color="primary"
+      color="orange"
       block
       class="panel-btn"
       rounded
       outlined
-      @click="$router.push(routerLink)"
-      >PANEL</v-btn
+      @click="leaveGroup"
+      >Leave</v-btn
     >
+
+    <!-- <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline"
+          >You were the last memeber of the group</v-card-title
+        >
+        <v-card-text
+          >Do you want to delete the group while leaving?</v-card-text
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog> -->
   </div>
 </template>
 
@@ -32,15 +48,13 @@ export default {
       console.log(err);
     }
   },
-  computed: {
-    routerLink() {
-      return "/group-panel/" + this.groupname;
-    },
-  },
   methods: {
     ...mapGetters(["getUserName"]),
     ...mapActions(["setUserData"]),
-    async leaveGroup() {
+    async leaveGroup(evt) {
+      evt.stopPropagation();
+      this.$emit("show-modal");
+
       try {
         const response = await axios.patch(
           `api/users/leave/${this.groupname}/${this.getUserName()}`,
@@ -65,14 +79,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border: solid 1px #b4b4b4;
-  border-radius: 10px;
-  padding: 10px;
 }
 
 .panel-btn {
   max-width: 100px !important;
   min-width: 10% !important;
 }
-
 </style>

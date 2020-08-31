@@ -12,14 +12,12 @@
     <p>Create accout & log in</p>
     <div class="buttons">
       <router-link to="/signup"
-        ><v-btn rounded color="primary"  class="mr-6"
+        ><v-btn rounded color="primary" class="mr-6"
           >Sign Up</v-btn
         ></router-link
       >
       <router-link to="/login"
-        ><v-btn rounded outlined  color="primary"
-          >Log In</v-btn
-        ></router-link
+        ><v-btn rounded outlined color="primary">Log In</v-btn></router-link
       >
     </div>
     <img src="../assets/img/about-login.png" alt="login photo" />
@@ -56,18 +54,8 @@ h3:nth-of-type(1) {
   margin-top: 30px;
 }
 
-.buttons {
-  //display: flex;
-  //justify-content: center;
-}
-
-
-// super small dev
-@import "../assets/about-styles/super-small.scss";
-//tablets
-@import "../assets/about-styles/tablets.scss";
-//large dev
-@import "../assets/about-styles/large.scss";
-//extra large dev
-@import "../assets/about-styles/extra-large.scss";
+@import "../assets/media-queries/extra-large.scss";
+@import "../assets/media-queries/large.scss";
+@import "../assets/media-queries/tablets.scss";
+@import "../assets/media-queries/super-small.scss";
 </style>
