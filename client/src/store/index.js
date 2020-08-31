@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import User from "./modules/user";
+import { vm } from "../main";
 
 Vue.use(Vuex);
 
@@ -20,6 +21,11 @@ export default new Vuex.Store({
     },
     SET_TIME(state, time) {
       state.timerTime = Math.round(time / 1000);
+    },
+    LOG_OUT(state) {
+      localStorage.clear();
+      state.isLogged = false;
+      vm.$router.push("/");
     },
   },
   actions: {

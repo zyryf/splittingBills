@@ -25,7 +25,7 @@ module.exports = {
     const user = new User({
       email: req.body.email,
       name: req.body.name,
-      password: bcrypt.hashSync(req.body.password, 10)
+      password: bcrypt.hashSync(req.body.password, 10),
     });
 
     try {
@@ -38,7 +38,6 @@ module.exports = {
   async leaveGroup(req, res) {
     const userName = req.params.username;
     const groupName = req.params.groupname;
-    console.log("leave group!");
     try {
       const user = await User.findOne({ name: userName });
       let group = await Group.findOne({ name: groupName });

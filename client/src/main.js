@@ -5,16 +5,28 @@ import store from "./store";
 import Vuelidate from "vuelidate";
 import axios from "axios";
 import FB_init from "../src/SDK/facebook";
+import vuescroll from "vuescroll";
 
 // bootsrap
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+
 import vuetify from "./plugins/vuetify";
 import VueWindowSize from "vue-window-size";
 
-Vue.use(VueWindowSize);
+// You can set global config here.
+Vue.use(vuescroll, {
+  ops: {
+    // The global config
+    mode: "slide",
+    bar: {
+      background: "#6C63FF",
+    },
+  }, // customize component name, default -> vueScroll
+});
 
+Vue.use(VueWindowSize);
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
@@ -23,14 +35,14 @@ Vue.use(IconsPlugin);
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
-new Vue({
+const vm = new Vue({
   router,
   store,
   vuetify,
   render: (h) => h(App),
 }).$mount("#app");
 
-// Facebook Initialization 
-FB_init()
+// Facebook Initialization
+FB_init();
 
-
+export { vm };

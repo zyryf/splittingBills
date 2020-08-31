@@ -3,8 +3,8 @@
     <h2 class="mt-auto mb-8">
       <strong
         >Here you can
-        <br />
-        <span class="primary--text">Log in</span>
+        <br v-if="windowWidth < 600" />
+        <span class="primary--text">log in</span>
       </strong>
     </h2>
 
@@ -17,6 +17,7 @@
         v-model="user.email"
         required
         :error-messages="emailErrors"
+        :dense="true"
       ></v-text-field>
       <p>Enter your password</p>
       <v-text-field
@@ -29,6 +30,7 @@
         required
         :type="'password'"
         :error-messages="passwordErrors"
+        :dense="true"
       ></v-text-field>
       <v-alert
         v-if="isError"
@@ -76,7 +78,11 @@ export default {
       password: { required },
     },
   },
-
+  mounted() {
+    if (this.$store.state.isLogged) {
+      this.$router.push("/dashboard");
+    }
+  },
   computed: {
     isError() {
       return !!this.errorsFromServer;
@@ -169,7 +175,9 @@ export default {
   justify-content: flex-start;
   padding: 30px;
 }
-
+p {
+  margin-bottom: 5px;
+}
 .all {
   position: relative;
 }
