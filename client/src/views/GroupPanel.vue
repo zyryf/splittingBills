@@ -1,55 +1,49 @@
 <template>
-  <div>
-    <b-row align-h="between" class="mr-4 ml-4">
-      <div class="d-flex flex-column justify-content-between">
-        <h1 class="m-auto">
-          <strong>{{ $attrs.groupname }}</strong>
+  <div id="group-panel">
+    <div class="grid-container my-8">
+      <div class="Header p-2">
+        <h1 class="my-6 m-auto">
+          Group: <strong>{{ $attrs.groupname }}</strong>
         </h1>
-        <Balance :groupname="$attrs.groupname" :key="expenses"/>
+        <Balance :groupname="$attrs.groupname" :key="expenses" />
       </div>
 
-      <NewExpense
-        :groupname="$attrs.groupname"
-        :members="members"
-        v-on:reloadExpenses="getExpenses"
-      />
-    </b-row>
-    <hr />
-    <b-row class="wrapper">
-      <b-col cols="3">
+      <div class="New-Expense p-2">
+        <NewExpense
+          :groupname="$attrs.groupname"
+          :members="members"
+          v-on:reloadExpenses="getExpenses"
+        />
+      </div>
+      <div class="Members p-2">
         <Members :members="members" />
-      </b-col>
-      <b-col>
-        <b-card
-          bg-variant="Secondary"
-          text-variant="black"
-          header="Expenses"
-          class="text-center expenses"
-        >
-          <div class="d-flex flex-column-reverse">
-            <expense
-              v-for="item in expenses"
-              :key="item.id"
-              :expense="item"
-              :groupname="$attrs.groupname"
-              :groupmembers="members"
-              v-on:reloadExpenses="getExpenses"
-            ></expense>
-          </div>
-        </b-card>
-      </b-col>
-    </b-row>
+      </div>
+      <div class="Expenses p-2">
+        <expense
+          v-for="item in expenses"
+          :key="item.id"
+          :expense="item"
+          :groupname="$attrs.groupname"
+          :groupmembers="members"
+          v-on:reloadExpenses="getExpenses"
+        ></expense>
+      </div>
+    </div>
+
+    <div class="mobile-nav">
+      <div class="menu"><h1>mobile</h1></div>
+      <div class="navbar"><h1>mobile</h1></div>
+      <div class="mobile-new-expense"><h1>mobile</h1></div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import Expense from "../components/Expense";
 import Balance from "../components/Balance";
-
 import Members from "../components/Members";
 import NewExpense from "../components/NewExpense";
 
@@ -60,6 +54,11 @@ export default {
       members: [],
       balance: 0,
     };
+  },
+  computed: {
+    isMobile() {
+      return true;
+    },
   },
   async mounted() {
     await this.setUserData();
@@ -98,25 +97,51 @@ export default {
 };
 </script>
 
-<style scoped>
-.custome-alert {
-  justify-content: flex-start;
+<style lang="scss" scoped>
+@media (min-width: 1000px) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr auto auto auto;
+    gap: 1px 1px;
+    grid-template-areas: "Header Header New-Expense New-Expense" ". . New-Expense New-Expense" "Members Expenses Expenses Expenses" "Members Expenses Expenses Expenses" "Members Expenses Expenses Expenses";
+  }
+  .grid-container > div {
+    //border: solid 1px red;
+  }
+
+  .Header {
+    grid-area: Header;
+  }
+
+  .New-Expense {
+    grid-area: New-Expense;
+  }
+
+  .Members {
+    grid-area: Members;
+  }
+
+  .Expenses {
+    grid-area: Expenses;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+}
+@media (max-width: 1000px) {
+  .New-Expense {
+    display: none;
+  }
+  .Members {
+    display: none;
+  }
 }
 
-.wrapper {
-  min-height: 30vh;
-}
-
-h2 {
-  text-align: left;
-  padding: 10px 5px;
-}
-
-h2 strong {
-  color: #42b983;
-}
-
-.expenses {
-  min-height: 30vh;
+.Expenses {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
 }
 </style>
