@@ -1,11 +1,22 @@
 <template>
   <v-app id="app">
     <router-view class="view" />
+    <v-btn
+      v-if="$store.state.isLogged"
+      color="red"
+      id="logout-btn"
+      block
+      class="submit-btn"
+      rounded
+      outlined
+      @click="LOG_OUT"
+      >Log out</v-btn
+    >
   </v-app>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import EndOfSession from "./components/EndOfSession";
 import Timer from "./components/Timer";
 export default {
@@ -16,11 +27,12 @@ export default {
     if (localStorage.getItem("token")) {
       this.$store.state.isLogged = true;
       this.isTokenExpired();
+      this.$router.push("/dashboard");
     }
   },
-
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
+    ...mapMutations(["LOG_OUT"]),
     logout() {
       localStorage.clear();
       this.$store.state.isLogged = false;
@@ -66,5 +78,9 @@ export default {
 .submit-btn {
   height: 45px !important;
 }
-
+#logout-btn {
+  min-width: 0px !important;
+  width: 200px !important;
+  margin: 20px auto;
+}
 </style>

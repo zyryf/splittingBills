@@ -13,6 +13,7 @@
     </p>
 
     <img
+      id="home-img"
       class="my-auto"
       src="./../assets/img/home-photo.png"
       alt=""
@@ -20,15 +21,21 @@
     />
 
     <div class="buttons">
-      <h5>Create an account or log in</h5>
+      <h5 id="home-info">Create an account or log in</h5>
       <router-link to="/signup"
-        ><v-btn rounded color="primary" block class="m-2 "
+        ><v-btn id="signin-btn" rounded color="primary" block class="m-2 "
           >Sign Up</v-btn
         ></router-link
       >
 
       <router-link to="/login"
-        ><v-btn rounded outlined block color="primary" class="m-2 "
+        ><v-btn
+          id="login-btn"
+          rounded
+          outlined
+          block
+          color="primary"
+          class="m-2 "
           >Log In</v-btn
         ></router-link
       >
@@ -43,6 +50,11 @@
 <script>
 export default {
   name: "Home",
+  mounted() {
+    if (this.$store.state.isLogged) {
+      this.$router.push("/dashboard");
+    }
+  },
 
   methods: {
     logIn() {
@@ -61,8 +73,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-img {
-  height: 35vh;
+#home-img {
+  width: 80vw;
+  // max-width: 500px;
   margin: auto 0;
 }
 
@@ -89,10 +102,9 @@ p {
 .v-btn:hover {
   text-decoration: none;
 }
-// big dev
-@import "../assets/home-styles/extra-large.scss";
-// super small dev
-@import "../assets/home-styles/super-small.scss";
-// tablets
-@import "../assets/home-styles/tablets.scss";
+
+@import "../assets/media-queries/extra-large.scss";
+@import "../assets/media-queries/large.scss";
+@import "../assets/media-queries/tablets.scss";
+@import "../assets/media-queries/super-small.scss";
 </style>

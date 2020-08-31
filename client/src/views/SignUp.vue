@@ -3,8 +3,8 @@
     <h2 class="mt-auto mb-8">
       <strong
         >Here you can
-        <br />
-        <span class="primary--text">Sign Up</span>
+        <br v-if="windowWidth < 600" />
+        <span class="primary--text">sign up</span>
       </strong>
     </h2>
 
@@ -17,6 +17,7 @@
         v-model="email"
         required
         :error-messages="emailErrors"
+        :dense="true"
       ></v-text-field>
       <p>Enter your nickname</p>
       <v-text-field
@@ -26,6 +27,7 @@
         v-model="name"
         required
         :error-messages="nicknameErrors"
+        :dense="true"
       ></v-text-field>
       <p>Enter your password</p>
       <v-text-field
@@ -37,6 +39,7 @@
         required
         :error-messages="passwordErrors"
         :type="'password'"
+        :dense="true"
       ></v-text-field>
       <p>Confirm password</p>
       <v-text-field
@@ -48,13 +51,25 @@
         required
         :error-messages="confirmedPasswordErrors"
         :type="'password'"
+        :dense="true"
       ></v-text-field>
-      <v-alert v-if="isError" color="error" outlined style="border-radius: 38px; width: 100%;"
+      <v-alert
+        v-if="isError"
+        color="error"
+        outlined
+        style="border-radius: 38px; width: 100%;"
         >{{ errorsFromServer }}
       </v-alert>
-      <v-alert v-if="signUpSuccess" color="success" outlined style="border-radius: 38px; width: 100%;"
+      <v-alert
+        v-if="signUpSuccess"
+        color="success"
+        outlined
+        style="border-radius: 38px; width: 100%;"
         >User created! Go to the
-        <router-link to="/login"><strong style="color: green;">LOG IN</strong></router-link> page.
+        <router-link to="/login"
+          ><strong style="color: green;">LOG IN</strong></router-link
+        >
+        page.
       </v-alert>
       <v-btn
         color="primary"
@@ -110,7 +125,7 @@ export default {
         if (!name) return false;
         try {
           const users = await axios.get("/api/users");
-          return !users.data.filter((user) => name === user.name).length
+          return !users.data.filter((user) => name === user.name).length;
         } catch {
           this.errorsFromServer =
             "Oooops. Something went wrong :( Server error!";
@@ -125,6 +140,11 @@ export default {
       required,
       sameAs: sameAs("password"),
     },
+  },
+  mounted() {
+    if (this.$store.state.isLogged) {
+      this.$router.push("/dashboard");
+    }
   },
   computed: {
     isError() {
@@ -205,5 +225,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+p {
+  margin-bottom: 5px;
+}
 </style>
