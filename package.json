@@ -7,7 +7,7 @@
     "start": "node server/index.js",
     "dev": "nodemon server/index.js"
   },
-  "author": "szymon borkowski",
+  "author": "szymon borkowski && Jakub Markowski",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.0",

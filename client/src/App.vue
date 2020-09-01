@@ -59,6 +59,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   max-width: 1000px;
   overflow: hidden;
+  
+
+
 }
 .v-application a:hover {
   text-decoration: none;

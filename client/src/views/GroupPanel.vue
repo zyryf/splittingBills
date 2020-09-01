@@ -32,7 +32,7 @@
 
     <div class="mobile-nav">
       <div class="menu"><h1>mobile</h1></div>
-      <div class="navbar"><h1>mobile</h1></div>
+      <div class="nav-bar"><h1>mobile</h1></div>
       <div class="mobile-new-expense"><h1>mobile</h1></div>
     </div>
   </div>
@@ -102,7 +102,7 @@ export default {
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
     gap: 1px 1px;
     grid-template-areas: "Header Header New-Expense New-Expense" ". . New-Expense New-Expense" "Members Expenses Expenses Expenses" "Members Expenses Expenses Expenses" "Members Expenses Expenses Expenses";
   }
@@ -144,4 +144,10 @@ export default {
   flex-direction: column-reverse;
   justify-content: flex-end;
 }
+
+  .Members {
+      flex-direction: column-reverse;
+  justify-content: flex-end;
+  }
+
 </style>
