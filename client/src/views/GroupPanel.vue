@@ -32,7 +32,7 @@
 
     <div class="mobile-nav">
       <div class="menu"><h1>mobile</h1></div>
-      <div class="nav-bar"><h1>mobile</h1></div>
+      <MobileNavBar />
       <div class="mobile-new-expense"><h1>mobile</h1></div>
     </div>
   </div>
@@ -46,7 +46,7 @@ import Expense from "../components/Expense";
 import Balance from "../components/Balance";
 import Members from "../components/Members";
 import NewExpense from "../components/NewExpense";
-
+import MobileNavBar from "../components/GroupPanel/Mobile/MobileNav";
 export default {
   data() {
     return {
@@ -54,6 +54,13 @@ export default {
       members: [],
       balance: 0,
     };
+  },
+  components: {
+    Members,
+    NewExpense,
+    Expense,
+    Balance,
+    MobileNavBar
   },
   computed: {
     isMobile() {
@@ -86,13 +93,6 @@ export default {
         console.log(err);
       }
     },
-  },
-
-  components: {
-    Members,
-    NewExpense,
-    Expense,
-    Balance,
   },
 };
 </script>
@@ -145,9 +145,8 @@ export default {
   justify-content: flex-end;
 }
 
-  .Members {
-      flex-direction: column-reverse;
+.Members {
+  flex-direction: column-reverse;
   justify-content: flex-end;
-  }
-
+}
 </style>
