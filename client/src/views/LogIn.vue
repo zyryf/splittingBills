@@ -23,7 +23,7 @@
       <v-text-field
         label="Password"
         color="primary"
-        class="mb-8"
+        class=""
         outlined
         rounded
         v-model="user.password"
@@ -32,6 +32,13 @@
         :error-messages="passwordErrors"
         :dense="true"
       ></v-text-field>
+      <v-alert
+        v-if="isError"
+        color="error"
+        style="border-radius: 38px; width: 100%;"
+        outlined
+        >{{ errorsFromServer }}
+      </v-alert>
       <v-btn
         color="primary"
         block
@@ -41,11 +48,23 @@
         :disabled="!isFormCorect"
         >LOG IN</v-btn
       >
+      <v-btn
+        color="primary"
+        block
+        class="submit-btn mt-4"
+        rounded
+        @click="logTestUserJakub1"
+        >TEST USER: jakub1</v-btn
+      >
+      <v-btn
+        color="primary"
+        block
+        class="submit-btn mt-4"
+        rounded
+        @click="logTestUserSzymon1"
+        >TEST USER: szymon1</v-btn
+      >
     </form>
-
-    <v-alert v-if="isError" color="error" outlined
-      >{{ errorsFromServer }}
-    </v-alert>
 
     <p class="mt-auto">
       Want to learn more? <br />Check the
@@ -111,37 +130,43 @@ export default {
   methods: {
     ...mapActions(["isTokenExpired"]),
     async submitForm() {
-      if (
-        this.user.email != null &&
-        this.user.password != null &&
-        this.emailErrors.length === 0 &&
-        this.passwordErrors.length === 0
-      ) {
-        try {
-          const res = await axios.post("/api/login", this.user);
-          this.user.email = "";
-          this.user.password = "";
-
-          localStorage.setItem("token", res.data.token);
-          this.$store.state.isLogged = true;
-          this.isTokenExpired();
-
-          this.$router.push("/dashboard");
-        } catch (err) {
-          if (err.response) {
-            this.errorsFromServer =
-              err.response.statusText + " :( Please try again later.";
-          } else {
-            this.errorsFromServer =
-              "Oooops. Something went wrong :( Server error!";
-          }
-        }
-      } else {
+      try {
+        const res = await axios.post("/api/login", this.user);
         this.user.email = "";
         this.user.password = "";
+
+        localStorage.setItem("token", res.data.token);
+        this.$store.state.isLogged = true;
+        this.isTokenExpired();
+
+        this.$router.push("/dashboard");
+      } catch (err) {
+        if (err.response) {
+          this.errorsFromServer = err.response.statusText;
+        } else {
+          this.errorsFromServer =
+            "Oooops. Something went wrong :( Server error!";
+        }
       }
     },
-    /* async logInFB() {
+
+    logTestUserJakub1() {
+      this.user = {
+        email: "jakub1@op.pl",
+        password: "jakub1",
+      };
+      this.submitForm();
+    },
+    logTestUserSzymon1() {
+      this.user = {
+        email: "szymon1@op.pl",
+        password: "szymon1",
+      };
+      this.submitForm();
+    },
+  },
+
+  /* async logInFB() {
       FB.login();
       // To poniżej, to powinna być funkcja w storze, i jeżeli pzy odpaleniu appki jest connected też powinna się wywoływać
       const accessToken = FB.getAccessToken();
@@ -161,7 +186,6 @@ export default {
         }
       }
     }, */
-  },
 };
 </script>
 

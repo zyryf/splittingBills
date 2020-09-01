@@ -32,16 +32,16 @@
         <v-subheader>YOUR GROUPS</v-subheader>
         <v-list-item-group color="primary">
           <v-list-item
-            :class="{ focused: name === groupToFocus }"
-            v-for="(name, index) in getUserGroups"
+            :class="{ focused: groupname === groupToFocus }"
+            v-for="(groupname, index) in getUserGroups"
             :key="index"
-            @click="$router.push(`/group-panel/ + ${name}`)"
+            @click="$router.push(`/group-panel/${groupname}`)"
           >
             <!-- <v-list-item-icon>
             <v-icon v-text="item.icon"></v-icon>
           </v-list-item-icon> -->
             <v-list-item-content>
-              <Group :groupname="name" v-on:show-modal="askToDelete(name)" />
+              <Group :groupname="groupname" v-on:show-modal="askToDelete(groupname)" />
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -70,7 +70,7 @@
         label="Group Name"
         outlined
         rounded
-        v-model="name"
+        v-model="groupname"
         required
         :dense="true"
       ></v-text-field>
@@ -120,7 +120,7 @@ const jwtDecode = require("jwt-decode");
 export default {
   data() {
     return {
-      name: "",
+      groupname: "",
       password: "",
       error: "",
       success: "",
@@ -137,7 +137,7 @@ export default {
     vuescroll,
   },
   validations: {
-    name: {
+    groupname: {
       required,
     },
     password: {
@@ -163,12 +163,12 @@ export default {
     },
 
     clearFormInputs() {
-      this.name = "";
+      this.groupname = "";
       this.password = "";
     },
     async createGroup() {
       const group = {
-        name: this.name,
+        name: this.groupname,
         password: this.password,
         members: this.getUserName,
       };
@@ -190,7 +190,7 @@ export default {
     async joinGroup() {
       try {
         const response = await axios.patch(
-          `api/users/join/${this.name}/${this.getUserName}`,
+          `api/users/join/${this.groupname}/${this.getUserName}`,
           {
             password: this.password,
           },
@@ -198,7 +198,7 @@ export default {
             headers: { token: localStorage.getItem("token") },
           }
         );
-        this.success = "You have joined the " + this.name;
+        this.success = "You have joined the " + this.groupname;
         this.clearFormInputs();
         this.clearMessages();
 
