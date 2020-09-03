@@ -26,6 +26,7 @@ export default new Vuex.Store({
       localStorage.clear();
       state.isLogged = false;
       vm.$router.push("/");
+      state.timerTime = 0;
     },
   },
   actions: {
@@ -39,8 +40,8 @@ export default new Vuex.Store({
         if (timeLeft > 0) {
           context.commit("SET_TIME", timeLeft);
           setTimeout(() => {
-            console.log("TOKEN EXPIRED!");
             context.commit("SET_SESSION_STATUS", true);
+            context.commit("LOG_OUT");
           }, timeLeft);
         }
       } else context.commit("SET_SESSION_STATUS", false);

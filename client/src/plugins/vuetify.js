@@ -13,7 +13,7 @@ const vuetify = new Vuetify({
     },
   },
   icons: {
-    iconfont: "mdi", // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+    iconfont: "fa",
   },
 });
 
