@@ -6,51 +6,89 @@
       >!
     </h2>
 
-    <div id="search-container">
-      <v-text-field
-        class=""
-        label="Search Groups"
-        outlined
-        rounded
-        v-model="searchInput"
-        required
-        :dense="true"
-      ></v-text-field>
-      <v-btn
-        id="search-btn"
-        color="primary"
-        block
-        class="submit-btn"
-        rounded
-        @click="searchGroup"
-        >Search</v-btn
-      >
-    </div>
+    <v-text-field
+      class="my-4"
+      id="search-input"
+      label="Search for group..."
+      outlined
+      rounded
+      v-model="searchInput"
+      required
+      :dense="true"
+    ></v-text-field>
 
-    <v-list rounded min-width="300" max-height="300" :outlined="true">
-      <vuescroll>
-        <v-subheader>YOUR GROUPS</v-subheader>
-        <v-list-item-group color="primary">
-          <v-list-item
-            :class="{ focused: groupname === groupToFocus }"
-            v-for="(groupname, index) in getUserGroups"
-            :key="index"
-            @click="$router.push(`/group-panel/${groupname}`)"
+    <section id="dashboard-wrapper">
+      <v-list rounded min-width="300" max-height="300" :outlined="true">
+        <vuescroll>
+          <v-subheader class="primary--text"> YOUR GROUPS</v-subheader>
+          <v-list-item-group color="primary">
+            <v-list-item
+              :class="{ focused: groupname === groupToFocus }"
+              v-for="(groupname, index) in getUserGroups"
+              :key="index"
+              @click="$router.push(`/group-panel/${groupname}`)"
+            >
+              <v-list-item-content>
+                <Group
+                  :groupname="groupname"
+                  v-on:show-modal="askToDelete(groupname)"
+                />
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </vuescroll>
+      </v-list>
+      <form class="mt-8">
+        <h4 class="mb-6">Create group or join one</h4>
+        <v-text-field
+          label="Group Name"
+          outlined
+          rounded
+          v-model="groupname"
+          required
+          :dense="true"
+        ></v-text-field>
+        <v-text-field
+          label="Password"
+          outlined
+          rounded
+          v-model="password"
+          required
+          type="password"
+          :dense="true"
+        ></v-text-field>
+
+        <div class="form-buttons">
+          <v-btn
+            color="primary"
+            block
+            class="submit-btn"
+            rounded
+            @click="createGroup"
+            :disabled="!this.groupname || !this.password"
+            >Create</v-btn
           >
-            <v-list-item-content>
-              <Group :groupname="groupname" v-on:show-modal="askToDelete(groupname)" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </vuescroll>
-    </v-list>
+          <v-btn
+            color="primary"
+            block
+            class="submit-btn"
+            rounded
+            outlined
+            @click="joinGroup"
+            :disabled="!this.groupname || !this.password"
+            >Join</v-btn
+          >
+        </div>
+      </form>
+    </section>
 
     <v-dialog v-model="dialog" persistent max-width="500">
       <v-card>
-        <v-card-title class="headline"
-          >You were the last memeber of the group</v-card-title
+        <v-card-title class="leaving-headline"
+          >You were the last <br v-if="windowWidth < 600" />
+          memeber of the group</v-card-title
         >
-        <v-card-text
+        <v-card-text class="leavegroup-msg"
           >Do you want to delete the group while leaving?</v-card-text
         >
         <v-card-actions>
@@ -61,48 +99,18 @@
       </v-card>
     </v-dialog>
 
-    <form class="mt-8">
-      <h5 class="mb-4">Create group or join one</h5>
-      <v-text-field
-        label="Group Name"
-        outlined
-        rounded
-        v-model="groupname"
-        required
-        :dense="true"
-      ></v-text-field>
-      <v-text-field
-        label="Password"
-        outlined
-        rounded
-        v-model="password"
-        required
-        type="password"
-        :dense="true"
-      ></v-text-field>
-
-      <div class="form-buttons">
-        <v-btn
-          color="primary"
-          block
-          class="submit-btn"
-          rounded
-          @click="createGroup"
-          :disabled="false"
-          >Create</v-btn
+    <v-dialog v-model="isError" max-width="500">
+      <v-card>
+        <v-card-title class="error-headline"
+          >Something went wrong :(</v-card-title
         >
-        <v-btn
-          color="primary"
-          block
-          class="submit-btn"
-          rounded
-          outlined
-          @click="joinGroup"
-          :disabled="false"
-          >Join</v-btn
-        >
-      </div>
-    </form>
+        <v-card-text class="error-msg">{{ error }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="isError = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -127,6 +135,7 @@ export default {
       dialog: false,
       searchInput: "",
       groupToFocus: "",
+      isError: false,
     };
   },
   components: {
@@ -147,17 +156,11 @@ export default {
     }
   },
   async mounted() {
+    if (!this.$store.state.isLogged) this.$router.push("/");
     await this.setUserData();
   },
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
-
-    clearMessages() {
-      setTimeout(() => {
-        this.error = "";
-        this.success = "";
-      }, 3000);
-    },
 
     clearFormInputs() {
       this.groupname = "";
@@ -175,12 +178,12 @@ export default {
         });
         this.clearFormInputs();
         this.success = response.data.title;
-        this.clearMessages();
         this.setUserData();
       } catch (err) {
+        console.log(err.response.data.title);
         this.clearFormInputs();
         this.error = err.response.data.title;
-        this.clearMessages();
+        this.isError = true;
       }
     },
 
@@ -195,15 +198,13 @@ export default {
             headers: { token: localStorage.getItem("token") },
           }
         );
-        this.success = "You have joined the " + this.groupname;
         this.clearFormInputs();
-        this.clearMessages();
 
         this.setUserData();
       } catch (err) {
         this.clearFormInputs();
         this.error = err.response.data.title;
-        this.clearMessages();
+        this.isError = true;
       }
     },
 
@@ -234,6 +235,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.leaving-headline,
+.error-headline {
+  display: flex;
+  justify-content: center;
+}
+.leavegroup-msg {
+  font-size: 14px;
+}
+.error-msg {
+  font-size: 17px;
+}
 .form-buttons {
   display: flex;
   justify-content: center;
@@ -250,25 +262,32 @@ export default {
   max-width: 400px;
 }
 
-#search-container {
-  display: flex;
-  flex-direction: row;
-  margin: 20px 0;
-}
-#search-btn {
-  height: 40px !important;
-}
 #dashboard {
   display: flex;
   justify-content: center;
+  flex-grow: unset;
 }
 #logout-btn {
   margin: 20px;
 }
 .v-list {
   overflow: hidden;
+  margin: 10px 0;
 }
 .focused {
   border: 1px solid #6c63ff;
 }
+h2 {
+  margin-left: 0;
+}
+.v-input {
+  margin: 0 auto;
+  width: 75%;
+  flex-grow: unset;
+}
+#dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+@import "../assets/media-queries/large.scss";
 </style>

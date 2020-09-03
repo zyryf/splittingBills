@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <p>Session time: {{ time.minutes }}: {{ time.seconds | addZero }}</p>
+  <div id="timer">
+    <i class="far fa-clock"></i>
+    <h3>{{ time.minutes }}:{{ time.seconds | addZero }}</h3>
   </div>
 </template>
 
@@ -44,9 +45,18 @@ export default {
 </script>
 
 <style scoped>
-p {
-  padding: 5px;
-  margin: 20px 30px;
+#timer {
+  display: flex;
+  justify-content: center;
+}
+h3 {
   font-size: 20px;
+  font-size: bold;
+  margin: auto 0;
+  min-width: 60px;
+}
+i {
+  font-size: 25px;
+  margin: auto 5px;
 }
 </style>

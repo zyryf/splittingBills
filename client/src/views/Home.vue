@@ -75,7 +75,6 @@ export default {
 <style lang="scss" scoped>
 #home-img {
   width: 80vw;
-  // max-width: 500px;
   margin: auto 0;
 }
 
