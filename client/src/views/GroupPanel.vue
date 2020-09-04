@@ -1,37 +1,65 @@
 <template>
-  <div id="group-panel">
+  <div id="group-panel" >
     <div class="grid-container">
       <div class="menu">
-        <div class="Header p-2">
+        <div class="Header mt-4 p-2">
           <header class="my-2 m-auto primary--text">
             {{ $attrs.groupname }}
           </header>
           <Balance :groupname="$attrs.groupname" :key="expenses.length" />
         </div>
-        <hr class="hr my-1 mx-6 " />
+        <hr class="hr my-4 mx-6 " />
 
-        <div class="New-Expense p-2">
-          <NewExpense
-            :groupname="$attrs.groupname"
-            :members="members"
-            v-on:reloadExpenses="getExpenses"
-          />
-        </div>
-        <div class="Members p-2">
-          <Members :members="members" />
-        </div>
-      </div>
-      <div class="Expenses p-2">
-        <expense
-          v-for="item in expenses"
-          :key="item.id"
-          :expense="item"
+        <NewExpense
+          class="New-Expense p-2"
           :groupname="$attrs.groupname"
-          :groupmembers="members"
+          :members="members"
           v-on:reloadExpenses="getExpenses"
-        ></expense>
+        />
+
+        <v-btn
+          v-if="!isMobile"
+          color="success"
+          @click="$router.push(`/group-panel/${$attrs.groupname}/menu`)"
+          rounded
+                  class="submit-btn panel-btn"
+          >MENU</v-btn
+        >
       </div>
-      <MobileNavBar v-if="isMobile" :groupname="$attrs.groupname"/>
+      <div class="Expenses mx-8">
+        <v-list
+          v-if="!isMobile"
+          rounded
+          min-width="300"
+          max-height="550"
+          :outlined="true"
+        >
+          <vuescroll>
+            <v-subheader class="primary--text">GROUP EXPENSES</v-subheader>
+            <v-list-item-group color="primary" class="d-flex flex-column-reverse">
+              <expense
+                v-for="item in expenses"
+                :key="item.id"
+                :expense="item"
+                :groupname="$attrs.groupname"
+                :groupmembers="members"
+                v-on:reloadExpenses="getExpenses"
+              ></expense>
+            </v-list-item-group>
+          </vuescroll>
+        </v-list>
+        <div v-if="isMobile">
+          <expense
+            v-for="item in expenses"
+            :key="item.id"
+            :expense="item"
+            :groupname="$attrs.groupname"
+            :groupmembers="members"
+            v-on:reloadExpenses="getExpenses"
+          ></expense>
+        </div>
+      </div>
+      <MobileNavBar v-if="isMobile" :groupname="$attrs.groupname" />
     </div>
   </div>
 </template>
@@ -45,6 +73,7 @@ import Balance from "../components/Balance";
 import Members from "../components/Members";
 import NewExpense from "../components/NewExpense";
 import MobileNavBar from "../components/GroupPanel/Mobile/MobileNav";
+import vuescroll from "vuescroll";
 export default {
   data() {
     return {
@@ -59,6 +88,7 @@ export default {
     Expense,
     Balance,
     MobileNavBar,
+    vuescroll,
   },
   computed: {
     isMobile() {
@@ -66,7 +96,7 @@ export default {
     },
   },
   async mounted() {
-    console.log()
+    console.log();
     await this.setUserData();
     await this.getMembers();
     await this.getExpenses();
@@ -96,12 +126,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#group-panel{
+  height: 100%;
+}
 header {
   font-size: 40px;
   font-weight: bold;
 }
 @media (min-width: 1000px) {
   .grid-container {
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: auto;
@@ -112,6 +146,11 @@ header {
   .menu {
     grid-area: Menu;
     min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    
   }
 
   .grid-container > div {
@@ -139,6 +178,7 @@ header {
 
   .Expenses {
     grid-area: Expenses;
+    flex-direction: column;
   }
 
   .mobile-nav {
@@ -152,16 +192,23 @@ header {
   .Members {
     display: none;
   }
+  .Expenses {
+    flex-direction: column-reverse;
+  }
+
 }
 
 .Expenses {
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
+  justify-content: center;
+
 }
 
 .Members {
   flex-direction: column-reverse;
   justify-content: flex-end;
+}
+.panel-btn {
+  width: 200px;
 }
 </style>

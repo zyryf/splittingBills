@@ -98,7 +98,7 @@ export default {
 
 <style lang="scss" scoped>
 .mobile-menu {
-  min-height: 100vh;
+  min-height: 90%;
   background-color: white;
   & > div > header {
     font-size: 40px;
@@ -130,7 +130,7 @@ export default {
   position: fixed;
   left: 0px;
   bottom: 0px;
-
+  z-index: 10;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -144,7 +144,7 @@ export default {
 
 .pay-btn {
   margin-top: auto;
-  margin-bottom: 70px;
+
   width: 150px;
 }
 

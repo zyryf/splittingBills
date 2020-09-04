@@ -31,6 +31,7 @@ export default {
 
 <style lang="scss">
 #mobileNav {
+  z-index: 10;
   width: 100vw;
   height: 60px;
   background-color: #3f3d56;

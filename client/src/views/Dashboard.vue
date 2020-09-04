@@ -24,8 +24,8 @@
           <v-subheader class="primary--text"> YOUR GROUPS</v-subheader>
           <v-list-item-group color="primary">
             <v-list-item
-              v-for="(groupname, index) in groups"
-              :key="index"
+              v-for="(groupname) in groups"
+              :key="groupname"
               @click="$router.push(`/group-panel/${groupname}`)"
             >
               <v-list-item-content>
@@ -118,7 +118,7 @@
 import axios from "axios";
 import { required } from "vuelidate/lib/validators";
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import Group from "../components/Group";
+import Group from "../components/group";
 import vuescroll from "vuescroll";
 const jwtDecode = require("jwt-decode");
 
@@ -149,13 +149,16 @@ export default {
       required,
     },
   },
-  created() {
-    this.groups = this.getUserGroups();
+  async created() {
+    await this.setUserData()
+    this.groups =  this.getUserGroups();
+    console.log(this.groups)
   },
   async mounted() {
     if (!this.$store.state.isLogged) this.$router.push("/");
     await this.setUserData();
   },
+
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
     ...mapGetters(["getUserGroups"]),
@@ -285,5 +288,8 @@ h2 {
   display: flex;
   flex-direction: column;
 }
+  .v-input {
+    max-width: 400px;
+  }
 @import "../assets/media-queries/large.scss";
 </style>
