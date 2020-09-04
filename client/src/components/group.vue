@@ -1,7 +1,9 @@
 <template>
   <div id="group-card">
+    <i class="fas fa-users"></i>
     <h5 class=" ml-4 m-auto ">{{ groupname }}</h5>
     <v-btn
+      id="leave-btn"
       color="orange"
       block
       class="panel-btn"
@@ -10,22 +12,6 @@
       @click="leaveGroup"
       >Leave</v-btn
     >
-
-    <!-- <v-dialog v-model="dialog" persistent max-width="290">
-      <v-card>
-        <v-card-title class="headline"
-          >You were the last memeber of the group</v-card-title
-        >
-        <v-card-text
-          >Do you want to delete the group while leaving?</v-card-text
-        >
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">Yes</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">No</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
   </div>
 </template>
 
@@ -73,16 +59,26 @@ export default {
 };
 </script>
 
-<style  lang="scss" scoped>
+<style lang="scss" scoped>
 #group-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
+h5 {
+  font-size: 18px;
+  margin: 0 3px;
+}
 
 .panel-btn {
   max-width: 100px !important;
   min-width: 10% !important;
+}
+#leave-btn {
+  margin-right: 2px;
+}
+i {
+  font-size: 18px;
 }
 </style>
