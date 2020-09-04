@@ -10,7 +10,8 @@ const state = {
 };
 
 const getters = {
-  getUser: (state) => {
+  getUser:  (state) => {
+    
     return state.user;
   },
 

@@ -43,8 +43,11 @@ export default new Vuex.Store({
             context.commit("SET_SESSION_STATUS", true);
             context.commit("LOG_OUT");
           }, timeLeft);
+        } else {
+          context.commit("SET_SESSION_STATUS", true);
+          context.commit("LOG_OUT");
         }
-      } else context.commit("SET_SESSION_STATUS", false);
+      } else vm.$router.push("/");
     },
   },
   modules: {

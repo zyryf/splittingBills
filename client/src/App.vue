@@ -1,8 +1,8 @@
 <template>
   <v-app id="app">
-    <router-view class="view" />
+    <router-view class="view my-auto" />
     <hr v-if="$store.state.isLogged" />
-    <footer v-if="$store.state.isLogged">
+    <footer v-if="$store.state.isLogged" class="mb-2">
       <Timer id="timer" />
       <v-btn
         color="black"

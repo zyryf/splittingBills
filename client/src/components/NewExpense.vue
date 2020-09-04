@@ -34,7 +34,7 @@
             <v-btn
         id="submit"
         color="primary"
-        class="submit-btn"
+        class="submit-btn panel-btn"
         rounded
         @click="addNewExpense"
         >SUBMIT</v-btn>
@@ -114,4 +114,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.panel-btn {
+  width: 200px;
+}
+</style>
