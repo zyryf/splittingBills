@@ -21,8 +21,6 @@ function calculateBalances(expenses, members) {
       balances.set(member, newMemberBalance);
     });
   });
-
-  console.log(expense);
   return [...balances];
 }
 

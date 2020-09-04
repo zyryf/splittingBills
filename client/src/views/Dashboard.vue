@@ -37,9 +37,6 @@
             :key="index"
             @click="$router.push(`/group-panel/${groupname}`)"
           >
-            <!-- <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
-          </v-list-item-icon> -->
             <v-list-item-content>
               <Group :groupname="groupname" v-on:show-modal="askToDelete(groupname)" />
             </v-list-item-content>

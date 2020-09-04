@@ -24,6 +24,8 @@ const getters = {
   getBalance: (state) => {
     return state.user.balance;
   },
+
+  
 };
 
 const mutations = {
@@ -33,8 +35,8 @@ const mutations = {
     if (userData.groups) state.user.groups = [...userData.groups];
     else state.user.groups = [];
   },
-  SET_USER_BALANCE(state, payload) {
-    state.user.balance = payload;
+  SET_USER_BALANCE(state, balance) {
+    state.user.balance = balance;
   },
 };
 
@@ -62,6 +64,8 @@ const actions = {
       console.log(err);
     }
   },
+
+  
 };
 
 export default {

@@ -1,18 +1,7 @@
 <template>
-  <div>
-    <b-card
-      bg-variant="light"
-      text-variant="black"
-      header="Your balance"
-      class="text-center  "
-      :header-bg-variant="color"
-      header-text-variant="white"
-    >
-      <div class="d-flex justify-content-between ">
-        <h3 class=" mr-4">{{ getBalance | addSign }} PLN</h3>
-        <b-button v-if="getBalance < 0" variant="danger">Pay</b-button>
-      </div>
-    </b-card>
+  <div class="balance"> 
+    <div class="head mr-4">Your Balance:</div>
+    <div class="amount">{{ getBalance }}</div>
   </div>
 </template>
 
@@ -22,10 +11,7 @@ import axios from "axios";
 export default {
   props: ["groupname"],
   data() {
-
     return {};
-
-
   },
   async mounted() {
     await this.setUserData();
@@ -42,7 +28,6 @@ export default {
       if (this.balance < 0) return "danger";
       return "dark";
     },
-
   },
 
   filters: {
@@ -55,3 +40,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+
+.balance {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+</style>
