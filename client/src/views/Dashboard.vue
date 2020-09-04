@@ -15,6 +15,7 @@
       v-model="searchInput"
       required
       :dense="true"
+      @input="filterGroups"
     ></v-text-field>
 
     <section id="dashboard-wrapper">
@@ -23,8 +24,7 @@
           <v-subheader class="primary--text"> YOUR GROUPS</v-subheader>
           <v-list-item-group color="primary">
             <v-list-item
-              :class="{ focused: groupname === groupToFocus }"
-              v-for="(groupname, index) in getUserGroups"
+              v-for="(groupname, index) in groups"
               :key="index"
               @click="$router.push(`/group-panel/${groupname}`)"
             >
@@ -125,16 +125,15 @@ const jwtDecode = require("jwt-decode");
 export default {
   data() {
     return {
+      groups: null,
       groupname: "",
       password: "",
       error: "",
-      success: "",
       message: false,
       deleteWhenEmpty: null,
       groupToDelete: "",
       dialog: false,
       searchInput: "",
-      groupToFocus: "",
       isError: false,
     };
   },
@@ -151,9 +150,7 @@ export default {
     },
   },
   created() {
-    if (!localStorage.getItem("token")) {
-      this.$router.push("/login");
-    }
+    this.groups = this.getUserGroups();
   },
   async mounted() {
     if (!this.$store.state.isLogged) this.$router.push("/");
@@ -161,10 +158,17 @@ export default {
   },
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
+    ...mapGetters(["getUserGroups"]),
 
     clearFormInputs() {
       this.groupname = "";
       this.password = "";
+    },
+    filterGroups() {
+      this.groups = this.getUserGroups();
+      this.groups = this.groups.filter((group) => {
+        if (group.includes(this.searchInput)) return group;
+      });
     },
     async createGroup() {
       const group = {
@@ -218,15 +222,9 @@ export default {
       this.dialog = false;
       this.groupToDelete = "";
     },
-    searchGroup() {
-      if (this.getUserGroups.indexOf(this.searchInput) !== -1) {
-        this.groupToFocus = this.searchInput;
-      }
-      this.searchInput = "";
-    },
   },
   computed: {
-    ...mapGetters(["getUser", "getUserName", "getUserGroups"]),
+    ...mapGetters(["getUser", "getUserName"]),
     sessionTimeLeft: function() {
       const timeNow = Date.now();
     },
@@ -274,9 +272,7 @@ export default {
   overflow: hidden;
   margin: 10px 0;
 }
-.focused {
-  border: 1px solid #6c63ff;
-}
+
 h2 {
   margin-left: 0;
 }
