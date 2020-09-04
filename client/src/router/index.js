@@ -6,6 +6,8 @@ import LogIn from "../views/LogIn.vue";
 import SignUp from "../views/SignUp.vue";
 import Dashboard from "../views/Dashboard.vue";
 import GroupPanel from "../views/GroupPanel.vue"
+import MobileMenu from "../components/GroupPanel/Mobile/MobileMenu.vue"
+import NewExpense from "../components/NewExpense.vue"
 
 Vue.use(VueRouter);
 
@@ -40,7 +42,21 @@ const routes = [
     name: "GroupPanel",
     component: GroupPanel,
     props: true
+  },
+  {
+    path: "/group-panel/:groupname/menu",
+    name: "MobileMenu",
+    component: MobileMenu,
+    props: true
+  },
+  {
+    path: "/group-panel/:groupname/new-expense",
+    name: "NewExpense",
+    component: NewExpense,
+    props: true
   }
+
+
 ];
 
 const router = new VueRouter({

@@ -154,7 +154,7 @@ export default {
       const errors = [];
       if (this.email === null) return errors;
       !this.$v.email.email && errors.push("Must be valid e-mail");
-      !this.$v.email.isUnique && errors.push("E-mail already exist");
+      this.$v.email.email && !this.$v.email.isUnique && errors.push("E-mail already exist");
       !this.$v.email.required && errors.push("E-mail is required");
       return errors;
     },
@@ -162,7 +162,7 @@ export default {
       const errors = [];
       if (this.name === null) return errors;
       !this.$v.name.minLength && errors.push("Nickname is too short");
-      !this.$v.name.isUnique && errors.push("Nickname already exist");
+      this.$v.name.minLength && !this.$v.name.isUnique && errors.push("Nickname already exist");
       !this.$v.name.required && errors.push("Nickname is required");
       return errors;
     },

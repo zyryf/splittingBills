@@ -1,59 +1,12 @@
 <template>
-  <b-alert
-    show
-    variant="primary"
-    class="d-flex flex-row justify-content-between"
-  >
-    <div>
-      <div class="d-inline-block">
-        <h5 class="m-0 d-flex justify-content-start">
-          <strong>Title:</strong>
-        </h5>
-        <p class="m-0 d-flex justify-content-start">
-          <strong>User:</strong>
-        </p>
-        <p class="m-0 d-flex justify-content-start">
-          <strong>Amount:</strong>
-        </p>
-        <p class="m-0 d-flex justify-content-start">
-          <strong>Time:</strong>
-        </p>
+  <div class="my-1 mx-6">
+    <button class="grid-expense-container w-100" @click="editPanel = true">
+      <div class="expense-header my-auto ml-2">{{ expense.title }}</div>
+      <div class="paid-by-text my-auto ml-2">Paid by: {{ expense.payer }}</div>
+      <div class="expense-amount ml-auto m-auto mr-6" :style="amountColor(expense.amount)">
+        {{ expense.amount }} PLN
       </div>
-      <div class="d-inline-block ml-3">
-        <h5 class="m-0 d-flex justify-content-start">{{ expense.title }}</h5>
-        <p class="m-0 d-flex justify-content-start">{{ expense.payer }}</p>
-        <p class="m-0 d-flex justify-content-start">{{ expense.amount }} PLN</p>
-        <p class="m-0 d-flex justify-content-start">{{ expense.date }}</p>
-      </div>
-    </div>
-
-    <div class="d-flex flex-row flex-wrap members-wrapper">
-      <div
-        class="m-1"
-        v-for="(member, index) in expense.selectedMembers"
-        :key="index"
-      >
-        <b-avatar size="sm" variant="light"></b-avatar>
-        <p class="d-inline m-2">{{ member }}</p>
-      </div>
-    </div>
-
-    <div class="d-flex flex-column justify-content-around">
-      <b-button
-        href="#"
-        variant="primary"
-        class="custom-button"
-        @click="editExpense"
-        >Edit</b-button
-      >
-      <b-button
-        href="#"
-        variant="danger"
-        class="custom-button"
-        @click="deleteExpense"
-        >Delete</b-button
-      >
-    </div>
+    </button>
     <edit-expense-panel
       v-if="editPanel"
       v-on:close="closeEditPanel"
@@ -61,7 +14,7 @@
       :members="groupmembers"
       :groupname="groupname"
     ></edit-expense-panel>
-  </b-alert>
+  </div>
 </template>
 
 <script>
@@ -79,11 +32,12 @@ export default {
   components: {
     editExpensePanel,
   },
+  computed: {},
 
   methods: {
     ...mapActions(["setUserBalance"]),
-    editExpense() {
-      this.editPanel = true;
+    amountColor(amount) {
+      return amount < 0 ? "color: #D07070;" : "color: #8DD070;";
     },
     closeEditPanel() {
       this.editPanel = false;
@@ -107,13 +61,42 @@ export default {
 };
 </script>
 
-<style scoped>
-.custom-button {
-  width: 80px;
+<style lang="scss" scoped>
+.grid-expense-container {
+  padding: 5px;
+  border: solid 1px #707070;
+  border-radius: 5px;
+
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "expense-header expense-amount"
+    "paid-by-text expense-amount";
+
+  & > div {
+    display: flex;
+  }
 }
 
-.members-wrapper {
-  width: 50%;
-  color: black;
+.expense-header {
+  grid-area: expense-header;
+  font-size: 20px;
+  font-weight: bold;
 }
+
+.paid-by-text {
+  grid-area: paid-by-text;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.expense-amount {
+  grid-area: expense-amount;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+
 </style>

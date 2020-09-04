@@ -27,6 +27,9 @@ module.exports = {
     const isRepeted = await Group.findOne({ name: group.name });
     if (isRepeted)
       return res.status(401).json({ title: "Group already exists!" });
+    
+    if (group.name == "")
+      return res.status(401).json({ title: "Empty name!" });
 
     try {
       await user.updateOne({
@@ -65,6 +68,7 @@ module.exports = {
 
       if (group) {
         return res.status(200).json(userBalance[1]);
+
       } else {
         return res.status(500).json({ title: "Group not found in database!" });
       }
@@ -101,13 +105,10 @@ module.exports = {
       
       group = await Group.findOne({ name: req.params.groupname })
       const balances = calculateBalances(group.expenses, group.members)
-    
-
+  
       await group.updateOne({
         $set: {balances: balances}
       })
-
-      
 
       return res.status(200).json({ title: "Expense added!" });
     } catch (err) {

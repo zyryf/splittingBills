@@ -1,22 +1,25 @@
 <template>
   <div id="group-panel">
-    <div class="grid-container my-8">
-      <div class="Header p-2">
-        <h1 class="my-6 m-auto">
-          Group: <strong>{{ $attrs.groupname }}</strong>
-        </h1>
-        <Balance :groupname="$attrs.groupname" :key="expenses" />
-      </div>
+    <div class="grid-container">
+      <div class="menu">
+        <div class="Header p-2">
+          <header class="my-2 m-auto primary--text">
+            {{ $attrs.groupname }}
+          </header>
+          <Balance :groupname="$attrs.groupname" :key="expenses.length" />
+        </div>
+        <hr class="hr my-1 mx-6 " />
 
-      <div class="New-Expense p-2">
-        <NewExpense
-          :groupname="$attrs.groupname"
-          :members="members"
-          v-on:reloadExpenses="getExpenses"
-        />
-      </div>
-      <div class="Members p-2">
-        <Members :members="members" />
+        <div class="New-Expense p-2">
+          <NewExpense
+            :groupname="$attrs.groupname"
+            :members="members"
+            v-on:reloadExpenses="getExpenses"
+          />
+        </div>
+        <div class="Members p-2">
+          <Members :members="members" />
+        </div>
       </div>
       <div class="Expenses p-2">
         <expense
@@ -28,12 +31,7 @@
           v-on:reloadExpenses="getExpenses"
         ></expense>
       </div>
-    </div>
-
-    <div class="mobile-nav">
-      <div class="menu"><h1>mobile</h1></div>
-      <MobileNavBar />
-      <div class="mobile-new-expense"><h1>mobile</h1></div>
+      <MobileNavBar v-if="isMobile" :groupname="$attrs.groupname"/>
     </div>
   </div>
 </template>
@@ -60,17 +58,17 @@ export default {
     NewExpense,
     Expense,
     Balance,
-    MobileNavBar
+    MobileNavBar,
   },
   computed: {
     isMobile() {
-      return true;
+      return this.windowWidth < 1000;
     },
   },
   async mounted() {
+    console.log()
     await this.setUserData();
-    this.members = await this.getMembers();
-
+    await this.getMembers();
     await this.getExpenses();
   },
   methods: {
@@ -79,7 +77,7 @@ export default {
     async getMembers() {
       try {
         const response = await axios.get(`api/groups/${this.$attrs.groupname}`);
-        return response.data.members;
+        this.members = response.data.members;
       } catch (err) {
         console.log(err);
       }
@@ -98,20 +96,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+header {
+  font-size: 40px;
+  font-weight: bold;
+}
 @media (min-width: 1000px) {
   .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto auto auto;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
     gap: 1px 1px;
-    grid-template-areas: "Header Header New-Expense New-Expense" ". . New-Expense New-Expense" "Members Expenses Expenses Expenses" "Members Expenses Expenses Expenses" "Members Expenses Expenses Expenses";
+    grid-template-areas: "Menu Expenses";
   }
+
+  .menu {
+    grid-area: Menu;
+    min-width: 300px;
+  }
+
   .grid-container > div {
     //border: solid 1px red;
   }
 
   .Header {
     grid-area: Header;
+    & > hr {
+      display: none;
+    }
+  }
+
+  .hr {
+    grid-area: hr;
   }
 
   .New-Expense {

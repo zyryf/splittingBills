@@ -33,11 +33,6 @@ export default {
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
     ...mapMutations(["LOG_OUT"]),
-    logout() {
-      localStorage.clear();
-      this.$store.state.isLogged = false;
-      this.$router.push("/");
-    },
   },
   components: {
     EndOfSession,
