@@ -11,7 +11,7 @@
         <hr class="hr my-4 mx-6 " />
 
         <NewExpense
-          class="New-Expense p-2"
+          class="New-Expense p-2 my-auto"
           :groupname="$attrs.groupname"
           :members="members"
           v-on:reloadExpenses="getExpenses"
