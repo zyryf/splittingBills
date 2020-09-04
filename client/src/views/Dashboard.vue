@@ -19,7 +19,7 @@
     ></v-text-field>
 
     <section id="dashboard-wrapper">
-      <v-list rounded min-width="300" max-height="300" :outlined="true">
+      <v-list rounded min-width="300" height="300"  :outlined="true">
         <vuescroll>
           <v-subheader class="primary--text"> YOUR GROUPS</v-subheader>
           <v-list-item-group color="primary">
