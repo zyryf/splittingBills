@@ -49,7 +49,6 @@ export default {
             headers: { token: localStorage.getItem("token") },
           }
         );
-        if (response.data.isEmpty) this.$emit("delete", this.groupname);
         this.setUserData();
       } catch (err) {
         console.log(err);

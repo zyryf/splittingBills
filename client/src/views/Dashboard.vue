@@ -152,7 +152,6 @@ export default {
   async created() {
     await this.setUserData()
     this.groups =  this.getUserGroups();
-    console.log(this.groups)
   },
   async mounted() {
     if (!this.$store.state.isLogged) this.$router.push("/");

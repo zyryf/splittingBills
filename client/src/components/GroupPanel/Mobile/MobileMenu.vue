@@ -33,9 +33,7 @@
         </div>
       </div>
     </div>
-    <v-btn class="pay-btn" color="primary"
-      >Pay Your Delt</v-btn
-    >
+    <v-btn class="pay-btn" color="primary">Pay Your Delt</v-btn>
 
     <div class="bottom-tab">
       <button
@@ -44,13 +42,15 @@
       >
         BACK
       </button>
-      <v-btn color="error">Leave Group</v-btn>
+      <v-btn color="error"> Leave Group</v-btn>
     </div>
+   
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -73,6 +73,8 @@ export default {
     });
   },
   methods: {
+    ...mapActions(["setUserData", "isTokenExpired"]),
+    ...mapGetters(["getUserGroups"]),
     async getUserBalance(username, groupname) {
       try {
         const response = await axios.get(
@@ -92,7 +94,9 @@ export default {
       }
     },
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["getUser", "getUserName"]),
+  },
 };
 </script>
 

@@ -1,11 +1,12 @@
 <template>
-  <div id="new-expense">
+  <div id="new-expense mx-auto">
     <h2 class="mt-auto mb-8 font-weight-bold">
       New Expense
     </h2>
     <form class="mb-2">
       <p>Title</p>
       <v-text-field
+      class="ne-input mx-auto"
         label="Title"
         outlined
         rounded
@@ -15,6 +16,7 @@
       ></v-text-field>
       <p>Amount</p>
       <v-text-field
+      class="ne-input mx-auto"
         label="Amount"
         outlined
         rounded
@@ -73,6 +75,7 @@ export default {
       this.expense.date = moment().format("MMM Do YYYY, h:mm:ss a");
       this.expense.payer = this.getUserName();
       this.sendExpense();
+      this.$router.push(`/group-panel/${this.groupname}`)
     },
     async sendExpense() {
       try {
@@ -115,6 +118,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#new-expense {
+  max-width: 500px;
+}
+
+.ne-input{
+  max-width: 300px;
+}
 .panel-btn {
   width: 200px;
 }

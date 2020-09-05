@@ -80,6 +80,9 @@ export default {
   overflow: hidden;
   margin: 0 auto;
 }
+.headline{
+  text-align:justify;
+}
 .v-application--wrap {
   display: flex;
   justify-content: center;
