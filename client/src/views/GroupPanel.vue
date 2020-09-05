@@ -8,7 +8,7 @@
           </header>
           <Balance :groupname="$attrs.groupname" :key="expenses.length" />
         </div>
-        <hr class="hr my-4 mx-6 " />
+        <hr v-if="!isMobile" class="hr my-4 mx-6 " />
 
         <NewExpense
           class="New-Expense p-2 my-auto"
@@ -22,7 +22,7 @@
           color="success"
           @click="$router.push(`/group-panel/${$attrs.groupname}/menu`)"
           rounded
-                  class="submit-btn panel-btn"
+                  class="submit-btn panel-btn mt-6"
           >MENU</v-btn
         >
       </div>
@@ -48,7 +48,7 @@
             </v-list-item-group>
           </vuescroll>
         </v-list>
-        <div v-if="isMobile">
+        <div v-if="isMobile" class="Expenses">
           <expense
             v-for="item in expenses"
             :key="item.id"
