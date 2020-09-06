@@ -56,12 +56,13 @@
       <v-alert v-if="isError" color="error" outlined
         >{{ errorsFromServer }}
       </v-alert>
-      <v-alert v-if="true" color="success" outlined
-        >User created! Go to the
-        <router-link to="/login"
-          ><strong style="color: green;">LOG IN</strong></router-link
-        >
-        page.
+      <v-alert
+        :dense="true"
+        v-if="true"
+        color="success"
+        outlined
+        style="border-radius: 38px; width: 100%;"
+        >User created!
       </v-alert>
       <v-btn
         color="primary"
