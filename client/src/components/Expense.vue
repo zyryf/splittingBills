@@ -1,12 +1,21 @@
 <template>
   <div class="my-1 mx-6">
-    <button class="grid-expense-container w-100" @click="editPanel = true">
-      <div class="expense-header my-auto ml-2">{{ expense.title }}</div>
-      <div class="paid-by-text my-auto ml-2">Paid by: {{ expense.payer }}</div>
-      <div class="expense-amount ml-auto m-auto mr-6" :style="amountColor(expense.amount)">
-        {{ expense.amount }} PLN
-      </div>
-    </button>
+    <div id="expense-wrapper">
+      <i class="fas fa-money-bill-wave"></i>
+      <button class="grid-expense-container " @click="editPanel = true">
+        <div class="expense-header my-auto ml-2">{{ expense.title }}</div>
+        <div class="paid-by-text my-auto ml-2">
+          Paid by: {{ expense.payer }}
+        </div>
+        <div
+          class="expense-amount ml-auto "
+          :style="amountColor(expense.amount)"
+        >
+          {{ expense.amount }} PLN
+        </div>
+      </button>
+      <i @click="deleteExpense" class="far fa-trash-alt"></i>
+    </div>
     <edit-expense-panel
       v-if="editPanel"
       v-on:close="closeEditPanel"
@@ -43,7 +52,8 @@ export default {
       this.editPanel = false;
       this.$emit("reloadExpenses");
     },
-    async deleteExpense() {
+    async deleteExpense(evt) {
+      evt.stopPropagation();
       try {
         const response = await axios.delete(
           `api/groups/${this.groupname}/expenses/${this.expense.id}`,
@@ -63,10 +73,6 @@ export default {
 
 <style lang="scss" scoped>
 .grid-expense-container {
-  padding: 5px;
-  border: solid 1px #707070;
-  border-radius: 5px;
-
   display: grid;
   grid-template-columns: 1fr max-content;
   grid-template-rows: 1fr 1fr;
@@ -84,6 +90,7 @@ export default {
   grid-area: expense-header;
   font-size: 20px;
   font-weight: bold;
+  margin: 0 50px;
 }
 
 .paid-by-text {
@@ -97,6 +104,19 @@ export default {
   font-size: 30px;
   font-weight: bold;
 }
+#expense-wrapper {
+  display: flex;
+  // background-color: blue;
+  align-items: center;
+}
 
-
+i.fa-trash-alt {
+  color: red;
+  font-size: 25px;
+  padding: 0 10px;
+}
+i.fa-money-bill-wave {
+  font-size: 25px;
+  margin: 0 10px;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="group-panel" >
+  <div id="group-panel">
     <div class="grid-container">
       <div class="menu">
         <div class="Header mt-4 p-2">
@@ -22,8 +22,8 @@
           color="success"
           @click="$router.push(`/group-panel/${$attrs.groupname}/menu`)"
           rounded
-                  class="submit-btn panel-btn mt-6"
-          >MENU</v-btn
+          class="submit-btn panel-btn mt-6"
+          >GROUP MENU</v-btn
         >
       </div>
       <div class="Expenses mx-8">
@@ -36,15 +36,20 @@
         >
           <vuescroll>
             <v-subheader class="primary--text">GROUP EXPENSES</v-subheader>
-            <v-list-item-group color="primary" class="d-flex flex-column-reverse">
-              <expense
-                v-for="item in expenses"
-                :key="item.id"
-                :expense="item"
-                :groupname="$attrs.groupname"
-                :groupmembers="members"
-                v-on:reloadExpenses="getExpenses"
-              ></expense>
+            <v-list-item-group
+              color="primary"
+              class="d-flex flex-column-reverse"
+            >
+              <v-list-item v-for="item in expenses" :key="item.id">
+                <v-list-item-content>
+                  <expense
+                    :expense="item"
+                    :groupname="$attrs.groupname"
+                    :groupmembers="members"
+                    v-on:reloadExpenses="getExpenses"
+                  ></expense>
+                </v-list-item-content>
+              </v-list-item>
             </v-list-item-group>
           </vuescroll>
         </v-list>
@@ -96,7 +101,6 @@ export default {
     },
   },
   async mounted() {
-    console.log();
     await this.setUserData();
     await this.getMembers();
     await this.getExpenses();
@@ -126,7 +130,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#group-panel{
+#group-panel {
   height: 100%;
 }
 header {
@@ -150,7 +154,6 @@ header {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    
   }
 
   .grid-container > div {
@@ -195,13 +198,11 @@ header {
   .Expenses {
     flex-direction: column-reverse;
   }
-
 }
 
 .Expenses {
   display: flex;
   justify-content: center;
-
 }
 
 .Members {

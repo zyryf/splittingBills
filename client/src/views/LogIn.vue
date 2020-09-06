@@ -33,6 +33,7 @@
         :dense="true"
       ></v-text-field>
       <v-alert
+        :dense="true"
         v-if="isError"
         color="error"
         style="border-radius: 38px; width: 100%;"
@@ -142,7 +143,7 @@ export default {
         this.$router.push("/dashboard");
       } catch (err) {
         if (err.response) {
-          this.errorsFromServer = err.response.statusText;
+          this.errorsFromServer = err.response.data.title;
         } else {
           this.errorsFromServer =
             "Oooops. Something went wrong :( Server error!";

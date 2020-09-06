@@ -39,7 +39,6 @@ export default {
     ...mapActions(["setUserData"]),
     async leaveGroup(evt) {
       evt.stopPropagation();
-      this.$emit("show-modal");
 
       try {
         const response = await axios.patch(
@@ -49,7 +48,8 @@ export default {
             headers: { token: localStorage.getItem("token") },
           }
         );
-        this.setUserData();
+        if (response.data.isEmpty) this.$emit("show-modal");
+        await this.setUserData();
       } catch (err) {
         console.log(err);
       }

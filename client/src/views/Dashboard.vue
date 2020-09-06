@@ -16,10 +16,17 @@
       required
       :dense="true"
       @input="filterGroups"
+      v-if="groups.length"
     ></v-text-field>
 
     <section id="dashboard-wrapper">
-      <v-list rounded min-width="300" height="300" :outlined="true">
+      <v-list
+        rounded
+        min-width="300"
+        height="300"
+        :outlined="true"
+        v-if="groups.length"
+      >
         <vuescroll>
           <v-subheader class="primary--text"> YOUR GROUPS</v-subheader>
           <v-list-item-group color="primary">
@@ -118,14 +125,14 @@
 import axios from "axios";
 import { required } from "vuelidate/lib/validators";
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import Group from "../components/group";
+import Group from "../components/Group";
 import vuescroll from "vuescroll";
 const jwtDecode = require("jwt-decode");
 
 export default {
   data() {
     return {
-      groups: null,
+      groups: [],
       groupname: "",
       password: "",
       error: "",
@@ -183,7 +190,7 @@ export default {
           headers: { token: localStorage.getItem("token") },
         });
         this.clearFormInputs();
-        this.setUserData();
+        await this.setUserData();
         this.groups = this.getUserGroups();
       } catch (err) {
         console.log(err.response.data.title);
@@ -206,7 +213,7 @@ export default {
         );
         this.clearFormInputs();
 
-        this.setUserData();
+        await this.setUserData();
         this.groups = this.getUserGroups();
       } catch (err) {
         this.clearFormInputs();
