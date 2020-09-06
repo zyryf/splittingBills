@@ -53,18 +53,10 @@
         :type="'password'"
         :dense="true"
       ></v-text-field>
-      <v-alert
-        v-if="isError"
-        color="error"
-        outlined
-        style="border-radius: 38px; width: 100%;"
+      <v-alert v-if="isError" color="error" outlined
         >{{ errorsFromServer }}
       </v-alert>
-      <v-alert
-        v-if="signUpSuccess"
-        color="success"
-        outlined
-        style="border-radius: 38px; width: 100%;"
+      <v-alert v-if="true" color="success" outlined
         >User created! Go to the
         <router-link to="/login"
           ><strong style="color: green;">LOG IN</strong></router-link
@@ -154,7 +146,9 @@ export default {
       const errors = [];
       if (this.email === null) return errors;
       !this.$v.email.email && errors.push("Must be valid e-mail");
-      this.$v.email.email && !this.$v.email.isUnique && errors.push("E-mail already exist");
+      this.$v.email.email &&
+        !this.$v.email.isUnique &&
+        errors.push("E-mail already exist");
       !this.$v.email.required && errors.push("E-mail is required");
       return errors;
     },
@@ -162,7 +156,9 @@ export default {
       const errors = [];
       if (this.name === null) return errors;
       !this.$v.name.minLength && errors.push("Nickname is too short");
-      this.$v.name.minLength && !this.$v.name.isUnique && errors.push("Nickname already exist");
+      this.$v.name.minLength &&
+        !this.$v.name.isUnique &&
+        errors.push("Nickname already exist");
       !this.$v.name.required && errors.push("Nickname is required");
       return errors;
     },

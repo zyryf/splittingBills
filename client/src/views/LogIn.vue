@@ -159,7 +159,7 @@ export default {
     },
     logTestUserSzymon1() {
       this.user = {
-        email: "szymon1@op.pl",
+        email: "szymon1@gmail.com",
         password: "szymon1",
       };
       this.submitForm();

@@ -21,19 +21,19 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: ["groupname"],
-  data() {
-    return {
-      members: [],
-    };
-  },
-  async mounted() {
-    try {
-      const response = await axios.get(`api/groups/${this.groupname}`);
-      this.members = response.data.members;
-    } catch (err) {
-      console.log(err);
-    }
-  },
+  // data() {
+  //   return {
+  //     members: [],
+  //   };
+  // },
+  // async mounted() {
+  //   // try {
+  //   //   const response = await axios.get(`api/groups/${this.groupname}`);
+  //   //   this.members = response.data.members;
+  //   // } catch (err) {
+  //   //   console.log(err);
+  //   // }
+  // },
   methods: {
     ...mapGetters(["getUserName"]),
     ...mapActions(["setUserData"]),

@@ -42,9 +42,8 @@
       >
         BACK
       </button>
-      <v-btn color="error"> Leave Group</v-btn>
+      <v-btn color="error" @click="leaveGroup"> Leave Group</v-btn>
     </div>
-   
   </div>
 </template>
 
@@ -74,7 +73,7 @@ export default {
   },
   methods: {
     ...mapActions(["setUserData", "isTokenExpired"]),
-    ...mapGetters(["getUserGroups"]),
+    ...mapGetters(["getUserGroups", "getUserName"]),
     async getUserBalance(username, groupname) {
       try {
         const response = await axios.get(
@@ -93,9 +92,24 @@ export default {
         console.log(err);
       }
     },
+    async leaveGroup() {
+      try {
+        const response = await axios.patch(
+          `api/users/leave/${this.groupname}/${this.getUserName()}`,
+          {},
+          {
+            headers: { token: localStorage.getItem("token") },
+          }
+        );
+        this.setUserData();
+        this.$router.push(`/dashboard`);
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   computed: {
-    ...mapGetters(["getUser", "getUserName"]),
+    ...mapGetters(["getUser"]),
   },
 };
 </script>
