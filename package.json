@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js"
+
   },
   "author": "szymon borkowski && Jakub Markowski",
   "license": "MIT",

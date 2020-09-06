@@ -59,10 +59,17 @@
           <b-button type="submit" variant="primary" @click="save"
             >Save</b-button
           >
-          <b-button type="reset" variant="danger" @click="closePanel"
-            >Close</b-button
+          <b-button type="reset" variant="danger" @click="deleteExpense"
+            >Delete</b-button
           >
         </div>
+        <b-button
+          type="reset"
+          class="mt-2 "
+          variant="warning"
+          @click="closePanel"
+          >Close</b-button
+        >
       </b-form>
     </b-card>
   </div>
@@ -97,6 +104,23 @@ export default {
   computed: {},
   methods: {
     ...mapActions(["setUserBalance"]),
+    async deleteExpense(evt) {
+      evt.stopPropagation();
+      try {
+        const response = await axios.delete(
+          `api/groups/${this.groupname}/expenses/${this.expense.id}`,
+          {
+            headers: { token: localStorage.getItem("token") },
+          }
+        );
+
+        await this.setUserBalance(this.groupname);
+        this.$emit("reloadExpenses");
+        this.closePanel();
+      } catch (err) {
+        console.log(err);
+      }
+    },
     closePanel() {
       this.$emit("close");
     },
