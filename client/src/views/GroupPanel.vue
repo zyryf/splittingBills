@@ -22,11 +22,11 @@
           color="success"
           @click="$router.push(`/group-panel/${$attrs.groupname}/menu`)"
           rounded
-          class="submit-btn panel-btn mt-6"
+          class="submit-btn panel-btn my-4"
           >GROUP MENU</v-btn
         >
       </div>
-      <div class="Expenses my-auto elevation-5 mx-4">
+      <div class="Expenses my-auto elevation-2 mx-4">
         <v-list
           v-if="!isMobile"
           rounded
@@ -48,6 +48,7 @@
                     :groupmembers="members"
                     v-on:reloadExpenses="getExpenses"
                   ></expense>
+                  <hr />
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>

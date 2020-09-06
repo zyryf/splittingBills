@@ -22,6 +22,7 @@
         rounded
         v-model="expense.amount"
         required
+        type="number"
         :dense="true"
       ></v-text-field>
       <b-form-group label="Select members for this expense">
