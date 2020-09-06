@@ -1,5 +1,5 @@
 const Group = require("../models/Group");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const uuid = require("uuid")
 const calculateBalances = require("./calculateBalances")
