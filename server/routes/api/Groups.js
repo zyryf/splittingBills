@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const Group = require("../../models/Group");
 const groupController = require("../../controllers/groupController");
 const authToken = require("../../middlewares/authToken");
