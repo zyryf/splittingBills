@@ -14,7 +14,6 @@
           {{ expense.amount }} PLN
         </div>
       </button>
-      <i @click="deleteExpense" class="far fa-trash-alt"></i>
     </div>
     <edit-expense-panel
       v-if="editPanel"
@@ -51,21 +50,6 @@ export default {
     closeEditPanel() {
       this.editPanel = false;
       this.$emit("reloadExpenses");
-    },
-    async deleteExpense(evt) {
-      evt.stopPropagation();
-      try {
-        const response = await axios.delete(
-          `api/groups/${this.groupname}/expenses/${this.expense.id}`,
-          {
-            headers: { token: localStorage.getItem("token") },
-          }
-        );
-        await this.setUserBalance(this.groupname);
-        this.$emit("reloadExpenses");
-      } catch (err) {
-        console.log(err);
-      }
     },
   },
 };

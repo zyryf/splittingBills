@@ -1,8 +1,8 @@
 <template>
   <div id="group-panel">
-    <div class="grid-container">
-      <div class="menu">
-        <div class="Header mt-4 p-2">
+    <div class="grid-container p-8">
+      <div class="menu p-8">
+        <div class="Header p-2">
           <header class="my-2 m-auto primary--text">
             {{ $attrs.groupname }}
           </header>
@@ -26,13 +26,13 @@
           >GROUP MENU</v-btn
         >
       </div>
-      <div class="Expenses mx-8">
+      <div class="Expenses my-auto elevation-5 mx-4">
         <v-list
           v-if="!isMobile"
           rounded
           min-width="300"
-          max-height="550"
-          :outlined="true"
+          height="700"
+          :outlined="false"
         >
           <vuescroll>
             <v-subheader class="primary--text">GROUP EXPENSES</v-subheader>
@@ -202,7 +202,7 @@ header {
 
 .Expenses {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .Members {
