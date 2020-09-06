@@ -19,12 +19,12 @@
     ></v-text-field>
 
     <section id="dashboard-wrapper">
-      <v-list rounded min-width="300" height="300"  :outlined="true">
+      <v-list rounded min-width="300" height="300" :outlined="true">
         <vuescroll>
           <v-subheader class="primary--text"> YOUR GROUPS</v-subheader>
           <v-list-item-group color="primary">
             <v-list-item
-              v-for="(groupname) in groups"
+              v-for="groupname in groups"
               :key="groupname"
               @click="$router.push(`/group-panel/${groupname}`)"
             >
@@ -150,8 +150,8 @@ export default {
     },
   },
   async created() {
-    await this.setUserData()
-    this.groups =  this.getUserGroups();
+    await this.setUserData();
+    this.groups = this.getUserGroups();
   },
   async mounted() {
     if (!this.$store.state.isLogged) this.$router.push("/");
@@ -183,8 +183,8 @@ export default {
           headers: { token: localStorage.getItem("token") },
         });
         this.clearFormInputs();
-        this.success = response.data.title;
         this.setUserData();
+        this.groups = this.getUserGroups();
       } catch (err) {
         console.log(err.response.data.title);
         this.clearFormInputs();
@@ -207,6 +207,7 @@ export default {
         this.clearFormInputs();
 
         this.setUserData();
+        this.groups = this.getUserGroups();
       } catch (err) {
         this.clearFormInputs();
         this.error = err.response.data.title;
@@ -287,8 +288,8 @@ h2 {
   display: flex;
   flex-direction: column;
 }
-  .v-input {
-    max-width: 400px;
-  }
+.v-input {
+  max-width: 400px;
+}
 @import "../assets/media-queries/large.scss";
 </style>
