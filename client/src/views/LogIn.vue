@@ -49,22 +49,6 @@
         :disabled="!isFormCorect"
         >LOG IN</v-btn
       >
-      <v-btn
-        color="primary"
-        block
-        class="submit-btn mt-4"
-        rounded
-        @click="logTestUserJakub1"
-        >TEST USER: jakub1</v-btn
-      >
-      <v-btn
-        color="primary"
-        block
-        class="submit-btn mt-4"
-        rounded
-        @click="logTestUserSzymon1"
-        >TEST USER: szymon1</v-btn
-      >
     </form>
 
     <p class="mt-auto">
@@ -150,43 +134,7 @@ export default {
         }
       }
     },
-
-    logTestUserJakub1() {
-      this.user = {
-        email: "jakub1@op.pl",
-        password: "jakub1",
-      };
-      this.submitForm();
-    },
-    logTestUserSzymon1() {
-      this.user = {
-        email: "szymon1@gmail.com",
-        password: "szymon1",
-      };
-      this.submitForm();
-    },
   },
-
-  /* async logInFB() {
-      FB.login();
-      // To poniżej, to powinna być funkcja w storze, i jeżeli pzy odpaleniu appki jest connected też powinna się wywoływać
-      const accessToken = FB.getAccessToken();
-      console.log(accessToken);
-      try {
-        const res = axios.post("/api/login/fb", { accessToken: accessToken });
-        // w odpowiedzi powinniśmy dostać nowy token przypisany do usera ale już stworzony na BackEndzie przez serwer
-        localStorage.setItem("token", res.data.token);
-        this.$store.state.isLogged = true;
-        this.isTokenExpired();
-        this.$router.push("/dashboard");
-      } catch (err) {
-        if (err.response) {
-          this.errorsFromServer = err.response.data.title;
-        } else {
-          this.errorsFromServer = "Oooops. Something went wrong :( Server error!";
-        }
-      }
-    }, */
 };
 </script>
 

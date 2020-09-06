@@ -58,7 +58,7 @@
       </v-alert>
       <v-alert
         :dense="true"
-        v-if="true"
+        v-if="signUpSuccess"
         color="success"
         outlined
         style="border-radius: 38px; width: 100%;"
@@ -115,7 +115,7 @@ export default {
       required,
       minLength: minLength(3),
       isUnique: async (name) => {
-        if (!name) return false;
+        if (!name) return true;
         try {
           const users = await axios.get("/api/users");
           return !users.data.filter((user) => name === user.name).length;
@@ -147,9 +147,7 @@ export default {
       const errors = [];
       if (this.email === null) return errors;
       !this.$v.email.email && errors.push("Must be valid e-mail");
-      this.$v.email.email &&
-        !this.$v.email.isUnique &&
-        errors.push("E-mail already exist");
+      this.$v.email.email && !this.$v.email.isUnique && errors.push("E-mail already exist");
       !this.$v.email.required && errors.push("E-mail is required");
       return errors;
     },

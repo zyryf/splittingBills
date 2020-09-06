@@ -1,20 +1,15 @@
 <template>
   <div class="my-1 mx-6">
-    <div id="expense-wrapper">
-      <i class="fas fa-money-bill-wave"></i>
-      <button class="grid-expense-container " @click="editPanel = true">
-        <div class="expense-header my-auto ml-2">{{ expense.title }}</div>
-        <div class="paid-by-text my-auto ml-2">
-          Paid by: {{ expense.payer }}
-        </div>
-        <div
-          class="expense-amount ml-auto "
-          :style="amountColor(expense.amount)"
-        >
-          {{ expense.amount }} PLN
-        </div>
-      </button>
-    </div>
+    <button class="grid-expense-container w-100" @click="editPanel = true">
+      <div class="expense-header my-auto ml-2">{{ expense.title }}</div>
+      <div class="paid-by-text my-auto ml-2">Paid by: {{ expense.payer }}</div>
+      <div
+        class="expense-amount ml-auto m-auto mr-6"
+        :style="amountColor(expense.amount)"
+      >
+        {{ expense.amount }} PLN
+      </div>
+    </button>
     <edit-expense-panel
       v-if="editPanel"
       v-on:close="closeEditPanel"
@@ -68,6 +63,7 @@ export default {
   & > div {
     display: flex;
   }
+
 }
 
 .expense-header {
