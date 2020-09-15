@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  nginx:
+    image: splittingbills/nginx
+    ports:
+      - 80:80
+      - 443:443
+  client:
+    image: splittingbills/client
+    environment:
+      - NODE_ENV=production
+    command: "http-server dist"
+  server:
+    image: splittingbills/server
+    environment:
+      - NODE_ENV=production
+      - DATASOURCE_URL=${DATASOURCE_URL}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+    command: "npm run start"
