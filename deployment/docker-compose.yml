@@ -1,17 +1,17 @@
 version: '3.8'
 services:
   nginx:
-    image: splittingbills/nginx
+    image: docker.pkg.github.com/zyryf/splittingbills/nginx:1.0.0
     ports:
       - 80:80
       - 443:443
   client:
-    image: splittingbills/client
+    image: docker.pkg.github.com/zyryf/splittingbills/client:1.0.0
     environment:
       - NODE_ENV=production
     command: "http-server dist"
   server:
-    image: splittingbills/server
+    image: docker.pkg.github.com/zyryf/splittingbills/server:1.0.0
     environment:
       - NODE_ENV=production
       - DATASOURCE_URL=${DATASOURCE_URL}
