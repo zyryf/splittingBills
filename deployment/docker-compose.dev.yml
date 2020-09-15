@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  nginx:
+    image: splittingbills/nginx
+    ports:
+    - 80:80
+    - 443:443
+  client:
+    image: splittingbills/client:latest
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ../modules/client/.env
+    volumes:
+      - ../modules/client:/app
+    ports:
+      - 8080:8080
+    command: "npm run serve"
+  server:
+    image: splittingbills/server:latest
+    environment:
+      - NODE_ENV=develpoment
+      - DATASOURCE_URL=mongodb://mongo:27017/splitting_billsDB
+    ports:
+      - 5000:5000
+    volumes:
+    - ../module/server:.
+    command: "npm run dev"
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+
